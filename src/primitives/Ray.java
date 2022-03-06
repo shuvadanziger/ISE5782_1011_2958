@@ -9,7 +9,14 @@ public class Ray {
 	{
 		p0 = new Point(p.xyz.d1, p.xyz.d2, p.xyz.d3);
 		Vector temp = v.normalize();
-		dir = new Vector(temp.xyz.d1, temp.xyz.d2, temp.xyz.d3);
+		try 
+		{
+			dir = new Vector(temp.xyz.d1, temp.xyz.d2, temp.xyz.d3);
+		}
+		catch(IllegalArgumentException ex)
+		{
+			throw new IllegalArgumentException(ex.getMessage());
+		}
 	}
 	public Point getP0()
 	{

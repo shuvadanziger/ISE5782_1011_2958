@@ -9,7 +9,7 @@ public class Tube implements Geometry {
 		axisRay = new Ray(a.getP0(), a.getDir());
 		radius = r;
 	}
-	public Vector getNormal(Point p) ///////*****************
+	public Vector getNormal(Point p)
 	{
 		return null;
 	}

@@ -14,7 +14,7 @@ public class Plane implements Geometry {
 		q0 = p;
 		normal = new Vector(v.getXyz());
 	}
-	public Vector getNormal(Point p) ///////*****************
+	public Vector getNormal(Point p)
 	{
 		return null;
 	}

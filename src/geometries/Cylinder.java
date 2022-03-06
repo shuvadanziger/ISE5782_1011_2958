@@ -7,7 +7,7 @@ public class Cylinder implements Geometry {
 	{
 		height = h;
 	}
-	public Vector getNormal(Point p) ///////*****************
+	public Vector getNormal(Point p)
 	{
 		return null;
 	}

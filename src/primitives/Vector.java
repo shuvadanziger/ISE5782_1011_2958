@@ -4,10 +4,18 @@ public class Vector extends Point {
 	public Vector(double d1, double d2, double d3)
 	{
 		super(d1, d2, d3);
+		if(Double3.ZERO.equals(xyz))
+		{
+			throw new IllegalArgumentException("Vector zero is prohibited");
+		}
 	}
 	public Vector(Double3 d)
 	{
 		super(d);
+		if(Double3.ZERO.equals(xyz))
+		{
+			throw new IllegalArgumentException("Vector zero is prohibited");
+		}
 	}
 	public Double3 getXyz() {
 		return xyz;
@@ -35,8 +43,15 @@ public class Vector extends Point {
 	}
 	public Vector scale(double scalar)
 	{
-		Vector ans = new Vector(this.xyz.scale(scalar));
-		return ans;
+		try
+		{
+			Vector ans = new Vector(this.xyz.scale(scalar));
+			return ans;
+		}
+		catch(IllegalArgumentException ex)
+		{
+			throw new IllegalArgumentException(ex.getMessage());
+		}
 	}
 	public double dotProduct(Vector v)
 	{

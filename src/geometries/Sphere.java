@@ -9,7 +9,7 @@ public class Sphere implements Geometry {
 		center = p1;
 		radius = r;
 	}
-	public Vector getNormal(Point p) ///////*****************
+	public Vector getNormal(Point p)
 	{
 		return null;
 	}
