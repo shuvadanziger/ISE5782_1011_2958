@@ -1,6 +1,15 @@
 package primitives;
-
+/**
+ * Vector - An object with length and direction
+ *
+ */
 public class Vector extends Point {
+	/**
+	 * Constructor
+	 * @param d1
+	 * @param d2
+	 * @param d3
+	 */
 	public Vector(double d1, double d2, double d3)
 	{
 		super(d1, d2, d3);
@@ -9,6 +18,10 @@ public class Vector extends Point {
 			throw new IllegalArgumentException("Vector zero is prohibited");
 		}
 	}
+	/**
+	 * Constructor
+	 * @param d
+	 */
 	public Vector(Double3 d)
 	{
 		super(d);
@@ -28,19 +41,18 @@ public class Vector extends Point {
 	public String toString() {
 		return super.toString();
 	}
-	/*public Vector subtract(Vector v)
-	{
-		Point temp = (Point) v;
-		return super.subtract(temp);
-	}*/
+	
 	@Override
 	public Vector add(Vector v)
 	{
-		/*Point temp = super.add(v);
-		Vector ans = new Vector(temp.xyz);*/
 		Vector ans = new Vector(this.xyz.add(v.xyz));
 		return ans;
 	}
+	/**
+	 * Vector multiplication by a number
+	 * @param scalar
+	 * @return
+	 */
 	public Vector scale(double scalar)
 	{
 		try
@@ -53,26 +65,47 @@ public class Vector extends Point {
 			throw new IllegalArgumentException(ex.getMessage());
 		}
 	}
+	/**
+	 * Scalar product
+	 * @param v
+	 * @return
+	 */
 	public double dotProduct(Vector v)
 	{
-		//Double3 temp = this.xyz.product(v.xyz);
 		Double3 temp = new Double3(this.xyz.product(v.xyz).d1, this.xyz.product(v.xyz).d2, this.xyz.product(v.xyz).d3);
 		return (temp.d1 + temp.d2 + temp.d3);
 	}
+	/**
+	 * Vector multiplication 
+	 * @param v
+	 * @return
+	 */
 	public Vector crossProduct(Vector v)
 	{
 		Vector ans = new Vector(xyz.d2*v.xyz.d3 - xyz.d3*v.xyz.d2,
 				xyz.d3*v.xyz.d1 - xyz.d1*v.xyz.d3, xyz.d1*v.xyz.d2 - xyz.d2*v.xyz.d1);
 		return ans;
 	}
+	/**
+	 * Vector length squared
+	 * @return
+	 */
 	public double lengthSquared()
 	{
 		return this.dotProduct(this);
 	}
+	/**
+	 * Vector length
+	 * @return
+	 */
 	public double length()
 	{
 		return Math.sqrt(this.lengthSquared());
 	}
+	/**
+	 * A normalization operation that returns a new vector normalized in the same direction as the original vector
+	 * @return
+	 */
 	public Vector normalize()
 	{
 		double temp = 1/this.length();

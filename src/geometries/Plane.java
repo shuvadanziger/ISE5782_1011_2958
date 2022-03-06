@@ -1,6 +1,9 @@
 package geometries;
 import primitives.*;
-
+/**
+ * Plane (point and vector)
+ *
+ */
 public class Plane implements Geometry {
 	private Point q0;
 	private Vector normal;
