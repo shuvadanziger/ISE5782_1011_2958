@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import primitives.*;
 
+
 /**
  * Unit tests for primitives.Vector class
  * @author Shuva
@@ -50,17 +51,16 @@ class VectorTests {
 
         // TC01: Test that length of cross-product is proper (orthogonal vectors taken
         // for simplicity)
-        assertEquals("crossProduct() wrong result length", v1.length() * v2.length(), vr.length(), 0.00001);
+        assertEquals( v1.length() * v2.length(), vr.length(), 0.00001,"crossProduct() wrong result length");
 
         // TC02: Test cross-product result orthogonality to its operands
-        assertTrue("crossProduct() result is not orthogonal to 1st operand", isZero(vr.dotProduct(v1)));
-        assertTrue("crossProduct() result is not orthogonal to 2nd operand", isZero(vr.dotProduct(v2)));
+        assertTrue(isZero(vr.dotProduct(v1)),"crossProduct() result is not orthogonal to 1st operand");
+        assertTrue(isZero(vr.dotProduct(v2)),"crossProduct() result is not orthogonal to 2nd operand");
 
         // =============== Boundary Values Tests ==================
         // TC11: test zero vector from cross-productof co-lined vectors
         Vector v3 = new Vector(-2, -4, -6);
-        assertThrows("crossProduct() for parallel vectors does not throw an exception",
-                IllegalArgumentException.class, () -> v1.crossProduct(v3));
+        assertThrows(IllegalArgumentException.class, () -> v1.crossProduct(v3),"crossProduct() for parallel vectors does not throw an exception");
 
 	}
 
