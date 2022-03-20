@@ -84,6 +84,10 @@ public class Vector extends Point {
 	{
 		Vector ans = new Vector(xyz.d2*v.xyz.d3 - xyz.d3*v.xyz.d2,
 				xyz.d3*v.xyz.d1 - xyz.d1*v.xyz.d3, xyz.d1*v.xyz.d2 - xyz.d2*v.xyz.d1);
+		if(Double3.ZERO.equals(ans.xyz))
+		{
+			throw new IllegalArgumentException("All the point are in the same line");
+		}
 		return ans;
 	}
 	/**

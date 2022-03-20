@@ -10,7 +10,9 @@ public class Plane implements Geometry {
 	public Plane (Point p1, Point p2, Point p3)
 	{
 		q0 = p1;
-		normal = getNormal(p2);
+		Vector v1 = p2.subtract(p1);
+		Vector v2 = p3.subtract(p1);
+		normal = v1.crossProduct(v2).normalize();
 	}
 	public Plane (Point p, Vector v)
 	{
@@ -19,10 +21,8 @@ public class Plane implements Geometry {
 	}
 	public Vector getNormal(Point p)
 	{
-		return null;
-		//Vector v1 = new Vector(1,0,0);
-		//Vector v2 = new Vector(0,1,0);
-		//Vector n = v1.crossProduct(v2).normalize();
+		return normal;
+		
 	}
 	public Vector getNormal()
 	{

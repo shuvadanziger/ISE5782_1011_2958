@@ -58,7 +58,7 @@ class PointTests {
 	@Test
 	void testDistance() {
 		Point p1 = new Point(0,4,5);
-		Point p2 = new Point(0,1,1);
+		Point p2 = new Point(0,1,0);
 		assertEquals(5, p1.distance(p2), "ERROR: distance() wrong value");
 
 	}
