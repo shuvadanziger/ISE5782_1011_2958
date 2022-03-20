@@ -11,7 +11,7 @@ public class Double3 {
 	final double d1;
 	final double d2;
 	final double d3;
-
+ 
 	/**
 	 * Zero triad (0,0,0)
 	 */

@@ -10,7 +10,16 @@ public class Plane implements Geometry {
 	public Plane (Point p1, Point p2, Point p3)
 	{
 		q0 = p1;
-		normal = getNormal(p2);
+		Vector v1 = p2.subtract(p1);
+		Vector v2 = p3.subtract(p1);
+		try {
+			normal = v1.crossProduct(v2).normalize();
+		}
+		catch(IllegalArgumentException ex)
+		{
+			throw new IllegalArgumentException("all the points are in the same line");
+		}
+		
 	}
 	public Plane (Point p, Vector v)
 	{
@@ -25,5 +34,6 @@ public class Plane implements Geometry {
 	{
 		return normal;
 	}
+	
 
 }
