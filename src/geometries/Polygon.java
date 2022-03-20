@@ -42,6 +42,7 @@ public class Polygon implements Geometry {
 	 *                                  consequent edges)
 	 *                                  <li>The polygon is concave (not convex)</li>
 	 *                                  </ul>
+	 *                                  
 	 */
 	public Polygon(Point... vertices) {
 		if (vertices.length < 3)
@@ -54,7 +55,7 @@ public class Polygon implements Geometry {
 		if (vertices.length == 3)
 			return; // no need for more tests for a Triangle
 
-		Vector n = plane.getNormal(null); ///////*****************
+		Vector n = plane.getNormal(); 
 
 		// Subtracting any subsequent points will throw an IllegalArgumentException
 		// because of Zero Vector if they are in the same point
@@ -86,6 +87,6 @@ public class Polygon implements Geometry {
 
 	@Override
 	public Vector getNormal(Point point) {
-		return plane.getNormal(null);     ///////*****************
+		return plane.getNormal();
 	}
 }
