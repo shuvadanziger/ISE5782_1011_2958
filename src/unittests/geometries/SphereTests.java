@@ -4,6 +4,7 @@
 package unittests.geometries;
 import geometries.Sphere;
 import primitives.Point;
+import primitives.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
 

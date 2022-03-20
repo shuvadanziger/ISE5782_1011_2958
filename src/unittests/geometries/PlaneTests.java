@@ -25,7 +25,7 @@ class PlaneTests {
 	@Test
 	public void testConstructor()
 	{
-		
+		Plane p = new Plane yhijo
 	}
 
 	/**
