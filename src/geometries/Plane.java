@@ -20,6 +20,13 @@ public class Plane implements Geometry {
 	public Vector getNormal(Point p)
 	{
 		return null;
+		//Vector v1 = new Vector(1,0,0);
+		//Vector v2 = new Vector(0,1,0);
+		//Vector n = v1.crossProduct(v2).normalize();
+	}
+	public Vector getNormal()
+	{
+		return normal;
 	}
 
 }

@@ -19,6 +19,7 @@ class TubeTests {
 	 */
 	@Test
 	void testGetNormal() {
+		//Tube t = new Tube(new Ray(new Vector()))
 	}
 
 }

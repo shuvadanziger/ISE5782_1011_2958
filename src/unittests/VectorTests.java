@@ -3,7 +3,9 @@
  */
 package unittests;
 
+import static java.lang.System.out;
 import static org.junit.jupiter.api.Assertions.*;
+import static primitives.Util.isZero;
 
 import org.junit.jupiter.api.Test;
 
@@ -22,6 +24,10 @@ class VectorTests {
 	 */
 	@Test
 	void testAddVector() {
+		Vector v1 = new Vector(1,2,3);
+		Vector v2 = new Vector(4,5,6);
+		Vector v3 = new Vector(5,7,9);
+		assertEquals(v3, v1.add(v2), "ERROR: add() is not working");
 	}
 
 	/**
@@ -29,6 +35,10 @@ class VectorTests {
 	 */
 	@Test
 	void testScale() {
+		Vector v1 = new Vector(1,2,3);
+		Vector v2 = new Vector(3,6,9);
+		assertEquals(v2, v1.scale(3), "ERROR: scale() is not working :)");
+		
 	}
 
 	/**
@@ -36,6 +46,15 @@ class VectorTests {
 	 */
 	@Test
 	void testDotProduct() {
+		Vector v1 = new Vector(1, 2, 3);
+		Vector v2 = new Vector(-2, -4, -6);
+	    Vector v3 = new Vector(0, 3, -2);
+		assertEquals(0, v1.dotProduct(v3), "ERROR: dotProduct() for orthogonal vectors is not zero");
+		//if (!isZero(v1.dotProduct(v3)))
+			//out.println("ERROR: dotProduct() for orthogonal vectors is not zero");
+		assertEquals(-28, v1.dotProduct(v2), "ERROR: dotProduct() wrong value");
+		//if (!isZero(v1.dotProduct(v2) + 28))
+			//out.println("ERROR: dotProduct() wrong value");
 	}
 
 	/**
