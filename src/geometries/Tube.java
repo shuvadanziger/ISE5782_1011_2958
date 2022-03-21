@@ -1,5 +1,6 @@
 package geometries;
 import primitives.*;
+import primitives.Double3;
 
 public class Tube implements Geometry {
 	private Ray axisRay;
@@ -16,7 +17,17 @@ public class Tube implements Geometry {
 	}
 	public Vector getNormal(Point p)
 	{
-		return null;
+		double t = axisRay.getDir().dotProduct(p.subtract(axisRay.getP0()));
+		Point o = axisRay.getP0().add(axisRay.getDir().scale(t));
+		Vector n = p.subtract(o).normalize();
+		return n;
+		/////לעשות חריגה כשהנקודה המתקבלת נמצאת מול ראש הקרן - שזה הנקודה P0 של הקרן \
+		
+		
+		//if(Double3.ZERO.equals(ans.xyz))
+		//{
+		//	throw new IllegalArgumentException("All the point are in the same line");
+		//}
 	}
 	
 
