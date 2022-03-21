@@ -30,7 +30,7 @@ class TubeTests {
 		Vector n = new Vector(1,0,0);
 		assertEquals(n, t.getNormal(p1), "Bad normal to tube");
 		Point p2 = new Point(1,0,0);
-		assertThrows(IllegalArgumentException.class, //
+		assertThrows(IllegalArgumentException.class, /////
 				() -> t.getNormal(p2), "calculates normal when the point is in front of the ray head");
 	}
 
