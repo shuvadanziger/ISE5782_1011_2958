@@ -19,7 +19,11 @@ class TubeTests {
 	 */
 	@Test
 	void testGetNormal() {
+<<<<<<< HEAD
 		
+=======
+		//Tube t = new Tube(new Ray(new Vector()))
+>>>>>>> branch 'master' of https://github.com/shuvadanziger/ISE5782_1011_2958.git
 	}
 
 }

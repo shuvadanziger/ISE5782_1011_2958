@@ -2,6 +2,9 @@
  * 
  */
 package unittests.geometries;
+import geometries.Sphere;
+import primitives.Point;
+import primitives.Vector;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,6 +30,9 @@ class SphereTests {
 		Vector n = new Vector(1,0,0);
 		assertEquals(n, s.getNormal(new Point(1,0,0)), "Bad normal to sphere");
 	}
+<<<<<<< HEAD
 	
 
+=======
+>>>>>>> branch 'master' of https://github.com/shuvadanziger/ISE5782_1011_2958.git
 }

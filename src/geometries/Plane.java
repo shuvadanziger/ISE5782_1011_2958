@@ -20,6 +20,12 @@ public class Plane implements Geometry {
 			throw new IllegalArgumentException("all the points are in the same line");
 		}
 		
+		Vector v1 = p2.subtract(p1);
+		Vector v2 = p3.subtract(p1);
+		normal = v1.crossProduct(v2).normalize();
+		Vector v1 = p2.subtract(p1);
+		Vector v2 = p3.subtract(p1);
+		normal = v1.crossProduct(v2).normalize();
 	}
 	public Plane (Point p, Vector v)
 	{
@@ -28,7 +34,8 @@ public class Plane implements Geometry {
 	}
 	public Vector getNormal(Point p)
 	{
-		return null;
+		return normal;
+		
 	}
 	public Vector getNormal()
 	{

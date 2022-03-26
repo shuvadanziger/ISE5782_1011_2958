@@ -5,6 +5,7 @@ package unittests;
 
 import static java.lang.System.out;
 import static org.junit.jupiter.api.Assertions.*;
+import static primitives.Util.isZero;
 
 import org.junit.jupiter.api.Test;
 
@@ -43,7 +44,7 @@ class VectorTests {
 		Vector v2 = new Vector(3,6,9);
 	    // TC01: Test that the result of scale is proper
 		assertEquals(v2, v1.scale(3), "ERROR: scale() does not work correctly");
-	}
+     }
 
 	/**
 	 * Test method for {@link primitives.Vector#dotProduct(primitives.Vector)}.
@@ -59,7 +60,6 @@ class VectorTests {
         // =============== Boundary Values Tests ==================
         // TC11: test zero vector from dot-product of co-lined vectors
 		assertTrue(isZero(v1.dotProduct(v3)), "ERROR: dotProduct() for orthogonal vectors is not zero");
-		
 	}
 
 	/**
