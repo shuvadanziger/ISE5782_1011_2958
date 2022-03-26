@@ -1,6 +1,6 @@
 package geometries;
 import primitives.*;
-import primitives.Double3;
+//import primitives.Double3;
 
 public class Tube implements Geometry {
 	private Ray axisRay;
@@ -15,19 +15,22 @@ public class Tube implements Geometry {
 		axisRay = new Ray(a.getP0(), a.getDir());
 		radius = r;
 	}
+	/**
+	 * Calculates the normalized normal to the tube
+	 * @return
+	 */
 	public Vector getNormal(Point p)
 	{
+		Vector v = p.subtract(axisRay.getP0());
+		double ans = axisRay.getDir().dotProduct(v);
+		if (ans==0)
+		{
+			throw new IllegalArgumentException("The point is in front of the head of the ray");
+		}
 		double t = axisRay.getDir().dotProduct(p.subtract(axisRay.getP0()));
 		Point o = axisRay.getP0().add(axisRay.getDir().scale(t));
 		Vector n = p.subtract(o).normalize();
 		return n;
-		/////לעשות חריגה כשהנקודה המתקבלת נמצאת מול ראש הקרן - שזה הנקודה P0 של הקרן \
-		
-		
-		//if(Double3.ZERO.equals(ans.xyz))
-		//{
-		//	throw new IllegalArgumentException("All the point are in the same line");
-		//}
 	}
 	
 

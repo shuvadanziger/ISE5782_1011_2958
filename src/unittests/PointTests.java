@@ -19,7 +19,7 @@ import primitives.Vector;
 class PointTests {
 
 	/**
-	 * Test method f                   or {@link primitives.Point#subtract(primitives.Point)}.
+	 * Test method for {@link primitives.Point#subtract(primitives.Point)}.
 	 */
 	@Test
 	void testSubtract() {

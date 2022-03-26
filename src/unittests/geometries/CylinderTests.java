@@ -19,8 +19,7 @@ class CylinderTests {
 	 */
 	@Test
 	void testGetNormal() {
-		
-	
+
 	}
 
 }
