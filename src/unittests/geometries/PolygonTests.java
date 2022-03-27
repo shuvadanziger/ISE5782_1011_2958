@@ -1,5 +1,5 @@
 /**
- * 
+ *
  */
 package unittests.geometries;
 
@@ -11,7 +11,7 @@ import primitives.*;
 
 /**
  * Testing Polygons
- * 
+ *
  * @author Dan
  *
  */
