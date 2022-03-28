@@ -55,5 +55,11 @@ class PlaneTests {
 		// TC02: Test that the length of the normal is 1
 		assertEquals(1, p.getNormal(new Point(0,0,0)).length(), "The length of the normal is not 1");
 	}
+	
+	@Test
+	void testFindIntsersections() {
+
+
+	}
 
 }
