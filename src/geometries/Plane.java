@@ -61,7 +61,7 @@ public class Plane implements Geometry {
 		{
 			return null;
 		}
-		ArrayList<Point> ans=new ArrayList<Point>();
+		List<Point> ans=new ArrayList<Point>();
 		double t=normal.dotProduct(q0.subtract(ray.getP0()));
 		t/=normal.dotProduct(ray.getDir());
 		ans.add(ray.getP0().add(ray.getDir().scale(t)));

@@ -23,7 +23,7 @@ public class Geometries implements Intersectable {
 	{
 		lst.add(geometries);
 	}
-//
+
 	@Override
 	public ArrayList<Point> findIntsersections(Ray ray)
 	{

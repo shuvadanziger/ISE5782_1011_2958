@@ -86,4 +86,12 @@ class SphereTests {
 
     }
 
+    @Test
+    void testFindIntsersections() {
+
+
+
+    }
+
+
 }

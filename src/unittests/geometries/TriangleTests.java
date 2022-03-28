@@ -28,4 +28,11 @@ class TriangleTests {
 
 	}
 
+	@Test
+	void testFindIntsersections() {
+
+
+
+	}
+
 }

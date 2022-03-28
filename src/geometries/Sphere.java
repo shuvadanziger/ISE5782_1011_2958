@@ -42,7 +42,7 @@ public class Sphere implements Geometry {
 		double th= Math.sqrt(radius*radius-d*d);
 		double t1=tm+th;
 		double t2=tm-th;
-		ArrayList<Point> lst= new ArrayList<Point>();
+		List<Point> lst= new ArrayList<Point>();
 		if(t1>0)
 		{
 			lst.add(ray.getP0().add(ray.getDir().scale(t1)));

@@ -26,13 +26,16 @@ public class Triangle extends Polygon {
 		Vector n1 = v1.crossProduct(v2).normalize();
 		Vector n2 = v2.crossProduct(v3).normalize();
 		Vector n3 = v3.crossProduct(v1).normalize();
-		if (alignZero(ray.getDir().dotProduct(n1))>0 && alignZero(ray.getDir().dotProduct(n2))>0 && alignZero(ray.getDir().dotProduct(n3))>0)
+		double t1 = lignZero(ray.getDir().dotProduct(n1));
+		double t2 = lignZero(ray.getDir().dotProduct(n2));
+		double t3 = lignZero(ray.getDir().dotProduct(n3));
+		if (t1>0 && t2>0 && t3>0)
 		{
-			return super.findIntsersections(ray);
+			return plane.findIntsersections(rey);
 		}
-		if (alignZero(ray.getDir().dotProduct(n1))<0 && alignZero(ray.getDir().dotProduct(n2))<0 && alignZero(ray.getDir().dotProduct(n3))<0)
+		if (t1<0 && t2<0 && t3<0)
 		{
-			return super.findIntsersections(ray);
+			return plane.findIntsersections(rey);
 		}
     	return null;
     }
