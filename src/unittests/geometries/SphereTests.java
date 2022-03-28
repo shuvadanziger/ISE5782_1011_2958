@@ -1,11 +1,9 @@
 /**
- * 
+ *
  */
 package unittests.geometries;
-import geometries.Sphere;
-import primitives.Point;
-import primitives.Ray;
-import primitives.Vector;
+import geometries.*;
+import primitives.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -25,13 +23,13 @@ class SphereTests {
 	 */
 	@Test
 	void testGetNormal() {
-		 // ============ Equivalence Partitions Tests ==============
+		// ============ Equivalence Partitions Tests ==============
 		Sphere s = new Sphere(new Point(0,0,0), 1);
 		Vector n = new Vector(1,0,0);
 		// TC01: Test that the result of getNormal is proper
 		assertEquals(n, s.getNormal(new Point(1,0,0)), "Bad normal to sphere");
 	}
-	/**
+    /**
      * Test method for {@link geometries.Sphere#findIntersections(primitives.Ray)}.
      */
     @Test
@@ -47,15 +45,19 @@ class SphereTests {
         // TC02: Ray starts before and crosses the sphere (2 points)
         Point p1 = new Point(0.0651530771650466, 0.355051025721682, 0);
         Point p2 = new Point(1.53484692283495, 0.844948974278318, 0);
-        List<Point> result = sphere.findIntersections(new Ray(new Point(-1, 0, 0),new Vector(3, 1, 0)));
+        List<Point> result = (List<Point>) sphere.findIntersections(new Ray(new Point(-1, 0, 0),
+                                                                new Vector(3, 1, 0)));
         assertEquals(2, result.size(), "Wrong number of points");
         if (result.get(0).getX() > result.get(1).getX())
             result = List.of(result.get(1), result.get(0));
         assertEquals(List.of(p1, p2), result, "Ray crosses sphere");
 
         // TC03: Ray starts inside the sphere (1 point)
-        
-        
+        List<Point> result1 = sphere.findIntersections(new Ray(new Point(1.5, 0, 0), new Vector(1, 0, 0)));
+        assertEquals(1, result1.size(), "Wrong number of points");
+        if (result1.get(0).getX() > result1.get(1).getX())
+            result1 = List.of(result1.get(1), result1.get(0));
+        assertEquals(List.of(p1, p2), result1, "Ray crosses sphere");
         ...
         // TC04: Ray starts after the sphere (0 points)
         ...

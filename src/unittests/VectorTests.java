@@ -84,8 +84,7 @@ class VectorTests {
         // =============== Boundary Values Tests ==================
         // TC11: test zero vector from cross-productof co-lined vectors
         Vector v3 = new Vector(-2, -4, -6);
-        assertThrows(IllegalArgumentException.class,
-        		 () -> v1.crossProduct(v3),"crossProduct() for parallel vectors does not throw an exception");
+        assertThrows(IllegalArgumentException.class, () -> v1.crossProduct(v3),"crossProduct() for parallel vectors does not throw an exception");
 
 	}
 
@@ -112,12 +111,12 @@ class VectorTests {
 		assertEquals(5,v1.length(),"ERROR: length() wrong value");
 
 	}
-
+ 
 	/**
 	 * Test method for {@link primitives.Vector#normalize()}.
 	 */
 	@Test
-	void testNormalize() {
+	void testNormalize() { 
 		Vector v = new Vector(1, 2, 3);
 		Vector u = v.normalize();
 	    // ============ Equivalence Partitions Tests ==============

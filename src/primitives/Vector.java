@@ -65,6 +65,7 @@ public class Vector extends Point {
 			throw new IllegalArgumentException(ex.getMessage());
 		}
 	}
+	
 	/**
 	 * Scalar product
 	 * @param v
