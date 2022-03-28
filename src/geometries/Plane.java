@@ -65,7 +65,8 @@ public class Plane implements Geometry {
 		double t=normal.dotProduct(q0.subtract(ray.getP0()));
 		t/=normal.dotProduct(ray.getDir());
 		ans.add(ray.getP0().add(ray.getDir().scale(t)));
-    	return ans;
+    	return ans;//
+		//
     }
 
 }
