@@ -44,7 +44,7 @@ public class Point {
 	 */
 	public Vector subtract(Point p)
 	{
-		Vector ans = new Vector(this.xyz.subtract(p.xyz));
+		Vector ans = new Vector(xyz.subtract(p.xyz));
 		return ans;
 	}
 	/**
@@ -75,6 +75,9 @@ public class Point {
 	{
 		double ans = Math.sqrt(distanceSquared(p));
 		return ans;
+	}
+	public double getX() {
+		return xyz.d1;
 	}
 
 

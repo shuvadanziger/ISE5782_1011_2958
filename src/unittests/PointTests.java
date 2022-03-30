@@ -25,12 +25,12 @@ class PointTests {
 	void testSubtract() {
 		Point p1 = new Point(1, 2, 3);
 		Point p2 = new Point(2, 3, 4);
-		Vector v = new Vector(1, 1, 1);
+		Vector v = new Vector(-1, -1, -1);
 		assertEquals(v, p1.subtract(p2), "ERROR: subtract(): Point - Point does not work correctly");
 		//if (!new Vector(1, 1, 1).equals(new Point(2, 3, 4).subtract(p1)))
 			//out.println("ERROR: Point - Point does not work correctly");
 	}
-
+ 
 	/**
 	 * Test method for {@link primitives.Point#add(primitives.Vector)}.
 	 */
@@ -47,9 +47,9 @@ class PointTests {
 	 */
 	@Test
 	void testDistanceSquared() {
-		Point p1 = new Point(1,2,3);
-		Point p2 = new Point(4,5,6);
-		assertEquals(27, p1.distance(p2), "ERROR: distanceSquared() wrong value");
+		Point p1 = new Point(0,4,4);
+		Point p2 = new Point(0,1,0);
+		assertEquals(25, p1.distanceSquared(p2), "ERROR: distanceSquared() wrong value");
 	}
 
 	/**
@@ -57,7 +57,7 @@ class PointTests {
 	 */
 	@Test
 	void testDistance() {
-		Point p1 = new Point(0,4,5);
+		Point p1 = new Point(0,4,4);
 		Point p2 = new Point(0,1,0);
 		assertEquals(5, p1.distance(p2), "ERROR: distance() wrong value");
 

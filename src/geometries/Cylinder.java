@@ -1,4 +1,5 @@
 package geometries;
+import java.util.ArrayList;
 import java.util.List;
 
 import primitives.*;
@@ -17,7 +18,7 @@ public class Cylinder implements Geometry {
 	{
 		return null;
 	}
-	public List<Point> findIntsersections(Ray ray)
+	public ArrayList<Point> findIntsersections(Ray ray)
     {
     	return null;
     }

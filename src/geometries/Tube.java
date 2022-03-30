@@ -1,4 +1,5 @@
 package geometries;
+import java.util.ArrayList;
 import java.util.List;
 
 import primitives.*;
@@ -35,7 +36,7 @@ public class Tube implements Geometry {
 		return n;
 	}
 
-	public List<Point> findIntsersections(Ray ray)
+	public ArrayList<Point> findIntsersections(Ray ray)
     {
     	return null;
     }
