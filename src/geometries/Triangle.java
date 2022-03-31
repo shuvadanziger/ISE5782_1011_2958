@@ -17,8 +17,11 @@ public class Triangle extends Polygon {
 	{
 		super(p1, p2, p3);
 	}
+	/**
+	 * find all the intsersections between the triangle and the ray.
+	 */
 	@Override
-	public ArrayList<Point> findIntsersections(Ray ray)
+	public List<Point> findIntsersections(Ray ray)
     {
 
 		Vector v1 = vertices.get(0).subtract(ray.getP0());
@@ -40,6 +43,7 @@ public class Triangle extends Polygon {
 		}
     	return null;
     }
+	
 	public Vector getNormal(Point point)
 	{
 		return super.getNormal(point);

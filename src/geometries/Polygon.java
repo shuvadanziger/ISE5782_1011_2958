@@ -69,7 +69,7 @@ public class Polygon implements Geometry {
 		// first edge being less than 180 deg. It is hold by the sign of its dot product
 		// with
 		// the normal. If all the rest consequent edges will generate the same sign -
-		// the
+		// the 
 		// polygon is convex ("kamur" in Hebrew).
 		boolean positive = edge1.crossProduct(edge2).dotProduct(n) > 0;
 		for (var i = 1; i < vertices.length; ++i) {
@@ -89,8 +89,11 @@ public class Polygon implements Geometry {
 	public Vector getNormal(Point point) {
 		return plane.getNormal();
 	}
+	/**
+	 * find all the intsersections between the polygon and the sphere
+	 */
 	@Override
-	public ArrayList<Point> findIntsersections(Ray ray)
+	public List<Point> findIntsersections(Ray ray)
     {
     	return null;
     }

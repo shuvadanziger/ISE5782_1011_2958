@@ -8,11 +8,14 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.jupiter.api.Test;
-
-import geometries.*;
 import primitives.*;
 
+import org.junit.jupiter.api.Test;
+
+import geometries.Plane;
+import geometries.Polygon;
+import primitives.Point;
+import primitives.Vector;
 
 /**
  * Unit tests for geometries.Plane class
@@ -20,7 +23,7 @@ import primitives.*;
  *
  */
 class PlaneTests {
-    /** 
+    /**
      * Test method for {@link geometries.Plane#Plane(primitives.Point)}.
      */
     @Test
@@ -66,13 +69,13 @@ class PlaneTests {
         // ============ Equivalence Partitions Tests ==============
 
         // TC01: Ray intersects the plane
-        List<Point> result = plane.findIntsersections(new Ray(new Point(1,0,0), new Vector(1,-2,-2)));
+        List<Point> result = plane.findIntsersections(new Ray(new Point(1,0,0), new Vector(1,-2,0)));
         List<Point> check = new ArrayList<Point>();
-        check.add(new Point(2,-2,2));
+        check.add(new Point(2,-2,0));
         assertEquals(check, result, "Ray crosses plane, and the function didn't find the croos point");
- 
+
         // TC02: Ray does not intersect the plane
-        result = plane.findIntsersections(new Ray(new Point(1,0,0), new Vector(-1,0,1)));
+        result = plane.findIntsersections(new Ray(new Point(1,0,0), new Vector(0,0,1)));
         assertEquals(null, result, "Ray does not crosses plane, and the function think it does, and i don't know why, my partner did this part :)");
 
         // =============== Boundary Values Tests ==================

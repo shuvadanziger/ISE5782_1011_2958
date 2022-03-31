@@ -19,13 +19,13 @@ class GeometriesTests {
 	void testFindIntsersections() {
 
 		// ============ Equivalence Partitions Tests ==============
-
+ 
 		// TC01: Some shapes intsersects but not all of them
 		Geometries lst1 = new Geometries();
 		Plane p1 = new Plane(new Point(1,0,0), new Vector(0,0,1));
-		lst1.add(p1);
+		lst1. add(p1);
 		Plane p2 = new Plane(new Point(0,0,3), new Vector(0,0,1));
-		lst1.add(p2);
+		lst1.add(p2); 
 		Triangle t = new Triangle(new Point(3,0,3), new Point(0,3,3), new Point(-3,-3,3));
 		lst1.add(t);
 		List<Point> result = lst1.findIntsersections(new Ray(new Point(0, 0, 2), new Vector(0,0,1)));
@@ -35,7 +35,8 @@ class GeometriesTests {
 
 		// TC10: Empty shapes collection
 		Geometries lst2 = new Geometries();
-		assertEquals(null, lst1, "Empty shapes collection");
+		result = lst2.findIntsersections(new Ray(new Point(0,0,1), new Vector(1,0,0)));
+		assertEquals(null, result, "Empty shapes collection");
 
 		// TC11: None of the shapes intsersects
 		p1 = new Plane(new Point(1,0,0), new Vector(0,0,1));
@@ -55,13 +56,10 @@ class GeometriesTests {
 		lst3.add(p2);
 		t = new Triangle(new Point(3,0,3), new Point(0,3,3), new Point(-3,-3,3));
 		//p2 = new Plane(new Point(0,0,3), new Vector(0,0,1));
-		lst3.add(p2);
+		lst3.add(t);
 		result = lst3.findIntsersections(new Ray(new Point(0, 0, 2), new Vector(0,0,1)));
 		assertEquals(1, result.size(), "Only one shape intsersects");
-		//List<Point> check = new ArrayList<Point>();
-		//check.add(new Point(1,1,0));
-		//assertEquals(check, result, "None of the shapes intsersects");
-
+		
 		// TC13: All of the shapes intsersects
 		Geometries lst4 = new Geometries();
 		p1 = new Plane(new Point(0,0,4), new Vector(0,0,1));
@@ -69,11 +67,11 @@ class GeometriesTests {
 		p2 = new Plane(new Point(0,0,3), new Vector(0,0,1));
 		lst4.add(p2);
 		t = new Triangle(new Point(3,0,3), new Point(0,3,3), new Point(-3,-3,3));
-		lst4.add(p2);
+		lst4.add(t);
 		result = lst4.findIntsersections(new Ray(new Point(0, 0, 2), new Vector(0,0,1)));
-		assertEquals(2, result.size(), "All of the shapes intsersects");
+		assertEquals(3, result.size(), "All of the shapes intsersects");
 
-
+ 
 	
 	}
 

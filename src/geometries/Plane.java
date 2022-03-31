@@ -5,6 +5,8 @@ import java.util.List;
 import primitives.*;
 
 import static primitives.Util.isZero;
+import static primitives.Util.*;
+
 
 /**
  * Plane (point and vector)
@@ -55,18 +57,34 @@ public class Plane implements Geometry {
 		return normal;
 	}
 
-	public ArrayList<Point> findIntsersections(Ray ray)
+	/**
+	 * find the intsersections between the ray and the plane
+	 */
+	public List<Point> findIntsersections(Ray ray)
     {
-		if(!isZero(normal.dotProduct(ray.getDir())))
+		if(isZero(normal.dotProduct(ray.getDir())))//if there are no intsersections
 		{
 			return null;
 		}
-		ArrayList<Point> ans=new ArrayList<Point>();
+		if(ray.getP0().equals(q0))//if the ray starts at the plane
+		{
+			return List.of(q0);
+		}
 		double t=normal.dotProduct(q0.subtract(ray.getP0()));
+		if (t==0)
+		{
+			return List.of(ray.getP0());
+		}
 		t/=normal.dotProduct(ray.getDir());
+		if (t<0)
+		{
+			return null;
+		} 
+		List<Point> ans=new ArrayList<Point>();
 		ans.add(ray.getP0().add(ray.getDir().scale(t)));
     	return ans;//
 		//
     }
 
 }
+

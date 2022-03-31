@@ -11,9 +11,9 @@ public class Cylinder implements Geometry {
 	 * @param h
 	 */
 	public Cylinder (double h)
-	{
+	{ 
 		height = h;
-	}
+	} 
 	public Vector getNormal(Point p)
 	{
 		return null;

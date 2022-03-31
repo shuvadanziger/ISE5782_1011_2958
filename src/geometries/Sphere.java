@@ -49,7 +49,7 @@ public class Sphere implements Geometry {
 		double t2=tm-th;
 		if(t1<=0 && t2<=0)
 		{
-			return null;
+			return null; 
 		}
 		List<Point> lst= new ArrayList<Point>();
 		if(t1>0)
