@@ -27,7 +27,7 @@ public class Camera {
 		}
 		if(v1.length()!=1||v2.length()!=1)
 		{
-			throw new IllegalArgumentException("vectors are not normalized");
+			throw new IllegalArgumentException("vectors are not normalized  ");
 		}
 		up=v1;
 		to=v2;
@@ -40,7 +40,8 @@ public class Camera {
 	public Camera setVPSize(double width, double height){
 		return this;
 	}
-	public Camera setVPDistance(double distance) {
+	public Camera setVPDistance(double distance) {///dfgdfgdfg 
+		
 		return this;
 	}
 	
