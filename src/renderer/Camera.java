@@ -19,9 +19,9 @@ public class Camera {
 	public double getDistance() {
 		return distance;
 	}
-	public Camera(Vector v1,Vector v2,Point p, double h, double w, double d )
+	public Camera(Point p, Vector v1,Vector v2)
 	{
-		if(v1.dotProduct(v2)!=0)
+		if(v1.dotProduct(v2)!=0) 
 		{
 			throw new IllegalArgumentException("the vectors are not orthogonal");
 		}
@@ -32,18 +32,37 @@ public class Camera {
 		up=v1;
 		to=v2;
 		right=v1.crossProduct(v2).normalize();
-		location=p;
-		distance=d;
-		width=w;	
-		hight=h;	
+		location=p;	
 	}
 	public Camera setVPSize(double width, double height){
+		this.width=width;
+		this.hight=height;
 		return this;
 	}
 	public Camera setVPDistance(double distance) {
+		this.distance=distance;
 		return this;
 	}
-	
+	public Ray constructRay(int nX, int nY, int j, int i) {
+		//Image center
+		Point pC=location.add(to.scale(distance));
+		//Ratio (pixel width & height)
+		double rY=hight/nY;
+		double rX=width/nX;
+		//Pixel[i,j] center
+		double yI=-(i-(nY-1)/2)*rY;
+		double xJ=(j-(nX-1)/2)*rX;
+		Point pIJ=pC.add(right.scale(xJ).add(up.scale(yI)));
+		
+		Vector vIJ=pIJ.subtract(location);
+		return new Ray(location, vIJ);
+		
+		
+
+		
+
+		
+	}
 	
 	
 
