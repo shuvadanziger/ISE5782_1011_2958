@@ -34,15 +34,13 @@ public class Camera {
 		right=v1.crossProduct(v2).normalize();
 		location=p;
 		distance=d;
-		width=w;
+		width=w;	
 		hight=h;	
 	}
 	public Camera setVPSize(double width, double height){
 		return this;
 	}
-	///
 	public Camera setVPDistance(double distance) {
-		
 		return this;
 	}
 	
