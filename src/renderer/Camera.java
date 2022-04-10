@@ -40,7 +40,8 @@ public class Camera {
 	public Camera setVPSize(double width, double height){
 		return this;
 	}
-	public Camera setVPDistance(double distance) {///dfgdfgdfg 
+	///
+	public Camera setVPDistance(double distance) {
 		
 		return this;
 	}
