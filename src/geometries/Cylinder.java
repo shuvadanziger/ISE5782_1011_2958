@@ -8,7 +8,7 @@ public class Cylinder implements Geometry {
 	private double height;
 	/**
 	 * Constructor
-	 * @param h
+	 * @param h 
 	 */
 	public Cylinder (double h)
 	{ 
