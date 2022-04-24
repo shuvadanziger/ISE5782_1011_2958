@@ -12,12 +12,16 @@ public class RayTracerBasic extends RayTracerBase{
 		super(scene);
 	}
 	/** 
-	 * @return background of the scene
+	 * 
+	 * @return color of the scene
 	 */
 	private Color calcColor(Point p)
 	{
 		return scene.ambientLight.getIntensity(); 
 	}
+	/**
+	 * return the color of the intsersections between the scene
+	 */
 	@Override
 	public  Color traceRay(Ray ray) {
 		List<Point> lst=scene.geometries.findIntsersections(ray);

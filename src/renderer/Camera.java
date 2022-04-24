@@ -43,14 +43,14 @@ public class Camera {
 		//throw new UnsupportedOperationException();
 		for (int i=0; i<imageWriter.getNy();i++) {
 			for(int j=0;j<imageWriter.getNx();j++) {
-				Color c= rayTracerBase.traceRay(constructRay(imageWriter.getNx(),imageWriter.getNy(),j,i));
+				Color c= rayTracerBase.traceRay(constructRay(imageWriter.getNx(),imageWriter.getNy(),i,j));
 				imageWriter.writePixel(j, i, c);
 			} 
 		}
 		
 	}
-	/**
-	 * creat grid 
+	/** 
+	 * create grid 
 	 * @param interval
 	 * @param color
 	 */
@@ -114,7 +114,7 @@ public class Camera {
 			throw new IllegalArgumentException("vectors are not normalized  ");
 		}
 		up=v1;
-		to=v2;
+		to=v2; 
 		right=v1.crossProduct(v2).normalize();
 		location=p;	 
 	}
@@ -153,7 +153,7 @@ public class Camera {
 		double rY=hight/nY;
 		double rX=width/nX;
 		//Pixel[i,j] center
-		double yI=-(i-((nY-1)/2))*rY;
+		double yI=(i-((nY-1)/2))*rY;
 		double xJ=(j-((nX-1)/2))*rX;
 		Point pIJ=pC; 
 		if (xJ!=0)
