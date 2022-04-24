@@ -30,7 +30,7 @@ class GeometriesTests {
 		lst1.add(t);
 		List<Point> result = lst1.findIntsersections(new Ray(new Point(0, 0, 2), new Vector(0,0,1)));
 		assertEquals(2, result.size(), "Some shapes intsersects but not all of them");
-
+ 
 		// =============== Boundary Values Tests ==================
 
 		// TC10: Empty shapes collection

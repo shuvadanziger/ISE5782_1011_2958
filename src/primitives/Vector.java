@@ -17,7 +17,7 @@ public class Vector extends Point {
 		{
 			throw new IllegalArgumentException("Vector zero is prohibited");
 		}
-	}
+	} 
 	/**
 	 * Constructor
 	 * @param d

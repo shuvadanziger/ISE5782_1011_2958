@@ -1,6 +1,10 @@
 package primitives;
 
+import java.util.List;
 import java.util.Objects;
+
+import geometries.Intersectable;
+import lighting.AmbientLight;
 /**
  * 
 Ray - The group of points on a line that are on one side of a given point on a line. Defined by point and direction (unit vector)
@@ -43,7 +47,7 @@ public class Ray {
 	{
 		return dir;
 	}
-	@Override
+	@Override 
 	public boolean equals(Object obj) {
 		if (this == obj) return true;
 		if (obj == null) return false;
@@ -55,7 +59,25 @@ public class Ray {
 	public String toString() {
 		return "p0 = " + p0.toString() + ", dir = " + dir.toString();
 	}
-	
+	/**
+	 * finds the closest point to the start of the ray 
+	 * @param lst list of points
+	 * @return closest point to the start of the ray
+	 */
+	public Point findClosestPoint(List<Point> lst) {
+		if(lst.size()==0) {
+			return null;
+		} 
+		Point ans=lst.get(0);
+		for(int i=1;i<lst.size();i++)
+		{
+			double x=lst.get(i).distance(p0);
+			if(lst.get(i).distance(p0)<ans.distance(p0)) {
+				ans=lst.get(i);
+			}
+		}
+		return ans;
+	}
 	
 
 }

@@ -78,7 +78,7 @@ public class ImageWriter {
 		}
 	}
 
-	/**
+	/**  
 	 * The function writePixel writes a color of a specific pixel into pixel color
 	 * matrix
 	 * 

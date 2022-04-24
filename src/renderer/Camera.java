@@ -1,5 +1,7 @@
 package renderer;
 
+import java.util.MissingResourceException;
+
 import primitives.*;
 
 public class Camera {
@@ -10,6 +12,70 @@ public class Camera {
 	private double hight;
 	private double width;
 	private double distance;
+	private ImageWriter imageWriter;
+	private RayTracerBase rayTracerBase;
+	/**
+	 * set imageWriter
+	 * @param im
+	 * @return camera
+	 */
+	public  Camera setImageWriter(ImageWriter im) {
+		imageWriter=im;
+		return this;
+	}
+	/**
+	 * set rayTracerBase
+	 * @param ray
+	 * @return camera
+	 */
+	public Camera setRayTracer(RayTracerBase ray) {
+		rayTracerBase=ray;
+		return this;
+	}
+	/**
+	 * check if something is empty, then paint the pixels 
+	 */
+	public void renderImage() {
+		if(location==null||up==null||to==null||Double.isNaN(distance)||Double.isNaN(hight)||Double.isNaN(width)||right==null||imageWriter==null||rayTracerBase==null) 
+		{ 
+			throw new MissingResourceException("one or more of the fields are empty",null,null);
+		}
+		//throw new UnsupportedOperationException();
+		for (int i=0; i<imageWriter.getNy();i++) {
+			for(int j=0;j<imageWriter.getNx();j++) {
+				Color c= rayTracerBase.traceRay(constructRay(imageWriter.getNx(),imageWriter.getNy(),i,j));
+				imageWriter.writePixel(j, i, c);
+			} 
+		}
+		
+	}
+	/**
+	 * creat grid 
+	 * @param interval
+	 * @param color
+	 */
+	public void printGrid(int interval, Color color) {
+		if(imageWriter==null) {
+			throw new MissingResourceException("imageWriter is empty",null,null);
+		}
+		for (int i=0; i<imageWriter.getNy();i++) {
+			for(int j=0;j<imageWriter.getNx();j++) {
+				if(i%interval==0||j%interval==0) {
+					imageWriter.writePixel(i, j,color);
+				}		
+			} 
+		}
+	}
+	/**
+	 * write to image
+	 */
+	public void writeToImage() {
+		if(imageWriter==null) {
+			throw new MissingResourceException("imageWriter is empty",null,null);
+		}
+		imageWriter.writeToImage();
+	}
+	
 	/**
 	 * return the height 
 	 * @return
@@ -33,7 +99,7 @@ public class Camera {
 	}
 	/**
 	 * Constructor
-	 * @param p location
+	 * @param p location 
 	 * @param v1 vector up
 	 * @param v2 vector to
 	 */
@@ -42,7 +108,7 @@ public class Camera {
 		if(v1.dotProduct(v2)!=0) //check if the vectors are orthogonal
 		{
 			throw new IllegalArgumentException("the vectors are not orthogonal");
-		}
+		} 
 		if(v1.length()!=1||v2.length()!=1)//check if the vectors are normalized
 		{
 			throw new IllegalArgumentException("vectors are not normalized  ");
@@ -96,13 +162,7 @@ public class Camera {
 			pIJ=pIJ.add(up.scale(yI));
 		
 		Vector vIJ=pIJ.subtract(location);
-		return new Ray(location, vIJ);
-		
-		
-
-		
-
-		
+		return new Ray(location, vIJ);	
 	}
 	
 	

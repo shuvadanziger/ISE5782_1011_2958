@@ -30,7 +30,7 @@ public class Geometries implements Intersectable {
 
 		for(Intersectable inter: geometries)
 		{
-			lst.add(inter);
+			lst.add(inter); 
 		}
 	}
 	/**

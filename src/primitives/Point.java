@@ -13,6 +13,7 @@ public class Point {
 	 * @param d2
 	 * @param d3
 	 */
+	public static final Point ZERO = new Point(0d,0d,0d);   // origin of the axis
 	public Point(double d1, double d2, double d3)
 	{
 		xyz = new Double3(d1, d2, d3);

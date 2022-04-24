@@ -8,8 +8,11 @@ import org.junit.jupiter.api.Test;
 
 class ImageWriterTest {
 
+	/**
+	 * 
+	 */
 	@Test
-	void test() {
+	void Imagetest() {
 		Color RED = new Color(255d,0d,0d);
 		Color YELLOW = new Color(255d, 256d,0d);
 		ImageWriter imageWriter=new ImageWriter("ImageTest", 800, 500);
@@ -21,9 +24,9 @@ class ImageWriterTest {
 				else {
 					imageWriter.writePixel(i, j, YELLOW);
 				}
-			}
+			} 
 		}
 		imageWriter.writeToImage();
 	}
-
+ 
 }
