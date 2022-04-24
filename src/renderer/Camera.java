@@ -43,7 +43,7 @@ public class Camera {
 		//throw new UnsupportedOperationException();
 		for (int i=0; i<imageWriter.getNy();i++) {
 			for(int j=0;j<imageWriter.getNx();j++) {
-				Color c= rayTracerBase.traceRay(constructRay(imageWriter.getNx(),imageWriter.getNy(),i,j));
+				Color c= rayTracerBase.traceRay(constructRay(imageWriter.getNx(),imageWriter.getNy(),j,i));
 				imageWriter.writePixel(j, i, c);
 			} 
 		}
@@ -61,7 +61,7 @@ public class Camera {
 		for (int i=0; i<imageWriter.getNy();i++) {
 			for(int j=0;j<imageWriter.getNx();j++) {
 				if(i%interval==0||j%interval==0) {
-					imageWriter.writePixel(i, j,color);
+					imageWriter.writePixel(j, i,color);
 				}		
 			} 
 		}
@@ -137,7 +137,7 @@ public class Camera {
 	public Camera setVPDistance(double distance) {
 		this.distance=distance;
 		return this;
-	}
+	} 
 	/**
 	 * construct ray
 	 * @param nX-Represents the amount of columns
