@@ -39,7 +39,7 @@ public class Scene {
 		return this;
 	}
 	/**
-	 * set geometries
+	 * set geometries objects
 	 * @param geometries
 	 * @return scene
 	 */

@@ -69,11 +69,11 @@ public class Ray {
 			return null;
 		} 
 		Point ans=lst.get(0);
-		for(int i=1;i<lst.size();i++)
+		for(Point p : lst)
 		{
-			double x=lst.get(i).distance(p0);
-			if(lst.get(i).distance(p0)<ans.distance(p0)) {
-				ans=lst.get(i);
+			double x=p.distance(p0);
+			if(p.distance(p0)<ans.distance(p0)) {
+				ans=p;
 			}
 		}
 		return ans;

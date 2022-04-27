@@ -43,7 +43,7 @@ public class Camera {
 		//throw new UnsupportedOperationException();
 		for (int i=0; i<imageWriter.getNy();i++) {
 			for(int j=0;j<imageWriter.getNx();j++) {
-				Color c= rayTracerBase.traceRay(constructRay(imageWriter.getNx(),imageWriter.getNy(),i,j));
+				Color c= rayTracerBase.traceRay(constructRay(imageWriter.getNx(),imageWriter.getNy(),j,i));
 				imageWriter.writePixel(j, i, c);
 			} 
 		}
@@ -61,7 +61,7 @@ public class Camera {
 		for (int i=0; i<imageWriter.getNy();i++) {
 			for(int j=0;j<imageWriter.getNx();j++) {
 				if(i%interval==0||j%interval==0) {
-					imageWriter.writePixel(j, i,color);
+					imageWriter.writePixel(j,i,color);
 				}		
 			} 
 		}
@@ -115,7 +115,7 @@ public class Camera {
 		}
 		up=v1;
 		to=v2; 
-		right=v1.crossProduct(v2).normalize();
+		right=v2.crossProduct(v1).normalize();
 		location=p;	 
 	}
 	/**
@@ -153,7 +153,7 @@ public class Camera {
 		double rY=hight/nY;
 		double rX=width/nX;
 		//Pixel[i,j] center
-		double yI=(i-((nY-1)/2))*rY;
+		double yI=-(i-((nY-1)/2))*rY;
 		double xJ=(j-((nX-1)/2))*rX;
 		Point pIJ=pC; 
 		if (xJ!=0)
