@@ -40,7 +40,7 @@ public class RenderTests {
 				.setImageWriter(new ImageWriter("base render test", 1000, 1000))
 				.setRayTracer(new RayTracerBasic(scene));
 
-		camera.renderImage();
+		camera.renderImage(); 
 		camera.printGrid(100, new Color(YELLOW));
 		camera.writeToImage();
 	}

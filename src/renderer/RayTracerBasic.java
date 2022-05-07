@@ -22,14 +22,14 @@ public class RayTracerBasic extends RayTracerBase{
 	/**
 	 * return the color of the intsersections between the scene
 	 */
-	@Override
+	
 	public  Color traceRay(Ray ray) {
-		List<GeoPoint> lst=scene.geometries.findGeoIntersectionsHelper(ray);
+		List<GeoPoint> lst=scene.geometries.findGeoIntersections(ray);
 		if(lst==null) {
 			return scene.background; 
 		} 
 		GeoPoint p=ray.findClosestGeoPoint(lst);
-		return calcColor(p);
+		return calcColor(p); 
 		
 		
 	}

@@ -41,12 +41,12 @@ public class Camera {
 			throw new MissingResourceException("one or more of the fields are empty",null,null);
 		}
 		//throw new UnsupportedOperationException();
-		for (int i=0; i<imageWriter.getNy();i++) {
+		for (int i=0; i<imageWriter.getNy();i++) { 
 			for(int j=0;j<imageWriter.getNx();j++) {
 				Color c= rayTracerBase.traceRay(constructRay(imageWriter.getNx(),imageWriter.getNy(),j,i));
 				imageWriter.writePixel(j, i, c);
 			} 
-		}
+		} 
 		 
 	}
 	/** 

@@ -57,19 +57,19 @@ public class Triangle extends Polygon {
 		Vector n2 = v2.crossProduct(v3).normalize();
 		Vector n3 = v3.crossProduct(v1).normalize();
 		double t1 = alignZero(ray.getDir().dotProduct(n1));
-		double t2 = alignZero(ray.getDir().dotProduct(n2));
+		double t2 = alignZero(ray.getDir().dotProduct(n2)); 
 		double t3 = alignZero(ray.getDir().dotProduct(n3));
 		List<GeoPoint> lst= new ArrayList<GeoPoint>();
-		if (t1>0 && t2>0 && t3>0)
+		if (t1>0 && t2>0 && t3>0) 
 		{
-			for(GeoPoint p:plane.findGeoIntersectionsHelper(ray)) {
+			for(GeoPoint p:plane.findGeoIntersections(ray)) {
 				lst.add(new GeoPoint(this,p.point));
-			}
+			} 
 			return lst;
 		}
 		if (t1<0 && t2<0 && t3<0)
 		{
-			for(GeoPoint p:plane.findGeoIntersectionsHelper(ray)) {
+			for(GeoPoint p:plane.findGeoIntersections(ray)) {
 				lst.add(new GeoPoint(this,p.point));
 			}
 			return lst;

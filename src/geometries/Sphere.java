@@ -81,7 +81,7 @@ public class Sphere extends Geometry {
 		double th= Math.sqrt(radius*radius-d*d);
 		double t1=tm+th;
 		double t2=tm-th;
-		if(t1<=0 && t2<=0)
+		if(t1<=0 && t2<=0) 
 		{
 			return null; 
 		}

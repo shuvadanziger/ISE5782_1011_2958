@@ -18,7 +18,7 @@ public class Plane extends Geometry {
 	private Vector normal;
 	/**
 	 * Constructor
-	 * @param p1
+	 * @param p1 
 	 * @param p2
 	 * @param p3
 	 * Calculate the normal to the plane formed by the 3 points obtained
@@ -105,7 +105,7 @@ public class Plane extends Geometry {
 		if (t<0)
 		{
 			return null;
-		} 
+		}  
 		List<GeoPoint> ans=new ArrayList<GeoPoint>();
 		ans.add(new GeoPoint(this,ray.getP0().add(ray.getDir().scale(t))));
     	return ans;//

@@ -29,7 +29,7 @@ public abstract class Intersectable {
 		 */
 	    public Geometry geometry;
 	    /**
-	     * the point
+	     * the point 
 	     */
 	    public Point point;
 	    /**

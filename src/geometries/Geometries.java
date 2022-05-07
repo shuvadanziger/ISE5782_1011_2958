@@ -22,9 +22,9 @@ public class Geometries extends Intersectable {
 		lst = new ArrayList<Intersectable>();
 	}
 	/**
-	 * Constractor
+	 * Constractor 
 	 * @param geometries
-	 */
+	 */ 
 	public Geometries(Intersectable... geometries)
 	{
 		lst = new ArrayList<Intersectable>();
@@ -68,7 +68,7 @@ public class Geometries extends Intersectable {
 		if (result.size()==0)
 		{
 			return null;
-		}
+		} 
 		return result;
 	}
 	public List<GeoPoint> findGeoIntersections(Ray ray){

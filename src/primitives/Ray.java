@@ -82,7 +82,7 @@ public class Ray {
 		if(lst.size()==0) {
 			return null;
 		} 
-		GeoPoint ans=lst.get(0);
+		GeoPoint ans=lst.get(0); 
 		for(GeoPoint p : lst)
 		{
 			//double x=p.distance(p0);
