@@ -12,7 +12,7 @@ import static primitives.Util.*;
  * Plane (point and vector)
  *
  */
-public class Plane implements Geometry {
+public class Plane extends Geometry {
 	private Point q0;
 	private Vector normal;
 	/**
@@ -60,6 +60,7 @@ public class Plane implements Geometry {
 	/**
 	 * find the intsersections between the ray and the plane
 	 */
+	@Override
 	public List<Point> findIntsersections(Ray ray)
     {
 		if(isZero(normal.dotProduct(ray.getDir())))//if there are no intsersections

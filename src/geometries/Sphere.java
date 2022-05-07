@@ -7,7 +7,7 @@ import primitives.*;
  * Sphere (point and radius)
  *
  */
-public class Sphere implements Geometry {
+public class Sphere extends Geometry {
 	private Point center;
 	private double radius;
 	/**
@@ -28,7 +28,8 @@ public class Sphere implements Geometry {
 	{
 		Vector n = p.subtract(center).normalize();
 		return n;
-	} 
+	}
+	@Override
 	public List<Point> findIntsersections(Ray ray)
     {
 		if(ray.getP0().equals(center))//if the ray starts at the center of the sphere

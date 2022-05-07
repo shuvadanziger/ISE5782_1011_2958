@@ -5,7 +5,7 @@ import java.util.List;
 import primitives.*;
 //import primitives.Double3;
 
-public class Tube implements Geometry {
+public class Tube extends Geometry {
 	private Ray axisRay;
 	private double radius;
 	/**
@@ -35,7 +35,7 @@ public class Tube implements Geometry {
 		Vector n = p.subtract(o).normalize();
 		return n;
 	}
-
+	@Override
 	public ArrayList<Point> findIntsersections(Ray ray)
     {
     	return null;

@@ -10,7 +10,7 @@ import primitives.Ray;
  * @author Shuva
  *
  */
-public class Geometries implements Intersectable {
+public class Geometries extends Intersectable {
 
 	private ArrayList<Intersectable> lst;
 	
