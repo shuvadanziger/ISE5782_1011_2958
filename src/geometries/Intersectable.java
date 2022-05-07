@@ -19,6 +19,10 @@ public abstract class Intersectable {
 	 * @author Shuva
 	 *
 	 */
+	public List<GeoPoint> findGeoIntersections(Ray ray){
+		return findGeoIntersectionsHelper(ray);
+	}
+	protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray);
 	public static class GeoPoint {
 		/**
 		 * the geometry
@@ -43,11 +47,12 @@ public abstract class Intersectable {
 			if (obj == null) return false;
 			if (!(obj instanceof GeoPoint)) return false;
 			GeoPoint other = (GeoPoint) obj;
-			return this.point.xyz.equals(other.point.xyz);
+			return (this.point.equals(other.point))&&this.geometry.equals(other.geometry);
+			
 		}
 		@Override
 		public String toString() {
-			return "xyz = " + xyz.toString();
+			return "point = " + point.toString()+"geometry = "+geometry.toString();
 		}
 	}
 

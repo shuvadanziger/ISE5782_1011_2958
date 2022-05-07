@@ -3,6 +3,7 @@ package geometries;
 import java.util.ArrayList;
 import java.util.List;
 
+import geometries.Intersectable.GeoPoint;
 import primitives.*;
 import static primitives.Util.*;
 
@@ -97,4 +98,8 @@ public class Polygon extends Geometry {
     {
     	return null;
     }
+	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
+		return null;
+	}
+
 }

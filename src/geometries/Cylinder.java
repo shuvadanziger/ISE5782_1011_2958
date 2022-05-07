@@ -2,9 +2,10 @@ package geometries;
 import java.util.ArrayList;
 import java.util.List;
 
+import geometries.Intersectable.GeoPoint;
 import primitives.*;
 
-public class Cylinder implements Geometry {
+public class Cylinder extends Geometry {
 	private double height;
 	/**
 	 * Constructor
@@ -23,5 +24,9 @@ public class Cylinder implements Geometry {
     {
     	return null;
     }
+	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
+		return null;
+	}
+
 
 }

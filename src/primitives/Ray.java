@@ -2,7 +2,7 @@ package primitives;
 
 import java.util.List;
 import java.util.Objects;
-
+import geometries.Intersectable.GeoPoint; 
 import geometries.Intersectable;
 import lighting.AmbientLight;
 /**
@@ -73,6 +73,20 @@ public class Ray {
 		{
 			//double x=p.distance(p0);
 			if(p.distance(p0)<ans.distance(p0)) {
+				ans=p;
+			}
+		}
+		return ans;
+	}
+	public GeoPoint findClosestGeoPoint(List<GeoPoint> lst) {
+		if(lst.size()==0) {
+			return null;
+		} 
+		GeoPoint ans=lst.get(0);
+		for(GeoPoint p : lst)
+		{
+			//double x=p.distance(p0);
+			if(p.point.distance(p0)<ans.point.distance(p0)) {
 				ans=p;
 			}
 		}

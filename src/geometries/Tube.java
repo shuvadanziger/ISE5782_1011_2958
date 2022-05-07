@@ -2,6 +2,7 @@ package geometries;
 import java.util.ArrayList;
 import java.util.List;
 
+import geometries.Intersectable.GeoPoint;
 import primitives.*;
 //import primitives.Double3;
 
@@ -40,6 +41,10 @@ public class Tube extends Geometry {
     {
     	return null;
     }
+	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
+		return null;
+	}
+
 
 
 }

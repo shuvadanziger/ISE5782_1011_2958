@@ -2,6 +2,7 @@ package geometries;
 import java.util.ArrayList;
 import java.util.List;
 
+import geometries.Intersectable.GeoPoint;
 import primitives.*;
 /**
  * Sphere (point and radius)
@@ -63,6 +64,39 @@ public class Sphere extends Geometry {
 		}
 		return lst;
 	}
+	public  List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
+		if(ray.getP0().equals(center))//if the ray starts at the center of the sphere
+		{
+			return List.of(new GeoPoint(this,center.add(ray.getDir().scale(radius))));
+		}
+		Vector u=center.subtract(ray.getP0());
+		
+		double tm=ray.getDir().dotProduct(u);
+		double temp=tm*tm;
+		double d= Math.sqrt(u.lengthSquared()-temp);
+		if(d>=radius)//if d is bigger then the radius there are no intsersections.
+		{
+			return null;
+		}
+		double th= Math.sqrt(radius*radius-d*d);
+		double t1=tm+th;
+		double t2=tm-th;
+		if(t1<=0 && t2<=0)
+		{
+			return null; 
+		}
+		List<GeoPoint> lst= new ArrayList<GeoPoint>();
+		if(t1>0)
+		{
+			lst.add(new GeoPoint(this,ray.getP0().add(ray.getDir().scale(t1))));
+		}
+		if(t2>0)
+		{
+			lst.add(new GeoPoint(this,ray.getP0().add(ray.getDir().scale(t2))));
+		}
+		return lst;
+	}
+
 
 
 }

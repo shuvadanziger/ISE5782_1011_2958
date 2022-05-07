@@ -2,6 +2,7 @@ package geometries;
 import java.util.ArrayList;
 import java.util.List;
 
+import geometries.Intersectable.GeoPoint;
 import primitives.*;
 
 import static primitives.Util.alignZero;
@@ -48,5 +49,34 @@ public class Triangle extends Polygon {
 	{
 		return super.getNormal(point);
 	}
+	public  List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
+		Vector v1 = vertices.get(0).subtract(ray.getP0());
+		Vector v2 = vertices.get(1).subtract(ray.getP0());
+		Vector v3 = vertices.get(2).subtract(ray.getP0());
+		Vector n1 = v1.crossProduct(v2).normalize();
+		Vector n2 = v2.crossProduct(v3).normalize();
+		Vector n3 = v3.crossProduct(v1).normalize();
+		double t1 = alignZero(ray.getDir().dotProduct(n1));
+		double t2 = alignZero(ray.getDir().dotProduct(n2));
+		double t3 = alignZero(ray.getDir().dotProduct(n3));
+		List<GeoPoint> lst= new ArrayList<GeoPoint>();
+		if (t1>0 && t2>0 && t3>0)
+		{
+			for(GeoPoint p:plane.findGeoIntersectionsHelper(ray)) {
+				lst.add(new GeoPoint(this,p.point));
+			}
+			return lst;
+		}
+		if (t1<0 && t2<0 && t3<0)
+		{
+			for(GeoPoint p:plane.findGeoIntersectionsHelper(ray)) {
+				lst.add(new GeoPoint(this,p.point));
+			}
+			return lst;
+		}
+    	return null;
+	
+	}
+
 
 }

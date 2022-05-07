@@ -3,6 +3,7 @@ package geometries;
 import java.util.ArrayList;
 import java.util.List;
 
+import geometries.Intersectable.GeoPoint;
 import primitives.Point;
 import primitives.Ray;
 /**
@@ -69,5 +70,30 @@ public class Geometries extends Intersectable {
 			return null;
 		}
 		return result;
+	}
+	public List<GeoPoint> findGeoIntersections(Ray ray){
+		return findGeoIntersectionsHelper(ray);
+	}
+	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
+		List<GeoPoint> result= new ArrayList<GeoPoint>();
+		List<GeoPoint> temp;
+		for (Intersectable i: lst) {
+			temp = i.findGeoIntersections(ray);
+			if (temp!=null)//if there are intsersections between the ray and the geometry object
+			{
+				for(GeoPoint p: temp) {
+					if(p!=null) 
+					{
+					result.add(p);
+					}
+				}
+			}
+		}
+		if (result.size()==0)
+		{
+			return null;
+		}
+		return result;
+	
 	}
 }

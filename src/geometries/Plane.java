@@ -2,6 +2,7 @@ package geometries;
 import java.util.ArrayList;
 import java.util.List;
 
+import geometries.Intersectable.GeoPoint;
 import primitives.*;
 
 import static primitives.Util.isZero;
@@ -86,6 +87,32 @@ public class Plane extends Geometry {
     	return ans;//
 		//
     }
+	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
+		if(isZero(normal.dotProduct(ray.getDir())))//if there are no intsersections
+		{
+			return null;
+		}
+		if(ray.getP0().equals(q0))//if the ray starts at the plane
+		{
+			return List.of(new GeoPoint(this,q0));
+		}
+		double t=normal.dotProduct(q0.subtract(ray.getP0()));
+		if (t==0)
+		{
+			return List.of(new GeoPoint(this,ray.getP0()));
+		}
+		t/=normal.dotProduct(ray.getDir());
+		if (t<0)
+		{
+			return null;
+		} 
+		List<GeoPoint> ans=new ArrayList<GeoPoint>();
+		ans.add(new GeoPoint(this,ray.getP0().add(ray.getDir().scale(t))));
+    	return ans;//
+		//
+	
+	}
+
 
 }
 

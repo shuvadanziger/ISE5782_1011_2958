@@ -47,7 +47,7 @@ public class Camera {
 				imageWriter.writePixel(j, i, c);
 			} 
 		}
-		
+		 
 	}
 	/** 
 	 * create grid 
