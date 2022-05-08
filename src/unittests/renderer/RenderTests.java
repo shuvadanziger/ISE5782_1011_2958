@@ -34,7 +34,7 @@ public class RenderTests {
 																												// left
 				new Triangle(new Point(100, 0, -100), new Point(0, -100, -100), new Point(100, -100, -100))); // down
 																												// right
-		Camera camera = new Camera(Point.ZERO, new Vector(0, 0, -1), new Vector(0, 1, 0)) //
+		Camera camera = new Camera(Point.ZERO, new Vector(0, 1, 0), new Vector(0, 0, -1)) //
 				.setVPDistance(100) //
 				.setVPSize(500, 500) //
 				.setImageWriter(new ImageWriter("base render test", 1000, 1000))
@@ -42,7 +42,7 @@ public class RenderTests {
 
 		camera.renderImage(); 
 		camera.printGrid(100, new Color(YELLOW));
-		camera.writeToImage();
+		camera.writeToImage(); 
 	}
 
 	// For stage 6 - please disregard in stage 5
@@ -67,7 +67,7 @@ public class RenderTests {
 				new Triangle(new Point(100, 0, -100), new Point(0, -100, -100), new Point(100, -100, -100))
 						.setEmission(new Color(BLUE)));
 
-		Camera camera = new Camera(Point.ZERO, new Vector(0, 0, -1), new Vector(0, 1, 0)) //
+		Camera camera = new Camera(Point.ZERO, new Vector(0, 1, 0), new Vector(0, 0, -1)) //
 				.setVPDistance(100) //
 				.setVPSize(500, 500) //
 				.setImageWriter(new ImageWriter("color render test", 1000, 1000))

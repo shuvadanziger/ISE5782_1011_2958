@@ -42,15 +42,17 @@ public class Triangle extends Polygon {
 		{
 			return plane.findIntsersections(ray);
 		}
-    	return null;
+    	return null; 
     }
 	
 	public Vector getNormal(Point point)
 	{
 		return super.getNormal(point);
 	}
+	@Override
 	public  List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
-		Vector v1 = vertices.get(0).subtract(ray.getP0());
+		
+		 Vector v1 = vertices.get(0).subtract(ray.getP0());
 		Vector v2 = vertices.get(1).subtract(ray.getP0());
 		Vector v3 = vertices.get(2).subtract(ray.getP0());
 		Vector n1 = v1.crossProduct(v2).normalize();
@@ -61,20 +63,46 @@ public class Triangle extends Polygon {
 		double t3 = alignZero(ray.getDir().dotProduct(n3));
 		List<GeoPoint> lst= new ArrayList<GeoPoint>();
 		if (t1>0 && t2>0 && t3>0) 
-		{
-			for(GeoPoint p:plane.findGeoIntersections(ray)) {
+		{ 
+		    List<GeoPoint> lst1= new ArrayList<GeoPoint>();
+			lst1=this.plane.findGeoIntersections(ray);
+			if(lst1==null) {
+			return null;
+			}
+			for(GeoPoint p:lst1) {
 				lst.add(new GeoPoint(this,p.point));
 			} 
 			return lst;
 		}
 		if (t1<0 && t2<0 && t3<0)
 		{
-			for(GeoPoint p:plane.findGeoIntersections(ray)) {
-				lst.add(new GeoPoint(this,p.point));
+			List<GeoPoint> lst1= new ArrayList<GeoPoint>();
+			lst1=this.plane.findGeoIntersections(ray);
+			if(lst1==null) {
+			return null;
 			}
+			for(GeoPoint p:lst1) {
+				lst.add(new GeoPoint(this,p.point));
+			} 
 			return lst;
 		}
     	return null;
+		 
+		/**
+		 * List<Point> lst1= new ArrayList<Point>();
+		 * lst1=this.findIntsersections(ray);
+		List<GeoPoint> lst= new ArrayList<GeoPoint>();
+		if(lst1==null) {
+			return null;
+		}
+		for(Point p:lst1) { 
+			lst.add(new GeoPoint(this,p));
+		}
+		return lst;
+		 */
+		
+
+		
 	
 	}
 
