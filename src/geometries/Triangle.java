@@ -86,25 +86,7 @@ public class Triangle extends Polygon {
 			} 
 			return lst;
 		}
-    	return null;
-		 
-		/**
-		 * List<Point> lst1= new ArrayList<Point>();
-		 * lst1=this.findIntsersections(ray);
-		List<GeoPoint> lst= new ArrayList<GeoPoint>();
-		if(lst1==null) {
-			return null;
-		}
-		for(Point p:lst1) { 
-			lst.add(new GeoPoint(this,p));
-		}
-		return lst;
-		 */
-		
-
-		
-	
+    	return null;	
 	}
-
 
 }
