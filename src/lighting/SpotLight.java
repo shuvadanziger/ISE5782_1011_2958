@@ -3,6 +3,7 @@ package lighting;
 import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
+import primitives.Util.*;
 
 public class SpotLight extends PointLight{
 	private Vector direction;
@@ -17,19 +18,20 @@ public class SpotLight extends PointLight{
 	 */
 	public SpotLight(Color c, Point p, Vector v) {
 		super(c, p);
-		this.direction=v;
+		this.direction=v.normalize();
 	}
 	@Override
 	public Color getIntensity(Point p) {
-		Color ans = super.getIntensity(p);
-		double dirL = this.direction.dotProduct(super.getL(p));
+		//return super.getIntensity(p).scale(Math.max(0, direction.dotProduct(getL(p))));
+		 Color ans = super.getIntensity(p);
+		double dirL = (this.direction.dotProduct(getL(p)));
 		if (0>dirL)
 		{
-			ans.scale(0);
-			return ans;
+			return ans.scale(0);
 		}
-		ans.scale(dirL);
-		return ans;
+		return ans.scale(dirL);
+		 
+		
 	}
 	@Override
 	public Vector getL(Point p) {
