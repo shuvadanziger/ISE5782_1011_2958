@@ -16,8 +16,33 @@ import static primitives.Util.*;
 
 
 public class RayTracerBasic extends RayTracerBase{
+	/**
+	 * Varies for moving the beginning of the rays for shading rays
+	 */
+	private static final double DELTA = 0.1;
 	public RayTracerBasic(Scene scene) {
 		super(scene);
+	}
+	/**
+	 * Checks if the point is shaded
+	 * @param gp GeoPoint-the point the function check.
+	 * @param l vector from the light source to the point
+	 * @param n normal to the geometry object
+	 * @param nv
+	 * @return
+	 */
+	private boolean unshaded(GeoPoint gp, Vector l, Vector n, double nv, LightSource light) {
+		Vector lightDirection = l.scale(-1); // from point to light source
+		Vector epsVector = n.scale(nv < 0 ? DELTA : -DELTA);
+		Point point = gp.point.add(epsVector);
+		Ray lightRay = new Ray(point, lightDirection);
+		List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
+		if (intersections == null) return true;
+		for (GeoPoint p:intersections) {
+			if(p.point.distance(gp.point)<light.getDistance(gp.point))
+				return false;
+		}
+		return true;
 	}
 	/** 
 	 * 
@@ -25,30 +50,7 @@ public class RayTracerBasic extends RayTracerBase{
 	 */
 	private Color calcColor(GeoPoint p, Ray ray)
 	{
-		/**
-		 * Geometry geometry=p.geometry;
-		Point point=p.point;
-		Material material=geometry.getMaterial();
-		Color ans=Color.BLACK;
-		for(LightSource light:scene.lights) {
-			Vector lI=light.getL(point);
-			Vector n=geometry.getNormal(point);
-			Double3 kD=material.kD;
-			Double3 kS=material.kS;
-			int nSH=material.nShininess;
-			Color iLI=light.getIntensity(point);
-			Vector v=ray.getDir();
-			Vector r=lI.add(-2*);
-			double max=0;
-			if(0<v.scale(-1).dotProduct(r)) {
-				max=v.scale(-1).dotProduct(r);
-			}
-
-			Color c=iLI.scale(kD.scale(lI.crossProduct(n).length()).add(kS.scale(Math.pow(max,nSH))));
-			ans.add(c);
-		}
-		 */
-		 
+		
 		return scene.ambientLight.getIntensity().add(calcLocalEffects(p,ray)); 
 	}
 	private Color calcLocalEffects(GeoPoint gp, Ray ray) {
@@ -61,7 +63,7 @@ public class RayTracerBasic extends RayTracerBase{
 		for (LightSource lightSource : scene.lights) {
 			Vector l = lightSource.getL(gp.point);
 			double nl = alignZero(n.dotProduct(l));
-			if (nl * nv > 0) { // sign(nl) == sing(nv)
+			if (nl * nv > 0 && unshaded(gp,l,n,nv, lightSource)) { // sign(nl) == sing(nv)
 				Color iL = lightSource.getIntensity(gp.point);
 				color = color.add(iL.scale(calcDiffusive(mat, nl)),iL.scale(calcSpecular(mat, n,l,nl,v)));
 			}

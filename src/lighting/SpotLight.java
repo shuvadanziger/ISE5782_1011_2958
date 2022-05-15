@@ -38,4 +38,5 @@ public class SpotLight extends PointLight{
 		Vector l = super.getL(p);
 		return l;
 	}
+
 }
