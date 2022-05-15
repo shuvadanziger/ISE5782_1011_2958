@@ -4,6 +4,7 @@ import java.util.List;
 
 import geometries.Geometry;
 import geometries.Intersectable.GeoPoint;
+import geometries.Triangle;
 import lighting.LightSource;
 import primitives.Color;
 import primitives.Double3;
@@ -20,6 +21,9 @@ public class RayTracerBasic extends RayTracerBase{
 	 * Varies for moving the beginning of the rays for shading rays
 	 */
 	private static final double DELTA = 0.1;
+	private static final int MAX_CALC_COLOR_LEVEL = 10;
+	private static final double MIN_CALC_COLOR_K = 0.001;
+
 	public RayTracerBasic(Scene scene) {
 		super(scene);
 	}
@@ -28,7 +32,8 @@ public class RayTracerBasic extends RayTracerBase{
 	 * @param gp GeoPoint-the point the function check.
 	 * @param l vector from the light source to the point
 	 * @param n normal to the geometry object
-	 * @param nv
+	 * @param nv Helps to know if the camera is in the normal direction or in the opposite direction to know which direction to move the point
+	 * @param light the light source.
 	 * @return
 	 */
 	private boolean unshaded(GeoPoint gp, Vector l, Vector n, double nv, LightSource light) {
@@ -37,7 +42,11 @@ public class RayTracerBasic extends RayTracerBase{
 		Point point = gp.point.add(epsVector);
 		Ray lightRay = new Ray(point, lightDirection);
 		List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);
+		//if (gp.geometry instanceof Triangle) {
+		//	boolean b=intersections.remove(gp);
+		//}
 		if (intersections == null) return true;
+		
 		for (GeoPoint p:intersections) {
 			if(p.point.distance(gp.point)<light.getDistance(gp.point))
 				return false;
