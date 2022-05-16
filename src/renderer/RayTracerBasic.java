@@ -20,7 +20,7 @@ public class RayTracerBasic extends RayTracerBase{
 	/**
 	 * Varies for moving the beginning of the rays for shading rays
 	 */
-	private static final double DELTA = 0.1;
+	//private static final double DELTA = 0.1;
 	private static final int MAX_CALC_COLOR_LEVEL = 10;
 	private static final double MIN_CALC_COLOR_K = 0.001;
 	private static final double INITIAL_K = 1.0;
@@ -51,13 +51,13 @@ public class RayTracerBasic extends RayTracerBase{
 	 * @return HISHTAKFUT
 	 */
 	private Ray constructReflectedRay(Point p, Vector v, Vector n) {
-		double nv = alignZero(n.dotProduct(v)); 
-		Vector epsVector = n.scale(nv <= 0 ? DELTA : -DELTA);
-		Point point = p.add(epsVector);	
+		//double nv = alignZero(n.dotProduct(v)); 
+		//Vector epsVector = n.scale(nv <= 0 ? DELTA : -DELTA);
+		//Point point = p.add(epsVector);	
 		if (n.dotProduct(v)==0)
-			return new Ray(point, v);
+			return new Ray(p, v, n);
 		Vector r = v.subtract(n.scale(v.dotProduct(n)).scale(2));
-		Ray ans = new Ray(point, r);
+		Ray ans = new Ray(p, r, n);
 		return ans;
 	}
 	/**
@@ -69,10 +69,10 @@ public class RayTracerBasic extends RayTracerBase{
 	 * @return SHKIFUT
 	 */
 	private Ray constructRefractedRay(Point p, Vector v, Vector n) { 
-		double nv = alignZero(n.dotProduct(v)); 
-		Vector epsVector = n.scale(nv > 0 ? DELTA : -DELTA);
-		Point point = p.add(epsVector);
-		Ray ans = new Ray(point, v);
+		//double nv = alignZero(n.dotProduct(v)); 
+		//Vector epsVector = n.scale(nv > 0 ? DELTA : -DELTA);
+		//Point point = p.add(epsVector);
+		Ray ans = new Ray(p, v, n);
 		return ans;
 	}
 	/**  
@@ -89,9 +89,9 @@ public class RayTracerBasic extends RayTracerBase{
 			//return true;
 		//}
 		Vector lightDirection = l.scale(-1); // from point to light source
-		Vector epsVector = n.scale(nv < 0 ? DELTA : -DELTA);
-		Point point = gp.point.add(epsVector);
-		Ray lightRay = new Ray(point, lightDirection);
+		//Vector epsVector = n.scale(nv < 0 ? DELTA : -DELTA);
+		//Point point = gp.point.add(epsVector);
+		Ray lightRay = new Ray(gp.point, lightDirection, n);
 		/**
 		 * List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);//, light.getDistance(gp.point)
 		if (intersections == null) return true;

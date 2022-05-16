@@ -1,5 +1,7 @@
 package primitives;
 
+import static primitives.Util.alignZero;
+
 import java.util.List;
 import java.util.Objects;
 import geometries.Intersectable.GeoPoint; 
@@ -11,6 +13,7 @@ Ray - The group of points on a line that are on one side of a given point on a l
  *
  */
 public class Ray {
+	private static final double DELTA = 0.1;
 	final Point p0;
 	final Vector dir;
 	/**
@@ -21,6 +24,28 @@ public class Ray {
 	public Ray(Point p, Vector v)
 	{
 		p0 = new Point(p.xyz.d1, p.xyz.d2, p.xyz.d3);
+		Vector temp = v.normalize();
+		try 
+		{
+			dir = new Vector(temp.xyz.d1, temp.xyz.d2, temp.xyz.d3);
+		}
+		catch(IllegalArgumentException ex)
+		{
+			throw new IllegalArgumentException(ex.getMessage());
+		}
+	}
+	/**
+	 * Constructor
+	 * @param p
+	 * @param v
+	 * @param n
+	 */
+	public Ray(Point p, Vector v, Vector n)
+	{
+		double nv = alignZero(n.dotProduct(v)); 
+		Vector epsVector = n.scale(nv > 0 ? DELTA : -DELTA);
+		Point point = p.add(epsVector);
+		p0 = new Point(point.xyz.d1, point.xyz.d2, point.xyz.d3);
 		Vector temp = v.normalize();
 		try 
 		{
