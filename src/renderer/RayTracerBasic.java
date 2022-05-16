@@ -30,7 +30,7 @@ public class RayTracerBasic extends RayTracerBase{
 		super(scene);
 	}
 	/**
-	 * 
+	 *   
 	 * @param ray
 	 * @return
 	 */
@@ -84,8 +84,8 @@ public class RayTracerBasic extends RayTracerBase{
 	 * @return
 	 */
 	private boolean unshaded(GeoPoint gp, Vector l, Vector n, double nv, LightSource light) {
-		if (gp.geometry.getMaterial().kT.equals(Double3.ZERO))
-			return true;
+		//if (gp.geometry.getMaterial().kT.equals(Double3.ZERO))
+			//return true;
 		Vector lightDirection = l.scale(-1); // from point to light source
 		Vector epsVector = n.scale(nv < 0 ? DELTA : -DELTA);
 		Point point = gp.point.add(epsVector);
