@@ -136,8 +136,8 @@ public class LightsTests {
 	@Test
 	public void myTrianglesLight() {
 		scene2.geometries.add(triangle1, triangle2);
-		scene2.lights.add(new DirectionalLight(new Color(0,255,0), new Vector(-2.5,3,3)));
-		scene2.lights.add(new PointLight(new Color(0,0,255), new Point(30, 10, -80)).setKl(0.000001).setKq(0.0001));
+		scene2.lights.add(new DirectionalLight(new Color(0,255,0),new Vector(-2.5,3,3) ));//new Vector(-2.5,3,3)
+		scene2.lights.add(new PointLight(new Color(0,0,255), new Point(30, 10, -100)).setKl(0.001).setKq(0.0002));
 		scene2.lights.add(new SpotLight(new Color(255,0,0), trPL, trDL).setKl(0.001).setKq(0.0001));
 
 		ImageWriter imageWriter = new ImageWriter("lightTriangles", 500, 500);

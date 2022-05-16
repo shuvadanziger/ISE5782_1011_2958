@@ -17,11 +17,13 @@ public abstract class Intersectable {
 	/**
 	 * Point on geometric object
 	 * @author Shuva
-	 *
+	 
+	}
 	 */
 	public List<GeoPoint> findGeoIntersections(Ray ray){
-		return findGeoIntersectionsHelper(ray);
-	}
+		return findGeoIntersectionsHelper(ray);}
+	
+	
 	protected abstract List<GeoPoint> findGeoIntersectionsHelper(Ray ray);
 	public static class GeoPoint {
 		/**
@@ -55,6 +57,16 @@ public abstract class Intersectable {
 			return "point = " + point.toString()+"geometry = "+geometry.toString();
 		}
 	}
+	//public final List<GeoPoint> findGeoIntersections(Ray ray) {
+    	//return findGeoIntersections(ray, Double.POSITIVE_INFINITY);
+    //}
+	//public final List<GeoPoint> findGeoIntersections(Ray ray, double maxDistance) {
+    	//return findGeoIntersectionsHelper(ray, maxDistance);
+	//}
+	//protected abstract List<GeoPoint>
+     //                 findGeoIntersectionsHelper(Ray ray, double maxDistance);
+
+	
 
 	
 }

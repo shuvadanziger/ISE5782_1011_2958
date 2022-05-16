@@ -24,7 +24,7 @@ public class Cylinder extends Geometry {
     {
     	return null;
     }
-	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
+	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){//,double maxDistance
 		return null;
 	}
 

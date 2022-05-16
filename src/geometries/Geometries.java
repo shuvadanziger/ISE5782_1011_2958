@@ -71,14 +71,14 @@ public class Geometries extends Intersectable {
 		} 
 		return result;
 	}
-	public List<GeoPoint> findGeoIntersections(Ray ray){
-		return findGeoIntersectionsHelper(ray);
-	}
-	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){
+	//public List<GeoPoint> findGeoIntersections(Ray ray,double maxDistance){
+		//return findGeoIntersectionsHelper(ray,maxDistance);
+	//}
+	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){//,double maxDistance
 		List<GeoPoint> result= new ArrayList<GeoPoint>();
 		List<GeoPoint> temp;
 		for (Intersectable i: lst) {
-			temp = i.findGeoIntersections(ray);
+			temp = i.findGeoIntersections(ray);//maxDistance
 			if (temp!=null)//if there are intsersections between the ray and the geometry object
 			{
 				for(GeoPoint p: temp) {
