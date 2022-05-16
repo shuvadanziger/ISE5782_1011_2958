@@ -47,13 +47,13 @@ public class RayTracerBasic extends RayTracerBase{
 	 * @param v
 	 * @param n
 	 * @param nv
-	 * @return
+	 * @return HISHTAKFUT
 	 */
 	private Ray constructReflectedRay(Point p, Vector v, Vector n) {
 		double nv = alignZero(n.dotProduct(v)); 
-		Vector epsVector = n.scale(nv < 0 ? DELTA : -DELTA);
+		Vector epsVector = n.scale(nv <= 0 ? DELTA : -DELTA);
 		Point point = p.add(epsVector);	
-		if (v.dotProduct(n)==0)
+		if (n.dotProduct(v)==0)
 			return new Ray(point, v);
 		Vector r = v.subtract(n.scale(v.dotProduct(n)).scale(2));
 		Ray ans = new Ray(point, r);
@@ -65,16 +65,16 @@ public class RayTracerBasic extends RayTracerBase{
 	 * @param v
 	 * @param n
 	 * @param nv
-	 * @return
+	 * @return SHKIFUT
 	 */
 	private Ray constructRefractedRay(Point p, Vector v, Vector n) { 
-		double nv = alignZero(v.dotProduct(n)); 
-		Vector epsVector = n.scale(nv < 0 ? DELTA : -DELTA);
+		double nv = alignZero(n.dotProduct(v)); 
+		Vector epsVector = n.scale(nv > 0 ? DELTA : -DELTA);
 		Point point = p.add(epsVector);
 		Ray ans = new Ray(point, v);
 		return ans;
 	}
-	/**
+	/**  
 	 * Checks if the point is shaded
 	 * @param gp GeoPoint-the point the function check.
 	 * @param l vector from the light source to the point
@@ -142,13 +142,13 @@ public class RayTracerBasic extends RayTracerBase{
 		//double kkr = k * material.kr;
 		Double3 kkr = material.kR.product(k);
 		//if (kkr > MIN_CALC_COLOR_K)
-		if (!kkr.lowerThan(MIN_CALC_COLOR_K)) {
+		if (!(kkr.lowerThan(MIN_CALC_COLOR_K))) {
 			color = calcGlobalEffect(constructReflectedRay(gp.point, v, n), level, material.kR, kkr);
 		}
 		//double kkt = k * material.kt;
 		Double3 kkt = material.kT.product(k);
 		//if (kkt > MIN_CALC_COLOR_K)
-		if (!kkt.lowerThan(MIN_CALC_COLOR_K)) {
+		if (!(kkt.lowerThan(MIN_CALC_COLOR_K))) {
 			color = color.add(calcGlobalEffect(constructRefractedRay(gp.point, v, n), level, material.kT, kkt));
 		}
 		return color;
@@ -171,7 +171,7 @@ public class RayTracerBasic extends RayTracerBase{
 		Color color = gp.geometry.getEmission();
 		Vector v = ray.getDir (); 
 		Vector n = gp.geometry.getNormal(gp.point);
-		double nv = alignZero(v.dotProduct(n)); //////////////////
+		double nv = alignZero(n.dotProduct(v)); 
 		if (nv == 0) return color;
 		Material mat = gp.geometry.getMaterial();
 		for (LightSource lightSource : scene.lights) {

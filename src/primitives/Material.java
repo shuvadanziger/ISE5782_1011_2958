@@ -12,11 +12,11 @@ public class Material {
 	/**
 	 * transparency
 	 */
-	public Double3 kT=new Double3(0,0,0);
+	public Double3 kT=new Double3(0);
 	/**
 	 * reflection
 	 */
-	public Double3 kR=new Double3(0,0,0);
+	public Double3 kR=new Double3(0);
 
 	public int nShininess=0;
 	/**
