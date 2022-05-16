@@ -36,6 +36,7 @@ public class RayTracerBasic extends RayTracerBase{
 	 */
 	private GeoPoint findClosestIntersection(Ray ray) {
 		List<GeoPoint> lst = scene.geometries.findGeoIntersections(ray);
+		
 		if (lst==null)
 			return null;
 		GeoPoint p = ray.findClosestGeoPoint(lst);
@@ -84,26 +85,31 @@ public class RayTracerBasic extends RayTracerBase{
 	 * @return
 	 */
 	private boolean unshaded(GeoPoint gp, Vector l, Vector n, double nv, LightSource light) {
-		//if (gp.geometry.getMaterial().kT.equals(Double3.ZERO))
+		//if (!gp.geometry.getMaterial().kT.equals(Double3.ZERO)) {
 			//return true;
+		//}
 		Vector lightDirection = l.scale(-1); // from point to light source
 		Vector epsVector = n.scale(nv < 0 ? DELTA : -DELTA);
 		Point point = gp.point.add(epsVector);
 		Ray lightRay = new Ray(point, lightDirection);
-		
-		/*List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);//, light.getDistance(gp.point)
+		/**
+		 * List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);//, light.getDistance(gp.point)
 		if (intersections == null) return true;
 		for (GeoPoint p:intersections) {
-			if(p.point.distance(gp.point)<light.getDistance(gp.point))
+			if(p.point.distance(gp.point)<light.getDistance(gp.point) && p.geometry.getMaterial().kT.equals(Double3.ZERO) )
 				return false;
 		}
-		return true;*/
+		return true;
+		 */
 		
 		GeoPoint p = this.findClosestIntersection(lightRay);
 		if (p==null) return true;
-		if (p.point.distance(gp.point)<light.getDistance(gp.point))
+		if (p.point.distance(gp.point)<light.getDistance(gp.point)&&p.geometry.getMaterial().kT.equals(Double3.ZERO))
 			return false;
 		return true;
+		 
+	
+		
 	}
 	
 	/** 

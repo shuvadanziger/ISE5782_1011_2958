@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import geometries.Intersectable.GeoPoint;
+import primitives.Double3;
 import primitives.Point;
 import primitives.Ray;
 /**
