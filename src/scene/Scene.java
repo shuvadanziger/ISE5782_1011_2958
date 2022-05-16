@@ -56,7 +56,7 @@ public class Scene {
 	/**
 	 * set lights list
 	 * @param l light
-	 * @return scene
+	 * @return scenecdx
 	 */
 	public Scene setLights(List<LightSource> l) {
 		this.lights=l;
