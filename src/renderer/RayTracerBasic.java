@@ -49,11 +49,13 @@ public class RayTracerBasic extends RayTracerBase{
 	 * @param nv
 	 * @return
 	 */
-	private Ray iR(GeoPoint gp, Vector v, Vector n, double nv) {
-		
-		Vector r = v.subtract(n.scale(n.dotProduct(v)).scale(2));
+	private Ray constructReflectedRay(Point p, Vector v, Vector n) {
+		double nv = alignZero(n.dotProduct(v)); 
 		Vector epsVector = n.scale(nv < 0 ? DELTA : -DELTA);
-		Point point = gp.point.add(epsVector);
+		Point point = p.add(epsVector);	
+		if (v.dotProduct(n)==0)
+			return new Ray(point, v);
+		Vector r = v.subtract(n.scale(v.dotProduct(n)).scale(2));
 		Ray ans = new Ray(point, r);
 		return ans;
 	}
@@ -65,9 +67,10 @@ public class RayTracerBasic extends RayTracerBase{
 	 * @param nv
 	 * @return
 	 */
-	private Ray iT(GeoPoint gp, Vector v, Vector n, double nv) { 
+	private Ray constructRefractedRay(Point p, Vector v, Vector n) { 
+		double nv = alignZero(n.dotProduct(v)); 
 		Vector epsVector = n.scale(nv < 0 ? DELTA : -DELTA);
-		Point point = gp.point.add(epsVector);
+		Point point = p.add(epsVector);
 		Ray ans = new Ray(point, v);
 		return ans;
 	}
@@ -81,10 +84,13 @@ public class RayTracerBasic extends RayTracerBase{
 	 * @return
 	 */
 	private boolean unshaded(GeoPoint gp, Vector l, Vector n, double nv, LightSource light) {
+		if (gp.geometry.getMaterial().kT.equals(Double3.ZERO))
+			return true;
 		Vector lightDirection = l.scale(-1); // from point to light source
 		Vector epsVector = n.scale(nv < 0 ? DELTA : -DELTA);
 		Point point = gp.point.add(epsVector);
 		Ray lightRay = new Ray(point, lightDirection);
+		
 		/*List<GeoPoint> intersections = scene.geometries.findGeoIntersections(lightRay);//, light.getDistance(gp.point)
 		if (intersections == null) return true;
 		for (GeoPoint p:intersections) {
@@ -104,39 +110,58 @@ public class RayTracerBasic extends RayTracerBase{
 	 * 
 	 * @return color of the scene
 	 */
-	private Color calcColor(GeoPoint gp, Ray ray, int level, double k)
+	private Color calcColor(GeoPoint gp, Ray ray, int level, Double3 k)
 	{
 		Color color = calcLocalEffects(gp,ray);
-		return 1 == level ? color : color.add(calcGlobalEffects(gp, ray, level, k));
+		return 1 == level ? color : color.add(calcGlobalEffects(gp, ray.getDir(), level, k));
 		//return scene.ambientLight.getIntensity().add(calcLocalEffects(p,ray)); 
 	}
 	
-	/////////////////////
+	/**
+	 * 
+	 * @param gp
+	 * @param ray
+	 * @return
+	 */
 	private Color calcColor(GeoPoint gp, Ray ray) {
-		return calcColor(gp, ray, MAX_CALC_COLOR_LEVEL, INITIAL_K).add(scene.ambientLight.getIntensity());
+		return calcColor(gp, ray, MAX_CALC_COLOR_LEVEL, new Double3(INITIAL_K)).add(scene.ambientLight.getIntensity());
 	}
-	///////////////////////////
-	private Color calcGlobalEffects(GeoPoint gp, Vector v, int level, double k) {
+	/**
+	 * 
+	 * @param gp
+	 * @param v
+	 * @param level
+	 * @param k
+	 * @return
+	 */
+	private Color calcGlobalEffects(GeoPoint gp, Vector v, int level, Double3 k) {
 		Color color = Color.BLACK; 
 		Vector n = gp.geometry.getNormal(gp.point);
 		Material material = gp.geometry.getMaterial();
 		//double kkr = material.kR.scale(k);
 		//double kkr = k * material.kr;
-		Double3 kkr = material.kR.scale(k);
+		Double3 kkr = material.kR.product(k);
 		//if (kkr > MIN_CALC_COLOR_K)
 		if (!kkr.lowerThan(MIN_CALC_COLOR_K)) {
 			color = calcGlobalEffect(constructReflectedRay(gp.point, v, n), level, material.kR, kkr);
 		}
 		//double kkt = k * material.kt;
-		Double3 kkt = material.kT.scale(k);
+		Double3 kkt = material.kT.product(k);
 		//if (kkt > MIN_CALC_COLOR_K)
 		if (!kkt.lowerThan(MIN_CALC_COLOR_K)) {
 			color = color.add(calcGlobalEffect(constructRefractedRay(gp.point, v, n), level, material.kT, kkt));
 		}
 		return color;
 	}
-	//////////////////////
-	private Color calcGlobalEffect(Ray ray, int level, double kx, double kkx) {
+	/**
+	 * 
+	 * @param ray
+	 * @param level
+	 * @param kx
+	 * @param kkx
+	 * @return
+	 */
+	private Color calcGlobalEffect(Ray ray, int level, Double3 kx, Double3 kkx) {
 		GeoPoint gp = findClosestIntersection (ray);
 		int levelMinus1 = level-1;
 		return (gp == null ? scene.background : calcColor(gp, ray, levelMinus1, kkx)).scale(kx);
