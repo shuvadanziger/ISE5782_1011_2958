@@ -65,7 +65,7 @@ public class Geometries extends Intersectable {
 				}
 			}
 		}
-		if (result.size()==0)
+		if (result.size()==0)  
 		{
 			return null;
 		} 

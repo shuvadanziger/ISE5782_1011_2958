@@ -68,7 +68,7 @@ public class RayTracerBasic extends RayTracerBase{
 	 * @return
 	 */
 	private Ray constructRefractedRay(Point p, Vector v, Vector n) { 
-		double nv = alignZero(n.dotProduct(v)); 
+		double nv = alignZero(v.dotProduct(n)); 
 		Vector epsVector = n.scale(nv < 0 ? DELTA : -DELTA);
 		Point point = p.add(epsVector);
 		Ray ans = new Ray(point, v);
@@ -171,7 +171,7 @@ public class RayTracerBasic extends RayTracerBase{
 		Color color = gp.geometry.getEmission();
 		Vector v = ray.getDir (); 
 		Vector n = gp.geometry.getNormal(gp.point);
-		double nv = alignZero(n.dotProduct(v)); 
+		double nv = alignZero(v.dotProduct(n)); 
 		if (nv == 0) return color;
 		Material mat = gp.geometry.getMaterial();
 		for (LightSource lightSource : scene.lights) {

@@ -28,7 +28,7 @@ public class ReflectionRefractionTests {
 	 */
 	@Test
 	public void twoSpheres() {
-		Camera camera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
+		Camera camera = new Camera(new Point(0, 0, 1000),  new Vector(0, 1, 0),new Vector(0, 0, -1)) //
 				.setVPSize(150, 150).setVPDistance(1000);
 
 		scene.geometries.add( //
@@ -43,7 +43,7 @@ public class ReflectionRefractionTests {
 		camera.setImageWriter(new ImageWriter("refractionTwoSpheres", 500, 500)) //
 				.setRayTracer(new RayTracerBasic(scene)) //
 				.renderImage(); //
-		camera.writeToImage();
+				camera.writeToImage();
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class ReflectionRefractionTests {
 	 */
 	@Test
 	public void twoSpheresOnMirrors() {
-		Camera camera = new Camera(new Point(0, 0, 10000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
+		Camera camera = new Camera(new Point(0, 0, 10000), new Vector(0, 1, 0), new Vector(0, 0, -1)) //
 				.setVPSize(2500, 2500).setVPDistance(10000); //
 
 		scene.setAmbientLight(new AmbientLight(new Color(255, 255, 255), 0.1));
@@ -85,7 +85,7 @@ public class ReflectionRefractionTests {
 	 */
 	@Test
 	public void trianglesTransparentSphere() {
-		Camera camera = new Camera(new Point(0, 0, 1000), new Vector(0, 0, -1), new Vector(0, 1, 0)) //
+		Camera camera = new Camera(new Point(0, 0, 1000),  new Vector(0, 1, 0),new Vector(0, 0, -1)) //
 				.setVPSize(200, 200).setVPDistance(1000);
 
 		scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15));
@@ -104,7 +104,7 @@ public class ReflectionRefractionTests {
 		ImageWriter imageWriter = new ImageWriter("refractionShadow", 600, 600);
 		camera.setImageWriter(imageWriter) //
 				.setRayTracer(new RayTracerBasic(scene)) //
-				.renderImage(); //
-		camera.writeToImage();
+				.renderImage();//
+				camera.writeToImage();
 	}
 }
