@@ -163,15 +163,15 @@ public class RayTracerBasic extends RayTracerBase{
 	 */
 	private Color calcGlobalEffect(Ray ray, int level, Double3 kx, Double3 kkx) {
 		GeoPoint gp = findClosestIntersection (ray);
-		int levelMinus1 = level-1;
-		return (gp == null ? scene.background : calcColor(gp, ray, levelMinus1, kkx)).scale(kx);
+		//int levelMinus1 = level-1;
+		return (gp == null ? scene.background : calcColor(gp, ray, level-1, kkx)).scale(kx);
 	}
 		
 	private Color calcLocalEffects(GeoPoint gp, Ray ray) {
 		Color color = gp.geometry.getEmission();
 		Vector v = ray.getDir (); 
 		Vector n = gp.geometry.getNormal(gp.point);
-		double nv = alignZero(v.dotProduct(n)); 
+		double nv = alignZero(v.dotProduct(n)); //////////////////
 		if (nv == 0) return color;
 		Material mat = gp.geometry.getMaterial();
 		for (LightSource lightSource : scene.lights) {
@@ -220,7 +220,7 @@ public class RayTracerBasic extends RayTracerBase{
 	
 	public  Color traceRay(Ray ray) {
 		GeoPoint closestPoint = this.findClosestIntersection(ray);
-		return closestPoint != null ? calcColor(closestPoint, ray) : scene.background;
+		return closestPoint == null ? scene.background : calcColor(closestPoint, ray);
 		
 		/*if(point==null) {
 			return scene.background;
