@@ -111,11 +111,11 @@ public class RayTracerBasic extends RayTracerBase{
 		Vector lightDirection = l.scale(-1); // from point to light source
 		Ray lightRay = new Ray(geoPoint.point, lightDirection, n);//ray from point to the light source		
 		Double3 ktr = new Double3(1.0);
-		List<GeoPoint> lst = scene.geometries.findGeoIntersections(lightRay); //find the list of intersection points
+		List<GeoPoint> lst = scene.geometries.findGeoIntersections(lightRay,ls.getDistance(geoPoint.point)); //find the list of intersection points
 		if (lst==null) return new Double3(1.0);//if there are no points between the point and the light- the geometry is transparent and does'nt effect the color of the point
 		for (GeoPoint gp: lst) //go over every intersection point in the list
-		{
-			if (gp.point.distance(geoPoint.point)<ls.getDistance(geoPoint.point))//checks if the intersection point is closer to the point than the light source
+		{  
+			//if (gp.point.distance(geoPoint.point)<ls.getDistance(geoPoint.point))//checks if the intersection point is closer to the point than the light source
 				ktr=gp.geometry.getMaterial().kT.product(ktr); //multiply ktr by kT of the intersection
 		}
 		if (ktr.equals(Double3.ZERO)) // already close enough to 0
@@ -134,7 +134,7 @@ public class RayTracerBasic extends RayTracerBase{
 		return 1 == level ? color : color.add(calcGlobalEffects(gp, ray.getDir(), level, k)); //if we arrived to the minimum level - 1 - we finish the recursion' and return the color we calculated,
 		//if we haven't finish the recursion and didn't reach the minimum level - we call calcGlobalEffects that calculates the color (with recursion).
 	}
-	
+
 	/**
 	 * calculate color - Shell function to calcColor
 	 * @param gp

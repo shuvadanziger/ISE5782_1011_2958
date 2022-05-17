@@ -41,7 +41,7 @@ public class Tube extends Geometry {
     {
     	return null;
     }
-	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray){//,double maxDistance
+	public List<GeoPoint> findGeoIntersectionsHelper(Ray ray,double maxDistance){//,double maxDistance
 		return null;
 	}
 

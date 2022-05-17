@@ -65,7 +65,7 @@ public class Sphere extends Geometry {
 		}
 		return lst;
 	}
-	public  List<GeoPoint> findGeoIntersectionsHelper(Ray ray){//,double maxDistance
+	public  List<GeoPoint> findGeoIntersectionsHelper(Ray ray,double maxDistance){//,double maxDistance
 		if(ray.getP0().equals(center))//if the ray starts at the center of the sphere
 		{
 			return List.of(new GeoPoint(this,center.add(ray.getDir().scale(radius))));
@@ -86,12 +86,12 @@ public class Sphere extends Geometry {
 		{
 			return null; 
 		}
-		List<GeoPoint> lst= new ArrayList<GeoPoint>();
-		if(t1>0 )//&& (alignZero(ray.getP0().add(ray.getDir().scale(t1)).distance(ray.getP0()) - maxDistance) > 0)
+		List<GeoPoint> lst= new ArrayList<GeoPoint>(); 
+		if(t1>0&& ((ray.getP0().add(ray.getDir().scale(t1)).distance(ray.getP0()) <= maxDistance) ) )//&& (alignZero(ray.getP0().add(ray.getDir().scale(t1)).distance(ray.getP0()) - maxDistance) > 0)
 		{
 			lst.add(new GeoPoint(this,ray.getP0().add(ray.getDir().scale(t1))));
 		}
-		if(t2>0 )//&& (alignZero(ray.getP0().add(ray.getDir().scale(t2)).distance(ray.getP0()) - maxDistance) > 0)
+		if(t2>0 &&((ray.getP0().add(ray.getDir().scale(t2)).distance(ray.getP0()) <= maxDistance)))//&& (alignZero(ray.getP0().add(ray.getDir().scale(t2)).distance(ray.getP0()) - maxDistance) > 0)
 		{
 			lst.add(new GeoPoint(this,ray.getP0().add(ray.getDir().scale(t2))));
 		}

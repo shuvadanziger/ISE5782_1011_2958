@@ -50,7 +50,7 @@ public class Triangle extends Polygon {
 		return super.getNormal(point);
 	}
 	@Override
-	public  List<GeoPoint> findGeoIntersectionsHelper(Ray ray){//,double maxDistance
+	public  List<GeoPoint> findGeoIntersectionsHelper(Ray ray,double maxDistance){//,double maxDistance
 		
 		 Vector v1 = vertices.get(0).subtract(ray.getP0());
 		Vector v2 = vertices.get(1).subtract(ray.getP0());
@@ -65,7 +65,7 @@ public class Triangle extends Polygon {
 		if (t1>0 && t2>0 && t3>0) 
 		{ 
 		    List<GeoPoint> lst1= new ArrayList<GeoPoint>();
-			lst1=this.plane.findGeoIntersections(ray);//,maxDistance
+			lst1=this.plane.findGeoIntersections(ray, maxDistance);//,maxDistance
 			if(lst1==null) {
 			return null;
 			}
@@ -82,7 +82,9 @@ public class Triangle extends Polygon {
 			return null;
 			}
 			for(GeoPoint p:lst1) {
-				lst.add(new GeoPoint(this,p.point));
+				if(p.point.distance(ray.getP0())<=maxDistance) {
+					lst.add(new GeoPoint(this,p.point));
+				}
 			} 
 			return lst;
 		}
