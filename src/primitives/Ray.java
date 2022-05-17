@@ -35,16 +35,16 @@ public class Ray {
 		}
 	}
 	/**
-	 * Constructor
+	 * Constructor that moves the point - ray head - in the direction of the normal
 	 * @param p
 	 * @param v
-	 * @param n
+	 * @param n normal
 	 */
 	public Ray(Point p, Vector v, Vector n)
 	{
 		double nv = alignZero(n.dotProduct(v)); 
-		Vector epsVector = n.scale(nv > 0 ? DELTA : -DELTA);
-		Point point = p.add(epsVector);
+		Vector epsVector = n.scale(nv > 0 ? DELTA : -DELTA); 
+		Point point = p.add(epsVector); //point move in the direction of the normal
 		p0 = new Point(point.xyz.d1, point.xyz.d2, point.xyz.d3);
 		Vector temp = v.normalize();
 		try 
