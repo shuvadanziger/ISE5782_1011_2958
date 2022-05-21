@@ -1,7 +1,11 @@
 package lighting;
 
 import primitives.*;
-
+/**
+ * Ambient light- Affects everything in the same amount
+ * @author Shuva
+ *
+ */
 public class AmbientLight extends Light {
 	/**
 	 * constructor

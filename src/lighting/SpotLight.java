@@ -4,7 +4,11 @@ import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
 import primitives.Util.*;
-
+/**
+ * point light with a direction
+ * @author Shuva
+ *
+ */
 public class SpotLight extends PointLight{
 	private Vector direction;
 	/**

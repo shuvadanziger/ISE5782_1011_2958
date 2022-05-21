@@ -3,12 +3,16 @@ package lighting;
 import primitives.Color;
 import primitives.Point;
 import primitives.Vector;
-
+/**
+ * light that come from one point- to every direction
+ * @author Shuva
+ *
+ */
 public class PointLight extends Light implements LightSource{
-	private Point position;
-	private double kC;
-	private double kL;
-	private double kQ;
+	private Point position;//location of the light
+	private double kC;//permanent(const) Discount factor 
+	private double kL;//liniar Discount factor
+	private double kQ;//Squares Discount factor
 	public PointLight setKc(double k) {
 		this.kC=k;
 		return this;

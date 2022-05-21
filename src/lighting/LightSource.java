@@ -5,7 +5,7 @@ import primitives.Point;
 import primitives.Vector;
 
 /**
- * inteface LightSource - for light sources
+ * interface LightSource - for light sources
  * @author talia
  *
  */

@@ -107,4 +107,39 @@ public class ReflectionRefractionTests {
 				.renderImage();//
 				camera.writeToImage();
 	}
+	
+	@Test
+	public void Picture7() {
+		Camera camera = new Camera(new Point(0, 0, 10000),  new Vector(0, 1, 0),new Vector(0, 0, -1)) //
+				.setVPSize(2500, 2500).setVPDistance(10000);
+
+		scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15));
+	
+		
+		scene.geometries.add( //
+				new Sphere(new Point(-950, -900, -1000), 400d).setEmission(new Color(0, 0, 100)) //
+						.setMaterial(new Material().setKd(0.25).setKs(0.25).setShininess(20).setKt(new Double3(0.9))),
+				new Sphere(new Point(-400, -500, -1000), 200d).setEmission(new Color(100, 20, 20)) //
+						.setMaterial(new Material().setKd(0.25).setKs(0.25).setShininess(20).setKt(new Double3(0.9))),
+				new Triangle(new Point(1500, -1500, -1500), new Point(-1500, 1500, -1500), new Point(670, 670, 3000)) //
+						.setEmission(new Color(20, 20, 20)) //
+						.setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60).setKR(new Double3(0)))
+				,new Triangle(new Point(1500, -1500, -1500), new Point(-1500, 1500, -1500),
+								new Point(-1500, -1500, -2000)) //
+								.setEmission(new Color(20, 20, 20)) //
+								.setMaterial(new Material().setKR(new Double3(1))));
+
+
+		scene.lights.add(new SpotLight(new Color(1020, 400, 400), new Point(-950, -900, -1000), new Vector(1, 1,0)) //-950, -900, -1000
+				.setKl(4E-5).setKq(2E-7));
+	
+
+		ImageWriter imageWriter = new ImageWriter("picture7", 600, 600);
+		camera.setImageWriter(imageWriter) //
+				.setRayTracer(new RayTracerBasic(scene)) //
+				.renderImage();//
+				camera.writeToImage();
+	}
+	
+	
 }

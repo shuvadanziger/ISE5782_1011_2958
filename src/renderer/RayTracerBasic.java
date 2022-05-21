@@ -1,3 +1,4 @@
+
 package renderer;
 
 import java.util.List;
@@ -44,7 +45,7 @@ public class RayTracerBasic extends RayTracerBase{
 	 */
 	private GeoPoint findClosestIntersection(Ray ray) {
 		List<GeoPoint> lst = scene.geometries.findGeoIntersections(ray);  //find the list of intersection points
-		if (lst==null)
+		if (lst==null)//if there are no points
 			return null;
 		GeoPoint p = ray.findClosestGeoPoint(lst); //find the closest intersection point
 		return p;
@@ -52,9 +53,8 @@ public class RayTracerBasic extends RayTracerBase{
 	/**
 	 * Calculate the reflected ray
 	 * @param gp-geo point 
-	 * @param v
-	 * @param n
-	 * @param nv
+	 * @param v-vector from the camera
+	 * @param n- normal 
 	 * @return HISHTAKFUT-reflected ray
 	 */
 	private Ray constructReflectedRay(Point p, Vector v, Vector n) {
@@ -63,13 +63,14 @@ public class RayTracerBasic extends RayTracerBase{
 		Vector r = v.subtract(n.scale(v.dotProduct(n)).scale(2)); //caculates: r = v-2*(v*n)*n
 		Ray ans = new Ray(p, r, n);
 		return ans;
+		
+		
 	}
 	/**
 	 * calculate the retracted ray
-	 * @param gp
-	 * @param v
-	 * @param n
-	 * @param nv
+	 * @param p- the point
+	 * @param v- vector from the camera
+	 * @param n-normal
 	 * @return SHKIFUT-Refracted ray 
 	 */
 	private Ray constructRefractedRay(Point p, Vector v, Vector n) { 
@@ -79,7 +80,7 @@ public class RayTracerBasic extends RayTracerBase{
 	
 	
 	/**  
-	 * Checks if the point is shaded
+	 * Checks if the point is shaded- not used
 	 * @param gp GeoPoint-the point the function check.
 	 * @param l vector from the light source to the point
 	 * @param n normal to the geometry object
@@ -87,7 +88,6 @@ public class RayTracerBasic extends RayTracerBase{
 	 * @param light the light source.
 	 * @return
 	 */
-	/*
 	private boolean unshaded(GeoPoint gp, Vector l, Vector n, double nv, LightSource light) {
 		Vector lightDirection = l.scale(-1); // from point to light source
 		Ray lightRay = new Ray(gp.point, lightDirection, n);//ray from point to the light source
@@ -97,20 +97,20 @@ public class RayTracerBasic extends RayTracerBase{
 			return false;//there is a shadow
 		return true;
 	}
-	*/
+	
 	
 	/**
-	 * Calculate the 
+	 * Calculate the effect of all the intersections before the point(between the point and the light)
 	 * @param geoPoint
-	 * @param ls
-	 * @param l
-	 * @param n
+	 * @param ls- light source
+	 * @param l- vector from the light to the point
+	 * @param n- normal
 	 * @return
 	 */
 	private Double3 transparency(GeoPoint geoPoint, LightSource ls, Vector l, Vector n) {
 		Vector lightDirection = l.scale(-1); // from point to light source
 		Ray lightRay = new Ray(geoPoint.point, lightDirection, n);//ray from point to the light source		
-		Double3 ktr = new Double3(1.0);
+		Double3 ktr = new Double3(1.0);//fully SHAKUF
 		List<GeoPoint> lst = scene.geometries.findGeoIntersections(lightRay,ls.getDistance(geoPoint.point)); //find the list of intersection points
 		if (lst==null) return new Double3(1.0);//if there are no points between the point and the light- the geometry is transparent and does'nt effect the color of the point
 		for (GeoPoint gp: lst) //go over every intersection point in the list
@@ -118,13 +118,13 @@ public class RayTracerBasic extends RayTracerBase{
 			//if (gp.point.distance(geoPoint.point)<ls.getDistance(geoPoint.point))//checks if the intersection point is closer to the point than the light source
 				ktr=gp.geometry.getMaterial().kT.product(ktr); //multiply ktr by kT of the intersection
 		}
-		if (ktr.equals(Double3.ZERO)) // already close enough to 0
+		if (ktr.equals(Double3.ZERO)) // already close enough to 0-shadow
             return Double3.ZERO;
 		return ktr;
 		
 	}
 	
-	/** calculate color 
+	/** calculate color (recursion)
 	 * 
 	 * @return color of the geo point
 	 */
@@ -136,7 +136,7 @@ public class RayTracerBasic extends RayTracerBase{
 	}
 
 	/**
-	 * calculate color - Shell function to calcColor
+	 * calculate color - Shell function to the recursive calcColor
 	 * @param gp
 	 * @param ray
 	 * @return color of the geo point
@@ -145,9 +145,9 @@ public class RayTracerBasic extends RayTracerBase{
 		return calcColor(gp, ray, MAX_CALC_COLOR_LEVEL, new Double3(INITIAL_K)).add(scene.ambientLight.getIntensity());
 	}
 	/**
-	 * calculate global effects
-	 * @param gp
-	 * @param v
+	 * calculate global effects-Refracted and Reflected
+	 * @param gp-the geopoint
+	 * @param v- vector from the camera
 	 * @param level
 	 * @param k
 	 * @return
@@ -157,30 +157,30 @@ public class RayTracerBasic extends RayTracerBase{
 		Vector n = gp.geometry.getNormal(gp.point);
 		Material material = gp.geometry.getMaterial();
 		Double3 kkr = material.kR.product(k);
-		if (!(kkr.lowerThan(MIN_CALC_COLOR_K))) { //////////////////////
+		if (!(kkr.lowerThan(MIN_CALC_COLOR_K))) { //if the color of the HISHTAKFOT is so low that it doesn't effect
 			color = calcGlobalEffect(constructReflectedRay(gp.point, v, n), level, material.kR, kkr);//calculate global effects for reflected ray
 		}
 		Double3 kkt = material.kT.product(k);
-		if (!(kkt.lowerThan(MIN_CALC_COLOR_K))) { ////////////////////////
+		if (!(kkt.lowerThan(MIN_CALC_COLOR_K))) { //if the color of the SHKIFUT is so low that it doesn't effect
 			color = color.add(calcGlobalEffect(constructRefractedRay(gp.point, v, n), level, material.kT, kkt));//calculate global effect for refracted ray
 		}
 		return color;
 	}
 	/**
 	 * calculate the global effects
-	 * @param ray
+	 * @param ray- SHKIFUT/HISHTAKUT ray
 	 * @param level
 	 * @param kx
 	 * @param kkx
 	 * @return
 	 */
 	private Color calcGlobalEffect(Ray ray, int level, Double3 kx, Double3 kkx) {
-		GeoPoint gp = findClosestIntersection (ray);
+		GeoPoint gp = findClosestIntersection (ray);//find the closest intersection
 		return (gp == null ? scene.background : calcColor(gp, ray, level-1, kkx)).scale(kx); //if there are no intersection points - returns the background color,
-		//and if there are - calculates the right color with calcColor
+		//and if there are - calculates the color of this point
 	}
 	/**
-	 * calculate the local effects-shadow, Diffusive, Specular, intensity
+	 * calculate the local effects- Diffusive, Specular, shadow(transperency)
 	 * @param gp
 	 * @param ray
 	 * @return
@@ -190,14 +190,14 @@ public class RayTracerBasic extends RayTracerBase{
 		Vector v = ray.getDir(); 
 		Vector n = gp.geometry.getNormal(gp.point);
 		double nv = alignZero(n.dotProduct(v)); 
-		if (nv == 0) return color; //////////////////////
+		if (nv == 0) return color;
 		Material mat = gp.geometry.getMaterial();
 		for (LightSource lightSource : scene.lights) { //go over all the light sources in the scene
 			Vector l = lightSource.getL(gp.point); //find the vector from the light source to the point
 			double nl = alignZero(n.dotProduct(l));
 			if (nl * nv > 0) { // sign(nl) == sing(nv)
 				Double3 ktr = transparency(gp, lightSource, l, n);
-				if (!(ktr.product(k).lowerThan(MIN_CALC_COLOR_K))) { /////////////////////////////
+				if (!(ktr.product(k).lowerThan(MIN_CALC_COLOR_K))) {
 					Color iL = lightSource.getIntensity(gp.point).scale(ktr); //scales the intensity of the light source with the color (Double3) returns from transperency
 					color = color.add(iL.scale(calcDiffusive(mat, nl)),iL.scale(calcSpecular(mat, n,l,nl,v))); //add the diffusive and the specular to the color
 				}
