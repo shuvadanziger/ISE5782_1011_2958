@@ -74,7 +74,7 @@ public class Sphere extends Geometry {
 		
 		double tm=ray.getDir().dotProduct(u);
 		double temp=tm*tm;
-		double d= Math.sqrt(u.lengthSquared()-temp);
+		double d= Math.sqrt(u.lengthSquared()-temp); 
 		if(d>=radius)//if d is bigger then the radius there are no intsersections.
 		{
 			return null;

@@ -26,7 +26,7 @@ public class PointLight extends Light implements LightSource{
 		return this;
 	}
 	/**
-	 * constructor
+	 * constructor 
 	 * @param c is the intensity of the light
 	 * @param p is the position of the light
 	 * @param kc is a discount factor

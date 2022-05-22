@@ -42,6 +42,8 @@ public class Ray {
 	 */
 	public Ray(Point p, Vector v, Vector n)
 	{
+	
+
 		double nv = alignZero(n.dotProduct(v)); 
 		Vector epsVector = n.scale(nv > 0 ? DELTA : -DELTA); 
 		Point point = p.add(epsVector); //point move in the direction of the normal

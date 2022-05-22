@@ -40,20 +40,20 @@ public class RayTracerBasic extends RayTracerBase{
 	}
 	/**
 	 * find the closest intersection
-	 * @param ray
-	 * @return
+	 * @param ray - checks the intersection of the ray with the objects
+	 * @return the closest geoPoint intersection
 	 */
 	private GeoPoint findClosestIntersection(Ray ray) {
 		List<GeoPoint> lst = scene.geometries.findGeoIntersections(ray);  //find the list of intersection points
 		if (lst==null)//if there are no points
-			return null;
+			return null;  
 		GeoPoint p = ray.findClosestGeoPoint(lst); //find the closest intersection point
 		return p;
 	}
 	/**
 	 * Calculate the reflected ray
 	 * @param gp-geo point 
-	 * @param v-vector from the camera
+	 * @param v-The vector in the direction of our current point of view (Refracted, reflection, or from the camera)
 	 * @param n- normal 
 	 * @return HISHTAKFUT-reflected ray
 	 */
@@ -62,6 +62,7 @@ public class RayTracerBasic extends RayTracerBase{
 			return new Ray(p, v, n);
 		Vector r = v.subtract(n.scale(v.dotProduct(n)).scale(2)); //caculates: r = v-2*(v*n)*n
 		Ray ans = new Ray(p, r, n);
+
 		return ans;
 		
 		
@@ -69,7 +70,7 @@ public class RayTracerBasic extends RayTracerBase{
 	/**
 	 * calculate the retracted ray
 	 * @param p- the point
-	 * @param v- vector from the camera
+	 * @param v- The vector in the direction of our current point of view (Refracted, reflection, or from the camera)
 	 * @param n-normal
 	 * @return SHKIFUT-Refracted ray 
 	 */
@@ -86,7 +87,7 @@ public class RayTracerBasic extends RayTracerBase{
 	 * @param n normal to the geometry object
 	 * @param nv Helps to know if the camera is in the normal direction or in the opposite direction to know which direction to move the point
 	 * @param light the light source.
-	 * @return
+	 * @return if the point is shaded or unshaded
 	 */
 	private boolean unshaded(GeoPoint gp, Vector l, Vector n, double nv, LightSource light) {
 		Vector lightDirection = l.scale(-1); // from point to light source
@@ -105,7 +106,7 @@ public class RayTracerBasic extends RayTracerBase{
 	 * @param ls- light source
 	 * @param l- vector from the light to the point
 	 * @param n- normal
-	 * @return
+	 * @return the level of transparency
 	 */
 	private Double3 transparency(GeoPoint geoPoint, LightSource ls, Vector l, Vector n) {
 		Vector lightDirection = l.scale(-1); // from point to light source
@@ -125,7 +126,10 @@ public class RayTracerBasic extends RayTracerBase{
 	}
 	
 	/** calculate color (recursion)
-	 * 
+	 *  @param gp -the geoPoint
+	 *  @param ray -The ray from our current point of view (Refracted, reflection, or from the camera) 
+	 *  @param level -of the recursion
+	 *  @param k -the intensity
 	 * @return color of the geo point
 	 */
 	private Color calcColor(GeoPoint gp, Ray ray, int level, Double3 k)
@@ -137,8 +141,8 @@ public class RayTracerBasic extends RayTracerBase{
 
 	/**
 	 * calculate color - Shell function to the recursive calcColor
-	 * @param gp
-	 * @param ray
+	 * @param gp - the geoPoint
+	 * @param ray- The ray from our current point of view (Refracted, reflection, or from the camera)
 	 * @return color of the geo point
 	 */
 	private Color calcColor(GeoPoint gp, Ray ray) {
@@ -147,10 +151,10 @@ public class RayTracerBasic extends RayTracerBase{
 	/**
 	 * calculate global effects-Refracted and Reflected
 	 * @param gp-the geopoint
-	 * @param v- vector from the camera
-	 * @param level
-	 * @param k
-	 * @return
+	 * @param v- The vector in the direction of our current point of view (Refracted, reflection, or from the camera)
+	 * @param level -level of the recursion
+	 * @param k -the intensity
+	 * @return the color of the point
 	 */
 	private Color calcGlobalEffects(GeoPoint gp, Vector v, int level, Double3 k) {
 		Color color = Color.BLACK; 
@@ -168,11 +172,11 @@ public class RayTracerBasic extends RayTracerBase{
 	}
 	/**
 	 * calculate the global effects
-	 * @param ray- SHKIFUT/HISHTAKUT ray
-	 * @param level
-	 * @param kx
-	 * @param kkx
-	 * @return
+	 * @param ray- SHKIFUT/HISHTAKUT ray 
+	 * @param level of the recursion
+	 * @param kx -kR/kT 
+	 * @param kkx - the intensity*kR/kT
+	 * @return  the color of the intersections of the ray 
 	 */
 	private Color calcGlobalEffect(Ray ray, int level, Double3 kx, Double3 kkx) {
 		GeoPoint gp = findClosestIntersection (ray);//find the closest intersection
@@ -181,9 +185,9 @@ public class RayTracerBasic extends RayTracerBase{
 	}
 	/**
 	 * calculate the local effects- Diffusive, Specular, shadow(transperency)
-	 * @param gp
-	 * @param ray
-	 * @return
+	 * @param gp the geoPoint
+	 * @param ray The ray from our current point of view (Refracted, reflection, or from the camera)
+	 * @return the color of the point -according to the Diffusive, Specular, shadow(transperency)
 	 */
 	private Color calcLocalEffects(GeoPoint gp, Ray ray, Double3 k) {
 		Color color = gp.geometry.getEmission(); 
@@ -207,9 +211,9 @@ public class RayTracerBasic extends RayTracerBase{
 	}
 	/**
 	 * Scattering of light from the geometric object coming from a certain direction
-	 * @param mat
-	 * @param nl
-	 * @return
+	 * @param mat the material of the geometry object
+	 * @param nl - normal*vector from light
+	 * @return the level of diffusion
 	 */
 	private Double3 calcDiffusive(Material mat, double nl) {
 		
@@ -218,11 +222,11 @@ public class RayTracerBasic extends RayTracerBase{
 	/**
 	 * Flash of light
 	 * @param mat material of the geometry object
-	 * @param n
-	 * @param l
-	 * @param nl
-	 * @param v
-	 * @return
+	 * @param n normal
+	 * @param l vector from light source
+	 * @param nl normal*vector from light source
+	 * @param v - vector from the camera
+	 * @return the level of specular
 	 */
 	private Double3 calcSpecular(Material mat, Vector n, Vector l, double nl, Vector v) {	
 		Vector temp=n.scale(nl).scale(-2);
@@ -236,7 +240,8 @@ public class RayTracerBasic extends RayTracerBase{
 		
 	}
 	/**
-	 * return the color of the intersections between the scene
+	 * @param ray -ray from the camera
+	 * @return the color of the intersections of the ray
 	 */
 	public  Color traceRay(Ray ray) {
 		GeoPoint closestPoint = this.findClosestIntersection(ray);//find the closets intersection

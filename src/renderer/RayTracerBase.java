@@ -14,8 +14,8 @@ public abstract class RayTracerBase {
 	}
 	/**
 	 * 
-	 * @param ray
-	 * @return
+	 * @param ray -ray from the camera
+	 * @return the color of the intersections of the ray
 	 */
 	public abstract Color traceRay(Ray ray);
 

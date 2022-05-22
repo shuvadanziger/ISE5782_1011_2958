@@ -36,8 +36,8 @@ public abstract class Intersectable {
 	    public Point point;
 	    /**
 	     * Constructor
-	     * @param geo
-	     * @param p
+	     * @param geo the geopmetry object
+	     * @param p the point
 	     */
 	    public GeoPoint(Geometry geo, Point p) {
 	    	this.geometry=geo;
@@ -52,7 +52,7 @@ public abstract class Intersectable {
 			return (this.point.equals(other.point))&&this.geometry.equals(other.geometry);
 			
 		}
-		@Override
+		@Override 
 		public String toString() {
 			return "point = " + point.toString()+"geometry = "+geometry.toString();
 		}
