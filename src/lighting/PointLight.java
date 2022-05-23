@@ -78,7 +78,9 @@ public class PointLight extends Light implements LightSource{
 			Vector up = v1.scale(mod);
 			Vector side = v2.scale(partial);
 			Point location = new Point(this.position.add(up).add(side).subtract(Vector.ZERO).getXyz());
-			Ray answer = new Ray(location, new Vector(p.subtract(location).getXyz()).normalize());
+			Vector help = new Vector(p.subtract(location).getXyz());
+			help.normalize();
+			Ray answer = new Ray(location, help);
 			ans.add(answer);
 		}
 		return ans;

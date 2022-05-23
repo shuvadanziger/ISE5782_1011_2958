@@ -141,7 +141,8 @@ public class RayTracerBasic extends RayTracerBase{
 		List<Ray> ans = ls.getV(geoPoint.point);
 		for (Ray r:ans) 
 		{
-			Ray lightRay = new Ray(r.getP0(), r.getDir().scale(-1), n);//ray from point to the light source	
+			Vector lightDirection = r.getDir(); // from point to light source
+			Ray lightRay = new Ray(r.getP0(), lightDirection, n);//ray from point to the light source	
 			List<GeoPoint> lst = scene.geometries.findGeoIntersections(lightRay,ls.getDistance(geoPoint.point)); //find the list of intersection points
 			if (lst==null) return new Double3(1.0);//if there are no points between the point and the light- the geometry is transparent and does'nt effect the color of the point
 			for (GeoPoint gp: lst) //go over every intersection point in the list
