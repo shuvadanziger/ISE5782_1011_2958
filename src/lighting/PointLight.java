@@ -1,7 +1,11 @@
 package lighting;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import primitives.Color;
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
 /**
  * light that come from one point- to every direction
@@ -55,5 +59,32 @@ public class PointLight extends Light implements LightSource{
 	public double getDistance(Point point) {
 		return position.distance(point);
 	}
+	
+	public List<Ray> getV(Point p)
+	{
+		Vector n = getL(p);
+		Vector temp = new Vector(p.subtract(Vector.ZERO).getXyz());
+		double dot = n.dotProduct(temp);
+		Vector v1 = n.normal(dot);
+		Vector v2 = v1.crossProduct(n);
+		v1.add(this.position.subtract(Vector.ZERO));
+		v2.add(this.position.subtract(Vector.ZERO));
+		
+		List<Ray> ans = new ArrayList();
+		for (int i=0; i<81; i++)
+		{
+			Vector up = v1.scale(i%9);
+			Vector side = v2.scale(i/9);
+			Point location = new Point(this.position.add(up).add(side).subtract(Vector.ZERO).getXyz());
+			Ray answer = new Ray(location, new Vector(p.subtract(location).getXyz()).normalize());
+			ans.add(answer);
+		}
+		return ans;
+	}
+	
+	//public Ray r(Vector v1, Vector v2)
+	//{
+	//	
+	//}
 
 }

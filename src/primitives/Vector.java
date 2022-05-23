@@ -117,5 +117,13 @@ public class Vector extends Point {
 		Vector ans = this.scale(temp);
 		return ans;
 	}
+	
+	public Vector normal ( double d)
+	{
+		double v3 = d-this.xyz.d1-this.xyz.d2;
+		v3 /=this.xyz.d3;
+		Vector ans = new Vector(1,1,v3);
+		return ans;
+	}
 
 }

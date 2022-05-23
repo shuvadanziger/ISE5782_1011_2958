@@ -1,7 +1,10 @@
 package lighting;
 
+import java.util.List;
+
 import primitives.Color;
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
 
 /**
@@ -11,6 +14,7 @@ import primitives.Vector;
  */
 
 public interface LightSource {
+	final double DELTA = 0.01;
 	/**
 	 * find the light intensity at a point p
 	 * @param p 
@@ -29,5 +33,5 @@ public interface LightSource {
 	 * @return the distance from the light to the point
 	 */
 	public double getDistance(Point point);
-
+	public List<Ray> getV(Point p);
 }

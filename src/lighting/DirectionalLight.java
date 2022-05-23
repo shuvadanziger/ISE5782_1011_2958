@@ -1,7 +1,11 @@
 package lighting;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import primitives.Color;
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
 /**
  * Light with direction but without location - like the sun
@@ -30,6 +34,12 @@ public class DirectionalLight extends Light implements LightSource{
 	}
 	public double getDistance(Point point) {
 		return Double.POSITIVE_INFINITY;
+	}
+	public List<Ray> getV(Point p)
+	{
+		//Ray r = new Ray()
+		List<Ray> ans = new ArrayList();
+		return ans;
 	}
 
 }
