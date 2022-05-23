@@ -1,7 +1,11 @@
 package lighting;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import primitives.Color;
 import primitives.Point;
+import primitives.Ray;
 import primitives.Vector;
 import primitives.Util.*;
 /**
@@ -41,6 +45,12 @@ public class SpotLight extends PointLight{
 	public Vector getL(Point p) {
 		Vector l = super.getL(p);
 		return l;
+	}
+	@Override
+	public List<Ray> getV(Point p)
+	{
+		List<Ray> ans = new ArrayList();
+		return ans;
 	}
 
 }

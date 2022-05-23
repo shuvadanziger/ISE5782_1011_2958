@@ -59,7 +59,7 @@ public class PointLight extends Light implements LightSource{
 	public double getDistance(Point point) {
 		return position.distance(point);
 	}
-	
+	@Override
 	public List<Ray> getV(Point p)
 	{
 		Vector n = getL(p);
@@ -73,8 +73,10 @@ public class PointLight extends Light implements LightSource{
 		List<Ray> ans = new ArrayList();
 		for (int i=0; i<81; i++)
 		{
-			Vector up = v1.scale(i%9);
-			Vector side = v2.scale(i/9);
+			double mod = i%9;
+			double partial = i/9;
+			Vector up = v1.scale(mod);
+			Vector side = v2.scale(partial);
 			Point location = new Point(this.position.add(up).add(side).subtract(Vector.ZERO).getXyz());
 			Ray answer = new Ray(location, new Vector(p.subtract(location).getXyz()).normalize());
 			ans.add(answer);
