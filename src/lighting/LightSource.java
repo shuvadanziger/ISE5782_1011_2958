@@ -14,7 +14,10 @@ import primitives.Vector;
  */
 
 public interface LightSource {
-	final double DELTA = 1;
+	/**
+	 * 
+	 */
+	final double DELTA = 0.2;
 	/**
 	 * find the light intensity at a point p
 	 * @param p 

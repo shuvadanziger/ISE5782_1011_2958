@@ -94,8 +94,8 @@ public class PointLight extends Light implements LightSource{
 	{
 		
 		Vector n = getL(p);
-		Vector v1 = n.normal(this.position).scale(-1);
-		Vector v2 = v1.crossProduct(n).scale(-1);		
+		Vector v1 = n.normal(this.position).scale(-1).normalize();
+		Vector v2 = v1.crossProduct(n).scale(-1).normalize();		
 		
 		Vector up=new Vector(v1.scale(LightSource.DELTA).getXyz());
 		Vector side=new Vector(v2.scale(LightSource.DELTA).getXyz());

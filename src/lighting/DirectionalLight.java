@@ -35,11 +35,15 @@ public class DirectionalLight extends Light implements LightSource{
 	public double getDistance(Point point) {
 		return Double.POSITIVE_INFINITY;
 	}
-	public List<Ray> getV(Point p)
+	public ArrayList<Ray> getV(Point p)
 	{
 		//Ray r = new Ray()
-		List<Ray> ans = new ArrayList();
+		ArrayList<Ray> ans = new ArrayList<Ray>();
+		double d=Double.POSITIVE_INFINITY;
+		Ray ray=new Ray(new Point(d,d,d),this.getL(p).normalize());
+		ans.add(0,ray);
 		return ans;
+		
 	}
 
 }
