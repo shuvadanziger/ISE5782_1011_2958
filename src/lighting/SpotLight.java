@@ -47,11 +47,10 @@ public class SpotLight extends PointLight{
 		return l;
 	}
 	@Override
-	public List<Ray> getV(Point p)
+	public ArrayList<Ray> getV(Point p)
 	{
-		List<Ray> ans = new ArrayList();
-		ans = super.getV(p);
-		return ans;
+	
+		return super.getV(p);
 	}
 
 }

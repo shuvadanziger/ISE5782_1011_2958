@@ -129,15 +129,57 @@ public class Vector extends Point {
 	*/
 	
 	public Vector normal (Point p)
-	{
-		double v1 = p.xyz.d1-1;
-		double v2 = p.xyz.d2-1;
-		double v3 = p.xyz.d3+(this.xyz.d1+this.xyz.d2)/this.xyz.d3;
+	{  
+		//double v1 = p.xyz.d1-1;
+		//double v2 = p.xyz.d2-1;
+		double v3 = -(this.xyz.d1+this.xyz.d2)/this.xyz.d3;
 		//double v3 = d-this.xyz.d1-this.xyz.d2;
 		//v3 /=this.xyz.d3;
-		Vector ans = new Vector(v1,v2,v3);
+		Vector ans = new Vector(1,1,v3);
 		//ans.scale(-1);
 		return ans;
 	}
+	/**
+     * rotates vector on a given axis by a given angle
+     * @param rotationAxis the rotation axis
+     * @param angle the rotation angle (degrees)
+     * @return the rotated vector
+     */
+    public Vector rotate(Vector rotationAxis, double angle) {
+        // vrot = v*cos(theta) + cross(k,v)sin(theta) + k(k.'v)(1-cos(theta))
+        // v - this
+        // k - rotation axis
+        // theta - rotation angle in degrees
+
+        // convert to radians
+        angle = Math.toRadians(angle);
+
+        double x = this.xyz.d1;
+        double y = this.xyz.d2;
+        double z = this.xyz.d3;
+
+        double u = rotationAxis.xyz.d1;
+        double v = rotationAxis.xyz.d2;
+        double w = rotationAxis.xyz.d3;
+
+        double dotProduct = this.dotProduct(rotationAxis);
+
+        double xRotated = u * dotProduct * (1d - Math.cos(angle))  // k*(k.'v)(1-cos(theta))
+                + x * Math.cos(angle)                              // v*cos(theta)
+                + (-w * y + v * z) * Math.sin(angle);              // cross(k,v)*sin(theta)
+
+        double yRotated = v * dotProduct * (1d - Math.cos(angle))  // k*(k.'v)(1-cos(theta))
+                + y * Math.cos(angle)                              // v*cos(theta)
+                + (w * x - u * z) * Math.sin(angle);               // cross(k,v)*sin(theta)
+
+        double zRotated = w * dotProduct * (1d - Math.cos(angle))  // k*(k.'v)(1-cos(theta))
+                + z * Math.cos(angle)                              // v*cos(theta)
+                + (-v * x + u * y) * Math.sin(angle);              // cross(k,v)*sin(theta)
+
+        if((xRotated)==0 && (yRotated)==0 && (zRotated)==0)
+            throw new IllegalArgumentException("rotation results with zero vector");
+
+        return new Vector(xRotated, yRotated, zRotated);
+    }
 
 }

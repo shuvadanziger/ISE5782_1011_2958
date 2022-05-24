@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import primitives.Color;
+import primitives.Double3;
 import primitives.Point;
 import primitives.Ray;
 import primitives.Vector;
@@ -89,32 +90,70 @@ public class PointLight extends Light implements LightSource{
 	*/
 	
 	@Override
-	public List<Ray> getV(Point p)
+	public ArrayList<Ray> getV(Point p)
 	{
+		
 		Vector n = getL(p);
 		Vector v1 = n.normal(this.position);
 		Vector v2 = v1.crossProduct(n);		
-		//Vector temp = new Vector(position.subtract(Vector.ZERO).getXyz());
-		//double dot = n.dotProduct(temp);
-		//Vector v1 = n.normal(dot);
-		//Vector v2 = v1.crossProduct(n);
-		v1.add(this.position.subtract(Vector.ZERO));
-		v2.add(this.position.subtract(Vector.ZERO));
 		
-		List<Ray> ans = new ArrayList();
-		for (int i=0; i<81; i++)
+		Vector up=new Vector(v1.scale(LightSource.DELTA).getXyz());
+		Vector side=new Vector(v2.scale(LightSource.DELTA).getXyz());
+		ArrayList<Ray> ans = new ArrayList<Ray>();
+		
+		Point first;
+		first=this.position.add(up.scale(4)).add(side.scale(4));
+		Point temp;
+		for (int i=0;i<81;i++) {
+			temp=first;
+			if((int)(i/9)==0) {
+				if(i%9==0) {
+					temp=first;
+				}
+				else {
+					temp=first.add((side).scale(i%9));
+				}
+			}  
+			if(i%9==0 && (int)(i/9)!=0) {
+				 temp=first.add(up.scale((int)(i/9)));
+			}
+			if((int)(i/9)!=0 && i%9!=0) {
+				temp=first.add(up.scale((int)(i/9)));
+				temp=temp.add((side).scale(i%9));
+			}	
+			ans.add(i, new Ray(this.position,p.subtract(temp).normalize()));
+		}
+		return ans;
+		
+		/**
+		 * for (int i=0; i<9; i++)
 		{
-			double mod = i%9;
-			double partial = i/9;
-			Vector up = v1.scale(mod);
-			Vector side = v2.scale(partial);
-			Point location = new Point(this.position.add(up).add(side).subtract(Vector.ZERO).getXyz());
+			Point location;
+			if(i%4==0&&i!=0) {
+				location=new Point(this.position.add(up).subtract(Vector.ZERO).getXyz());
+			}  
+			else {
+				side=side.add(v2.scale(-LightSource.DELTA));
+				if(i%9==0&&i!=0) {  
+					up=up.add(v1.scale(-LightSource.DELTA));
+					side=v2.scale(4*LightSource.DELTA);
+				}
+				location = new Point(this.position.add(up).add(side).subtract(Vector.ZERO).getXyz());
+			}
+			
 			Vector help = new Vector(p.subtract(location).getXyz());
 			help.normalize();
 			Ray answer = new Ray(location, help);
 			ans.add(answer);
 		}
+		if(ans.size()==0) {
+			return null;
+		}
 		return ans;
+		 
+		 */
+		
+		
 	}
 
 }
