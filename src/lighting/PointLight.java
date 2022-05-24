@@ -59,11 +59,12 @@ public class PointLight extends Light implements LightSource{
 	public double getDistance(Point point) {
 		return position.distance(point);
 	}
+	/*
 	@Override
 	public List<Ray> getV(Point p)
 	{
 		Vector n = getL(p);
-		Vector temp = new Vector(p.subtract(Vector.ZERO).getXyz());
+		Vector temp = new Vector(position.subtract(Vector.ZERO).getXyz());
 		double dot = n.dotProduct(temp);
 		Vector v1 = n.normal(dot);
 		Vector v2 = v1.crossProduct(n);
@@ -85,10 +86,35 @@ public class PointLight extends Light implements LightSource{
 		}
 		return ans;
 	}
+	*/
 	
-	//public Ray r(Vector v1, Vector v2)
-	//{
-	//	
-	//}
+	@Override
+	public List<Ray> getV(Point p)
+	{
+		Vector n = getL(p);
+		Vector v1 = n.normal(this.position);
+		Vector v2 = v1.crossProduct(n);		
+		//Vector temp = new Vector(position.subtract(Vector.ZERO).getXyz());
+		//double dot = n.dotProduct(temp);
+		//Vector v1 = n.normal(dot);
+		//Vector v2 = v1.crossProduct(n);
+		v1.add(this.position.subtract(Vector.ZERO));
+		v2.add(this.position.subtract(Vector.ZERO));
+		
+		List<Ray> ans = new ArrayList();
+		for (int i=0; i<81; i++)
+		{
+			double mod = i%9;
+			double partial = i/9;
+			Vector up = v1.scale(mod);
+			Vector side = v2.scale(partial);
+			Point location = new Point(this.position.add(up).add(side).subtract(Vector.ZERO).getXyz());
+			Vector help = new Vector(p.subtract(location).getXyz());
+			help.normalize();
+			Ray answer = new Ray(location, help);
+			ans.add(answer);
+		}
+		return ans;
+	}
 
 }

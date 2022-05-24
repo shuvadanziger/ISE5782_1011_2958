@@ -118,11 +118,25 @@ public class Vector extends Point {
 		return ans;
 	}
 	
-	public Vector normal ( double d)
+	/*
+	public Vector normal (double d)
 	{
 		double v3 = d-this.xyz.d1-this.xyz.d2;
 		v3 /=this.xyz.d3;
 		Vector ans = new Vector(1,1,v3);
+		return ans;
+	}
+	*/
+	
+	public Vector normal (Point p)
+	{
+		double v1 = p.xyz.d1-1;
+		double v2 = p.xyz.d2-1;
+		double v3 = p.xyz.d3+(this.xyz.d1+this.xyz.d2)/this.xyz.d3;
+		//double v3 = d-this.xyz.d1-this.xyz.d2;
+		//v3 /=this.xyz.d3;
+		Vector ans = new Vector(v1,v2,v3);
+		//ans.scale(-1);
 		return ans;
 	}
 

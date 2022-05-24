@@ -50,6 +50,7 @@ public class SpotLight extends PointLight{
 	public List<Ray> getV(Point p)
 	{
 		List<Ray> ans = new ArrayList();
+		ans = super.getV(p);
 		return ans;
 	}
 

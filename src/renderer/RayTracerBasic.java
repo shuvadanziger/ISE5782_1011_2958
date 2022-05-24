@@ -1,6 +1,7 @@
 
 package renderer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import geometries.Geometry;
@@ -137,23 +138,41 @@ public class RayTracerBasic extends RayTracerBase{
 	private Double3 transparency(GeoPoint geoPoint, LightSource ls, Vector l, Vector n) {
 		//Vector lightDirection = l.scale(-1); // from point to light source
 		//Ray lightRay = new Ray(geoPoint.point, lightDirection, n);//ray from point to the light source		
-		Double3 ktr = new Double3(1.0);//fully SHAKUF
+		//Double3 ktr = new Double3(1.0);//fully SHAKUF
 		List<Ray> ans = ls.getV(geoPoint.point);
+		List<Double3> ktrList = new ArrayList();
+		for (int i=0; i<81; i++)
+		{
+			ktrList.add(new Double3(1.0));
+		}
+		//int i=0;
+		Double3 ktrTemp = new Double3(1.0);
 		for (Ray r:ans) 
 		{
-			Vector lightDirection = r.getDir(); // from point to light source
-			Ray lightRay = new Ray(r.getP0(), lightDirection, n);//ray from point to the light source	
+			Vector lightDirection = r.getDir().scale(-1); // from point to light source
+			Ray lightRay = new Ray(geoPoint.point, lightDirection, n);//ray from point to the light source	
 			List<GeoPoint> lst = scene.geometries.findGeoIntersections(lightRay,ls.getDistance(geoPoint.point)); //find the list of intersection points
 			if (lst==null) return new Double3(1.0);//if there are no points between the point and the light- the geometry is transparent and does'nt effect the color of the point
 			for (GeoPoint gp: lst) //go over every intersection point in the list
 			{  
+				ktrTemp = gp.geometry.getMaterial().kT.product(ktrTemp);
+				//Double3 temp = gp.geometry.getMaterial().kT.product(ktrList.get(i));
 				//if (gp.point.distance(geoPoint.point)<ls.getDistance(geoPoint.point))//checks if the intersection point is closer to the point than the light source
-					ktr=ktr.add(gp.geometry.getMaterial().kT.product(ktr)); //multiply ktr by kT of the intersection
+				//ktrList.set(i, temp);//multiply ktr by kT of the intersection
+				//ktr.add(gp.geometry.getMaterial().kT.product(ktr)); 
 			}
+			ktrList.add(ktrTemp);
+			//i++;
 		}
-		ktr=ktr.scale(1/81);
-		if (ktr.equals(Double3.ZERO)) // already close enough to 0-shadow
-            return Double3.ZERO;
+		Double3 ktr = new Double3(1.0);
+		for (Double3 d: ktrList)
+		{
+			ktr.add(d);
+		}
+		ktr.reduce(81);
+		//ktr.scale(1/81);
+		//if (ktr.equals(Double3.ZERO)) // already close enough to 0-shadow
+          //  return Double3.ZERO;
 		return ktr;
 		
 	}
