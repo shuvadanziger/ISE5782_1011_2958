@@ -94,8 +94,8 @@ public class PointLight extends Light implements LightSource{
 	{
 		
 		Vector n = getL(p);
-		Vector v1 = n.normal(this.position);
-		Vector v2 = v1.crossProduct(n);		
+		Vector v1 = n.normal(this.position).scale(-1);
+		Vector v2 = v1.crossProduct(n).scale(-1);		
 		
 		Vector up=new Vector(v1.scale(LightSource.DELTA).getXyz());
 		Vector side=new Vector(v2.scale(LightSource.DELTA).getXyz());
@@ -111,17 +111,17 @@ public class PointLight extends Light implements LightSource{
 					temp=first;
 				}
 				else {
-					temp=first.add((side).scale(i%9));
+					temp=first.add((side).scale(-i%9));
 				}
 			}  
 			if(i%9==0 && (int)(i/9)!=0) {
-				 temp=first.add(up.scale((int)(i/9)));
+				 temp=first.add(up.scale(-(int)(i/9)));
 			}
 			if((int)(i/9)!=0 && i%9!=0) {
-				temp=first.add(up.scale((int)(i/9)));
-				temp=temp.add((side).scale(i%9));
+				temp=first.add(up.scale(-(int)(i/9)));
+				temp=temp.add((side).scale(-i%9));
 			}	
-			ans.add(i, new Ray(this.position,p.subtract(temp).normalize()));
+			ans.add(i, new Ray(temp,p.subtract(temp).normalize()));
 		}
 		return ans;
 		
