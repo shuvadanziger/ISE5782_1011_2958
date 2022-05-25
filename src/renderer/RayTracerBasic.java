@@ -126,7 +126,7 @@ public class RayTracerBasic extends RayTracerBase{
 		
 	}
 	
-	//////////////////////////////////////////////////////////////////////////////////
+	
 	/**
 	 * Calculate the effect of all the intersections before the point(between the point and the light)
 	 * @param geoPoint
@@ -135,41 +135,28 @@ public class RayTracerBasic extends RayTracerBase{
 	 * @param n- normal
 	 * @return the level of transparency
 	 */
-	private Double3 transparency(GeoPoint geoPoint, LightSource ls, Vector l, Vector n,double nv) {
-		//ArrayList<Double3> ktrList = new ArrayList<Double3>();
-		Double3 ktr = new Double3(1.0);
+	private Double3 transparencySoftSahdow(GeoPoint geoPoint, LightSource ls, Vector n) {
+		Double3 ktr;
 		Double3 shadow = Double3.ZERO;
-		List<Ray> softShadow = ls.getV(geoPoint.point);//list of all the rays from the light to the point
-		int i=0;
+		List<Ray> softShadow = ls.softShadow(geoPoint.point);//list of all the rays from the light to the point
 		for (Ray r:softShadow) //go over all the rays from the light  
 		{  
-			//if (alignZero(n.dotProduct(r.getDir()))* nv <= 0) { // sign(nl) != sing(nv)
-				//shadow=shadow.add(new Double3(1.0));
-				//i++;
-				
-			//}
-			//else {
-				Vector lightDirection = r.getDir().scale(-1); // from point to light source
-				Ray lightRay = new Ray(geoPoint.point, lightDirection, n);//ray from point to the light source	
-				List<GeoPoint> lst = scene.geometries.findGeoIntersections(lightRay,geoPoint.point.distance(r.getP0())); //find the list of intersection points
-				 if (lst==null) shadow=shadow.add(new Double3(1.0));//if there are no points between the point and the light- the geometry is transparent and does'nt effect the color of the point
-				else {
-					for (GeoPoint gp: lst) //go over every intersection point in the list
-					{  
-						ktr = gp.geometry.getMaterial().kT.product(ktr);
-					}
-					shadow=shadow.add(ktr);
-				
+			ktr = new Double3(1.0);
+			Vector lightDirection = r.getDir().scale(-1); // from point to light source
+			Ray lightRay = new Ray(geoPoint.point, lightDirection, n);//ray from point to the light source	
+			List<GeoPoint> lst = scene.geometries.findGeoIntersections(lightRay,geoPoint.point.distance(r.getP0())); //find the list of intersection points
+			if (lst==null) shadow=shadow.add(new Double3(1.0));//if there are no points between the point and the light- the geometry is transparent and does'nt effect the color of the point
+			else {
+				for (GeoPoint gp: lst) //go over every intersection point in the list
+				{  
+					ktr = gp.geometry.getMaterial().kT.product(ktr);
 				}
-			//}
+				shadow=shadow.add(ktr);
+			}
 			
 		} 
-		if(softShadow.size()-i!=0) {
-			shadow=shadow.reduce(softShadow.size()-i);
-		}
-		else {
-			shadow=new Double3(1);
-		}
+		
+		shadow=shadow.reduce(softShadow.size());
 		return shadow;
 		
 	}
@@ -250,7 +237,7 @@ public class RayTracerBasic extends RayTracerBase{
 			Vector l = lightSource.getL(gp.point); //find the vector from the light source to the point
 			double nl = alignZero(n.dotProduct(l));
 			if (nl * nv > 0) { // sign(nl) == sing(nv)
-				Double3 ktr = transparency(gp, lightSource, l, n,nv);
+				Double3 ktr = transparencySoftSahdow(gp, lightSource, n);
 				if (!(ktr.product(k).lowerThan(MIN_CALC_COLOR_K))) {
 					Color iL = lightSource.getIntensity(gp.point).scale(ktr); //scales the intensity of the light source with the color (Double3) returns from transperency
 					color = color.add(iL.scale(calcDiffusive(mat, nl)),iL.scale(calcSpecular(mat, n,l,nl,v))); //add the diffusive and the specular to the color

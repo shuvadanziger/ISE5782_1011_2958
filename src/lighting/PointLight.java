@@ -2,6 +2,7 @@ package lighting;
 
 import java.util.ArrayList;
 import java.util.List;
+import static java.lang.System.out;
 
 import primitives.Color;
 import primitives.Double3;
@@ -57,54 +58,29 @@ public class PointLight extends Light implements LightSource{
 		Vector ans=p.subtract(position).normalize();
 		return ans;
 	}
+	
+	
 	public double getDistance(Point point) {
 		return position.distance(point);
 	}
-	/*
-	@Override
-	public List<Ray> getV(Point p)
-	{
-		Vector n = getL(p);
-		Vector temp = new Vector(position.subtract(Vector.ZERO).getXyz());
-		double dot = n.dotProduct(temp);
-		Vector v1 = n.normal(dot);
-		Vector v2 = v1.crossProduct(n);
-		v1.add(this.position.subtract(Vector.ZERO));
-		v2.add(this.position.subtract(Vector.ZERO));
-		
-		List<Ray> ans = new ArrayList();
-		for (int i=0; i<81; i++)
-		{
-			double mod = i%9;
-			double partial = i/9;
-			Vector up = v1.scale(mod);
-			Vector side = v2.scale(partial);
-			Point location = new Point(this.position.add(up).add(side).subtract(Vector.ZERO).getXyz());
-			Vector help = new Vector(p.subtract(location).getXyz());
-			help.normalize();
-			Ray answer = new Ray(location, help);
-			ans.add(answer);
-		}
-		return ans;
-	}
-	*/
 	
 	@Override
-	public ArrayList<Ray> getV(Point p)
+	public ArrayList<Ray> softShadow(Point p)
 	{
-		
-		Vector n = getL(p);
-		Vector v1 = n.normal(this.position).scale(-1).normalize();
-		Vector v2 = v1.crossProduct(n).scale(-1).normalize();		
-		
+		//Creates a plane that its normal is the vector between the position and the point on the geometric object.
+		//The length of the vectors that define the plane is delta 
+		Vector n = getL(p);//n- vector from the light to the point
+		Vector v1 = n.normal().scale(-1).normalize();//v1- vector normal to n
+		Vector v2 = v1.crossProduct(n).scale(-1).normalize();//v2- vector normal to v1 and to n		
 		Vector up=new Vector(v1.scale(LightSource.DELTA).getXyz());
 		Vector side=new Vector(v2.scale(LightSource.DELTA).getXyz());
+
 		ArrayList<Ray> ans = new ArrayList<Ray>();
-		
-		Point first;
-		first=this.position.add(up.scale(4)).add(side.scale(4));
-		Point temp;
+		Point first=this.position.add(up.scale(4)).add(side.scale(4));//The first point on the grid that is on the plain 
+																//(The center of the grid is the position of the light)
+		Point temp;  
 		for (int i=0;i<81;i++) {
+			//Goes through all the points on the grid and takes out from each point a ray to the point on the geometric object
 			temp=first;
 			if((int)(i/9)==0) {
 				if(i%9==0) {
@@ -124,36 +100,7 @@ public class PointLight extends Light implements LightSource{
 			ans.add(i, new Ray(temp,p.subtract(temp).normalize()));
 		}
 		return ans;
-		
-		/**
-		 * for (int i=0; i<9; i++)
-		{
-			Point location;
-			if(i%4==0&&i!=0) {
-				location=new Point(this.position.add(up).subtract(Vector.ZERO).getXyz());
-			}  
-			else {
-				side=side.add(v2.scale(-LightSource.DELTA));
-				if(i%9==0&&i!=0) {  
-					up=up.add(v1.scale(-LightSource.DELTA));
-					side=v2.scale(4*LightSource.DELTA);
-				}
-				location = new Point(this.position.add(up).add(side).subtract(Vector.ZERO).getXyz());
-			}
-			
-			Vector help = new Vector(p.subtract(location).getXyz());
-			help.normalize();
-			Ray answer = new Ray(location, help);
-			ans.add(answer);
-		}
-		if(ans.size()==0) {
-			return null;
-		}
-		return ans;
-		 
-		 */
-		
-		
+	
 	}
 
 }

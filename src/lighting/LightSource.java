@@ -36,5 +36,5 @@ public interface LightSource {
 	 * @return the distance from the light to the point
 	 */
 	public double getDistance(Point point);
-	public List<Ray> getV(Point p);
+	public List<Ray> softShadow(Point p);
 }
