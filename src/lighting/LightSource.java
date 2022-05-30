@@ -17,7 +17,7 @@ public interface LightSource {
 	/**
 	 * 
 	 */
-	final double DELTA = 0.2;
+	final double DELTA = 3;
 	/**
 	 * find the light intensity at a point p
 	 * @param p 

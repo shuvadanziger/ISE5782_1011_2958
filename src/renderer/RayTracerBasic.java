@@ -109,7 +109,7 @@ public class RayTracerBasic extends RayTracerBase{
 	 * @param n- normal
 	 * @return the level of transparency
 	 */
-	private Double3 transparency1(GeoPoint geoPoint, LightSource ls, Vector l, Vector n) {
+	private Double3 transparency(GeoPoint geoPoint, LightSource ls, Vector l, Vector n) {
 		Vector lightDirection = l.scale(-1); // from point to light source
 		Ray lightRay = new Ray(geoPoint.point, lightDirection, n);//ray from point to the light source		
 		Double3 ktr = new Double3(1.0);//fully SHAKUF
@@ -129,9 +129,9 @@ public class RayTracerBasic extends RayTracerBase{
 	
 	/**
 	 * Calculate the effect of all the intersections before the point(between the point and the light)
+	 * Calculate more than one rays towards the light to the point to achieve more realistic shading
 	 * @param geoPoint
 	 * @param ls- light source
-	 * @param l- vector from the light to the point
 	 * @param n- normal
 	 * @return the level of transparency
 	 */
@@ -152,10 +152,8 @@ public class RayTracerBasic extends RayTracerBase{
 					ktr = gp.geometry.getMaterial().kT.product(ktr);
 				}
 				shadow=shadow.add(ktr);
-			}
-			
+			}	
 		} 
-		
 		shadow=shadow.reduce(softShadow.size());
 		return shadow;
 		
@@ -191,7 +189,7 @@ public class RayTracerBasic extends RayTracerBase{
 	 * @param v- The vector in the direction of our current point of view (Refracted, reflection, or from the camera)
 	 * @param level -level of the recursion
 	 * @param k -the intensity
-	 * @return the color of the point
+	 * @return the color of the point  
 	 */
 	private Color calcGlobalEffects(GeoPoint gp, Vector v, int level, Double3 k) {
 		Color color = Color.BLACK; 
@@ -237,7 +235,13 @@ public class RayTracerBasic extends RayTracerBase{
 			Vector l = lightSource.getL(gp.point); //find the vector from the light source to the point
 			double nl = alignZero(n.dotProduct(l));
 			if (nl * nv > 0) { // sign(nl) == sing(nv)
-				Double3 ktr = transparencySoftSahdow(gp, lightSource, n);
+				Double3 ktr;
+				if(scene.softShadow) {//if the image use soft shadow
+					 ktr = transparencySoftSahdow(gp, lightSource, n);
+				}
+				else {
+					ktr = transparency(gp, lightSource,l, n);
+				}
 				if (!(ktr.product(k).lowerThan(MIN_CALC_COLOR_K))) {
 					Color iL = lightSource.getIntensity(gp.point).scale(ktr); //scales the intensity of the light source with the color (Double3) returns from transperency
 					color = color.add(iL.scale(calcDiffusive(mat, nl)),iL.scale(calcSpecular(mat, n,l,nl,v))); //add the diffusive and the specular to the color

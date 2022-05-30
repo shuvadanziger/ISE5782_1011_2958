@@ -83,7 +83,7 @@ public class PointLight extends Light implements LightSource{
 			//Goes through all the points on the grid and takes out from each point a ray to the point on the geometric object
 			temp=first;
 			if((int)(i/9)==0) {
-				if(i%9==0) {
+				if(i%9==0) {  
 					temp=first;
 				}
 				else {

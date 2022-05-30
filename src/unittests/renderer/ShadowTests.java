@@ -115,5 +115,18 @@ public class ShadowTests {
 				.renderImage(); //
 		camera.writeToImage();
 	}
+	
+	/**
+	 * Sphere-Triangle shading - move spot closer
+	 */
+	@Test
+	public void softShadowSphereTriangle() {
+		scene.setSoftShadow();
+		sphereTriangleHelper("softShadow", //
+				new Triangle(new Point(-70, -40, 0), new Point(-40, -70, 0), new Point(-68, -68, -4)), //
+				new Point(-88, -88, 120));
+	}
+	
+
 
 }

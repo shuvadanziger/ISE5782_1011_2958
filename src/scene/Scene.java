@@ -14,6 +14,7 @@ public class Scene {
 	public AmbientLight ambientLight;
 	public Geometries geometries;
 	public List<LightSource> lights;
+	public boolean softShadow;
 	/**
 	 * constructor
 	 * @param sceneName
@@ -24,8 +25,16 @@ public class Scene {
 		background=Color.BLACK;
 		ambientLight=new AmbientLight();
 		lights = new LinkedList<>();
+		softShadow=false;
 	}
-
+	/**
+	 * set the scene to use soft shadow
+	 * @return scene
+	 */
+	public Scene setSoftShadow() {
+		softShadow=true;
+		return this;
+	}
 	/**
 	 * set background
 	 * @param back
