@@ -65,37 +65,37 @@ public class PointLight extends Light implements LightSource{
 	}
 	
 	@Override
-	public ArrayList<Ray> softShadow(Point p)
+	public ArrayList<Ray> softShadow(Point p, int rayNum, double d)
 	{
 		//Creates a plane that its normal is the vector between the position and the point on the geometric object.
 		//The length of the vectors that define the plane is delta 
 		Vector n = getL(p);//n- vector from the light to the point
 		Vector v1 = n.normal().scale(-1).normalize();//v1- vector normal to n
 		Vector v2 = v1.crossProduct(n).scale(-1).normalize();//v2- vector normal to v1 and to n		
-		Vector up=new Vector(v1.scale(LightSource.DELTA).getXyz());
-		Vector side=new Vector(v2.scale(LightSource.DELTA).getXyz());
+		Vector up=new Vector(v1.scale(d).getXyz());
+		Vector side=new Vector(v2.scale(d).getXyz());
 
 		ArrayList<Ray> ans = new ArrayList<Ray>();
 		Point first=this.position.add(up.scale(4)).add(side.scale(4));//The first point on the grid that is on the plain 
 																//(The center of the grid is the position of the light)
 		Point temp;  
-		for (int i=0;i<81;i++) {
+		for (int i=0;i<(rayNum*rayNum);i++) {
 			//Goes through all the points on the grid and takes out from each point a ray to the point on the geometric object
 			temp=first;
-			if((int)(i/9)==0) {
-				if(i%9==0) {  
+			if((int)(i/rayNum)==0) {
+				if(i%rayNum==0) {  
 					temp=first;
 				}
 				else {
-					temp=first.add((side).scale(-i%9));
+					temp=first.add((side).scale(-i%rayNum));
 				}
 			}  
-			if(i%9==0 && (int)(i/9)!=0) {
-				 temp=first.add(up.scale(-(int)(i/9)));
+			if(i%rayNum==0 && (int)(i/rayNum)!=0) {
+				 temp=first.add(up.scale(-(int)(i/rayNum)));
 			}
-			if((int)(i/9)!=0 && i%9!=0) {
-				temp=first.add(up.scale(-(int)(i/9)));
-				temp=temp.add((side).scale(-i%9));
+			if((int)(i/rayNum)!=0 && i%rayNum!=0) {
+				temp=first.add(up.scale(-(int)(i/rayNum)));
+				temp=temp.add((side).scale(-i%rayNum));
 			}	
 			ans.add(i, new Ray(temp,p.subtract(temp).normalize()));
 		}

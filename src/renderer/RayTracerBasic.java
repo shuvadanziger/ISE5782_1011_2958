@@ -135,10 +135,10 @@ public class RayTracerBasic extends RayTracerBase{
 	 * @param n- normal
 	 * @return the level of transparency
 	 */
-	private Double3 transparencySoftSahdow(GeoPoint geoPoint, LightSource ls, Vector n) {
+	private Double3 transparencySoftSahdow(GeoPoint geoPoint, LightSource ls, Vector n, int rayNum) {
 		Double3 ktr;
 		Double3 shadow = Double3.ZERO;
-		List<Ray> softShadow = ls.softShadow(geoPoint.point);//list of all the rays from the light to the point
+		List<Ray> softShadow = ls.softShadow(geoPoint.point, rayNum, scene.delta);//list of all the rays from the light to the point
 		for (Ray r:softShadow) //go over all the rays from the light  
 		{  
 			ktr = new Double3(1.0);
@@ -236,8 +236,8 @@ public class RayTracerBasic extends RayTracerBase{
 			double nl = alignZero(n.dotProduct(l));
 			if (nl * nv > 0) { // sign(nl) == sing(nv)
 				Double3 ktr;
-				if(scene.softShadow) {//if the image use soft shadow
-					 ktr = transparencySoftSahdow(gp, lightSource, n);
+				if(scene.softShadow!=0) {//if the image use soft shadow
+					 ktr = transparencySoftSahdow(gp, lightSource, n, scene.softShadow);
 				}
 				else {
 					ktr = transparency(gp, lightSource,l, n);

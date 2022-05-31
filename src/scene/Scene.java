@@ -14,7 +14,8 @@ public class Scene {
 	public AmbientLight ambientLight;
 	public Geometries geometries;
 	public List<LightSource> lights;
-	public boolean softShadow;
+	public int softShadow;
+	public double delta;
 	/**
 	 * constructor
 	 * @param sceneName
@@ -25,14 +26,25 @@ public class Scene {
 		background=Color.BLACK;
 		ambientLight=new AmbientLight();
 		lights = new LinkedList<>();
-		softShadow=false;
+		softShadow=0;
+		delta = 0;
 	}
 	/**
-	 * set the scene to use soft shadow
+	 * set the number of rays in soft shadow
+	 * @param rayNum number of rays in a row
 	 * @return scene
 	 */
-	public Scene setSoftShadow() {
-		softShadow=true;
+	public Scene setSoftShadow(int rayNum) {
+		softShadow=rayNum;
+		return this;
+	}
+	/**
+	 * set the distance between the rays in soft shadow
+	 * @param d number of distance between two rays
+	 * @return scene
+	 */
+	public Scene setDelta(double d) {
+		delta = d;
 		return this;
 	}
 	/**

@@ -17,7 +17,7 @@ public interface LightSource {
 	/**
 	 * 
 	 */
-	final double DELTA = 15;
+	//final double DELTA = 15;
 	/**
 	 * find the light intensity at a point p
 	 * @param p 
@@ -36,5 +36,5 @@ public interface LightSource {
 	 * @return the distance from the light to the point
 	 */
 	public double getDistance(Point point);
-	public List<Ray> softShadow(Point p);
+	public List<Ray> softShadow(Point p, int rayNum, double d);
 }

@@ -121,7 +121,8 @@ public class ShadowTests {
 	 */
 	@Test
 	public void softShadowSphereTriangle() {
-		scene.setSoftShadow();
+		double d = 0.2;
+		scene.setSoftShadow(9).setDelta(d);
 		sphereTriangleHelper("softShadow", //
 				new Triangle(new Point(-70, -40, 0), new Point(-40, -70, 0), new Point(-68, -68, -4)), //
 				new Point(-88, -88, 120));
