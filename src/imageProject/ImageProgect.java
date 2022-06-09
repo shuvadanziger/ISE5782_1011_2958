@@ -24,8 +24,8 @@ import scene.Scene;
 class ImageProgect {
 	
 	private Scene scene = new Scene("Project1");
-	Camera camera = new Camera(new Point(0, 0, 10000),  new Vector(0, 1, 0),new Vector(0, 0, -1)) //
-			.setVPSize(2500, 2500).setVPDistance(10000);
+	//Camera camera = new Camera(new Point(0, 0, 10000),  new Vector(0, 1, 0),new Vector(0, 0, -1)) //
+		//	.setVPSize(2500, 2500).setVPDistance(10000);
 	@Test
 	void Image() {
 		//x+: right, x-: left

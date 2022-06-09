@@ -77,16 +77,10 @@ public class PointLight extends Light implements LightSource{
 
 		ArrayList<Ray> ans = new ArrayList<Ray>();
 		Point first;
-		if(rayNum%2==0) {
-			first=this.position.add(up.scale(rayNum/2)).add(side.scale(rayNum/2));//The first point on the grid that is on the plain 
+	
+		first=this.position.add(up.scale(((int)rayNum/2))).add(side.scale(((int)rayNum/2)));//The first point on the grid that is on the plain 
 			//(The center of the grid is the position of the light)
-		}
-		else {
-			first=this.position.add(up.scale(((int)rayNum/2)+1)).add(side.scale(((int)rayNum/2)+1));//The first point on the grid that is on the plain 
-			//(The center of the grid is the position of the light)
-		}
-		//Point first=this.position.add(up.scale(4)).add(side.scale(4));//The first point on the grid that is on the plain 
-																//(The center of the grid is the position of the light)
+		
 		Point temp;  
 		for (int i=0;i<(rayNum*rayNum);i++) {
 			//Goes through all the points on the grid and takes out from each point a ray to the point on the geometric object
