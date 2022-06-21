@@ -16,6 +16,7 @@ public class Scene {
 	public List<LightSource> lights;
 	public int softShadow;
 	public double delta;
+	public boolean adaptiveSuperSampling;
 	/**
 	 * constructor
 	 * @param sceneName
@@ -28,6 +29,8 @@ public class Scene {
 		lights = new LinkedList<>();
 		softShadow=0;
 		delta = 0;
+		adaptiveSuperSampling=false;
+
 	}
 	/**
 	 * set the number of rays in soft shadow
@@ -36,6 +39,15 @@ public class Scene {
 	 */
 	public Scene setSoftShadow(int rayNum) {
 		softShadow=rayNum;
+		return this;
+	}
+	/**
+	 * set if the scene use adaptive Super-sampling
+	 * @param a 
+	 * @return scene
+	 */
+	public Scene setAdaptiveSuperSampling(boolean a) {
+		this.adaptiveSuperSampling=a;
 		return this;
 	}
 	/**

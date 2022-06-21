@@ -126,7 +126,9 @@ public class RayTracerBasic extends RayTracerBase{
 		
 	}
 	
-	
+	private Double3 transparencyAdaptiveSuperSampling() {
+		
+	}
 	/**
 	 * Calculate the effect of all the intersections before the point(between the point and the light)
 	 * Calculate more than one rays towards the light to the point to achieve more realistic shading
@@ -138,9 +140,9 @@ public class RayTracerBasic extends RayTracerBase{
 	private Double3 transparencySoftSahdow(GeoPoint geoPoint, LightSource ls, Vector n, int rayNum) {
 		Double3 ktr;
 		Double3 shadow = Double3.ZERO;
-		List<Ray> softShadow = ls.softShadow(geoPoint.point, rayNum, scene.delta);//list of all the rays from the light to the point
+		List<Ray> softShadow = ls.softShadow(geoPoint.point, rayNum, scene.delta,scene.adaptiveSuperSampling);//list of all the rays from the light to the point
 		for (Ray r:softShadow) //go over all the rays from the light  
-		{  
+		{   
 			ktr = new Double3(1.0);
 			Vector lightDirection = r.getDir().scale(-1); // from point to light source
 			Ray lightRay = new Ray(geoPoint.point, lightDirection, n);//ray from point to the light source	
