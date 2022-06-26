@@ -64,12 +64,19 @@ public class PointLight extends Light implements LightSource{
 		return position.distance(point);
 	}
 	
-	
-	private ArrayList<Ray> softShadow1(Point p, int rayNum, double d,Vector up, Vector side)
+	@Override
+	public ArrayList<Ray> softShadow(Point p, int rayNum, double d)
 	{
+		//Creates a plane that its normal is the vector between the position and the point on the geometric object.
+		//The length of the vectors that define the plane is delta 
+		Vector n = getL(p);//n- vector from the light to the point
+		Vector v1 = n.normal().scale(-1).normalize();//v1- vector normal to n
+		Vector v2 = v1.crossProduct(n).scale(-1).normalize();//v2- vector normal to v1 and to n		
+		Vector up=new Vector(v1.scale(d).getXyz());
+		Vector side=new Vector(v2.scale(d).getXyz());
 
 		ArrayList<Ray> ans = new ArrayList<Ray>();
-		Point first; 
+		Point first;
 	
 		first=this.position.add(up.scale(((int)rayNum/2))).add(side.scale(((int)rayNum/2)));//The first point on the grid that is on the plain 
 			//(The center of the grid is the position of the light)
@@ -98,36 +105,5 @@ public class PointLight extends Light implements LightSource{
 		return ans;
 	
 	}
-	@Override
-	public ArrayList<Ray> softShadow(Point p, int rayNum, double d, boolean a){
-		//Creates a plane that its normal is the vector between the position and the point on the geometric object.
-		//The length of the vectors that define the plane is delta 
-		Vector n = getL(p);//n- vector from the light to the point
-		Vector v1 = n.normal().scale(-1).normalize();//v1- vector normal to n
-		Vector v2 = v1.crossProduct(n).scale(-1).normalize();//v2- vector normal to v1 and to n		
-		Vector up=new Vector(v1.scale(d).getXyz());
-		Vector side=new Vector(v2.scale(d).getXyz());
-	
-		if(a) {
-			return softShadow1(p,rayNum,d,up,side);
-		}
-		else {
-			ArrayList<Ray> ans = new ArrayList<Ray>();
-			Point p1=this.position.add(up.scale(((int)rayNum/2))).add(side.scale(((int)rayNum/2)));//The first point on the grid that is on the plain 
-			Point p2=this.position.add(up.scale(((int)rayNum/2))).add(side.scale(((int)rayNum/-2)));//The first point on the grid that is on the plain 
-			Point p3=this.position.add(up.scale(((int)rayNum/-2))).add(side.scale(((int)rayNum/2)));//The first point on the grid that is on the plain 
-			Point p4=this.position.add(up.scale(((int)rayNum/-2))).add(side.scale(((int)rayNum/-2)));//The first point on the grid that is on the plain 
-			ans.add(new Ray(p1,p.subtract(p1).normalize()));
-			ans.add(new Ray(p2,p.subtract(p2).normalize()));
-			ans.add(new Ray(p3,p.subtract(p3).normalize()));
-			ans.add(new Ray(p4,p.subtract(p4).normalize()));
-			ans.add(new Ray(new Point(0,0,0),up));
-			ans.add(new Ray(new Point(0,0,0),side));
-
-			return ans;
-		}
-	}
-	
-	
 
 }

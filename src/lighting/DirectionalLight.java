@@ -35,8 +35,7 @@ public class DirectionalLight extends Light implements LightSource{
 	public double getDistance(Point point) {
 		return Double.POSITIVE_INFINITY;
 	}
-	@Override
-	public ArrayList<Ray> softShadow(Point p, int rayNum, double d,boolean a)
+	public ArrayList<Ray> softShadow(Point p, int rayNum, double d)
 	{
 		ArrayList<Ray> ans = new ArrayList<Ray>();
 		double temp=Double.POSITIVE_INFINITY;

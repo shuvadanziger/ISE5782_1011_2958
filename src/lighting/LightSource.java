@@ -1,6 +1,5 @@
 package lighting;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import primitives.Color;
@@ -44,5 +43,5 @@ public interface LightSource {
 	 * @param d the distance between the start of the rays
 	 * @return rays from the light to the point
 	 */
-	public ArrayList<Ray> softShadow(Point p, int rayNum, double d, boolean a);
+	public List<Ray> softShadow(Point p, int rayNum, double d);
 }

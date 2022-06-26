@@ -35,7 +35,7 @@ class ImageProgect {
 		Camera camera = new Camera(new Point(0, 0, 10000),  new Vector(0, 1, 0),new Vector(0, 0, -1)) //
 				.setVPSize(2500, 2500).setVPDistance(10000);
 
-		scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15)).setBackground(new Color(173,216,230)).setSoftShadow(9).setDelta(12.5);
+		scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15)).setBackground(new Color(173,216,230));//.setSoftShadow(9).setDelta(12.5);
 	
 		
 		scene.geometries.add(
@@ -86,7 +86,7 @@ class ImageProgect {
 		ImageWriter imageWriter = new ImageWriter("PROJECT1", 600, 600);
 		camera.setImageWriter(imageWriter) //
 				.setRayTracer(new RayTracerBasic(scene)) //
-				.renderImage();//
+				.renderImageSuperSampling();//
 				camera.writeToImage();
 	}
 	
