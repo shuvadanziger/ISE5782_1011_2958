@@ -86,7 +86,7 @@ class ImageProgect {
 		ImageWriter imageWriter = new ImageWriter("PROJECT1", 600, 600);
 		camera.setImageWriter(imageWriter) //
 				.setRayTracer(new RayTracerBasic(scene)) //
-				.renderImageSuperSampling();//
+				.renderImage();//
 				camera.writeToImage();
 	}
 	

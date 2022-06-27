@@ -75,7 +75,7 @@ public class PointLight extends Light implements LightSource{
 		Vector up=new Vector(v1.scale(d).getXyz());
 		Vector side=new Vector(v2.scale(d).getXyz());
 
-		ArrayList<Ray> ans = new ArrayList<Ray>();
+		ArrayList<Ray> ans = new ArrayList<Ray>(); 
 		Point first;
 	
 		first=this.position.add(up.scale(((int)rayNum/2))).add(side.scale(((int)rayNum/2)));//The first point on the grid that is on the plain 
