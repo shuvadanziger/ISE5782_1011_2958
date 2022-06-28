@@ -18,6 +18,9 @@ public class Camera {
 	private double distance;
 	private ImageWriter imageWriter;
 	private RayTracerBase rayTracerBase;
+	private int antiAliasing;
+	private boolean multiThreading;
+	private boolean adaptiveSS;
 	private int maxLevelAdaptiveSS = 3;//maximum level of recursion for adaptive supersampling
    /**
     * setter for _maxLevel
@@ -28,13 +31,40 @@ public class Camera {
 	public Camera setMaxLevelAdaptiveSS(int maxLevelAdaptiveSS) {
        maxLevelAdaptiveSS = maxLevelAdaptiveSS;
        return this;
-   }
+	}
+	/**
+	 * set the number of rays in anti aliasing
+	 * @param a number of rays in a row
+	 * @return
+	 */
+	public Camera setAntialiasing(int a) {
+		antiAliasing = a;
+		return this;
+	}
+	/**
+	 * set to use multi threading
+	 * @param b
+	 * @return
+	 */
+	public Camera setMultiThreading(boolean b) {
+		multiThreading = b;
+		return this;
+	}
+	/**
+	 * set to use adaptive super sampling
+	 * @param b
+	 * @return
+	 */
+	public Camera setAdaptiveSS(boolean b) {
+		adaptiveSS = b;
+		return this;
+	}
 	/**
 	 * set imageWriter
 	 * @param im
 	 * @return camera
 	 */
-	public  Camera setImageWriter(ImageWriter im) {
+	public Camera setImageWriter(ImageWriter im) {
 		imageWriter=im;
 		return this;
 	}
@@ -53,7 +83,9 @@ public class Camera {
 	/**
 	 * check if something is empty, then paint the pixels 
 	 */
-	public void renderImage() {
+	public Camera renderImage() {
+		if (multiThreading)
+			return renderImageMultiThreading();
 		if(location==null||up==null||to==null||Double.isNaN(distance)||Double.isNaN(hight)||Double.isNaN(width)||right==null||imageWriter==null||rayTracerBase==null) 
 		{ 
 			throw new MissingResourceException("one or more of the fields are empty",null,null);
@@ -61,31 +93,47 @@ public class Camera {
 		//throw new UnsupportedOperationException();
 		for (int i=0; i<imageWriter.getNy();i++) { 
 			for(int j=0;j<imageWriter.getNx();j++) {
-				
-				Color c= calcColorAntiAliasing(constructReyAntiAliasing(imageWriter.getNx(),imageWriter.getNy(),j,i));
-				imageWriter.writePixel(j, i, c);
-				
+				if (antiAliasing == 0) {
+					Color c= rayTracerBase.traceRay(constructRay(imageWriter.getNx(),imageWriter.getNy(), j, i));
+					imageWriter.writePixel(j, i, c);
+				}
+				else {
+					Color c= calcColorAntiAliasing(constructReyAntiAliasing(imageWriter.getNx(),imageWriter.getNy(),j,i));
+					imageWriter.writePixel(j, i, c);
+				}
+				if (adaptiveSS) {
+					imageWriter.writePixel(j, i, castRayAdaptiveSuperSampling(j, i));
+				}
 
 			} 
 		} 
+		return this;
 		 
 	}
 	
+	
 	/**
-	* render with threads, without super sampling or anti alising
+	* render with threads, with or without anti alising
 	 * @return
 	 */
 	public Camera renderImageMultiThreading() {
         Pixel.initialize(imageWriter.getNy(), imageWriter.getNx(), 60);
 		IntStream.range(0, imageWriter.getNy()).parallel().forEach(i -> {
-		 IntStream.range(0, imageWriter.getNx()).parallel().forEach(j -> {
-		 //castRay(imageWriter.getNx(), imageWriter.getNy(), j, i);
-         imageWriter.writePixel(j, i, rayTracerBase.traceRay(constructRay(imageWriter.getNx(),imageWriter.getNy(), j, i)));
-
-		 Pixel.pixelDone();
-		 Pixel.printPixel();
-		 });
-		 });
+			IntStream.range(0, imageWriter.getNx()).parallel().forEach(j -> {
+				//castRay(imageWriter.getNx(), imageWriter.getNy(), j, i);
+				if (antiAliasing == 0) {
+					imageWriter.writePixel(j, i, rayTracerBase.traceRay(constructRay(imageWriter.getNx(),imageWriter.getNy(), j, i)));
+				}
+				else {
+					imageWriter.writePixel(j, i, calcColorAntiAliasing(constructReyAntiAliasing(imageWriter.getNx(),imageWriter.getNy(),j,i)));
+				}
+				if (adaptiveSS) {
+					imageWriter.writePixel(j, i, castRayAdaptiveSuperSampling(j, i));
+				}
+				Pixel.pixelDone();
+				Pixel.printPixel();
+				});
+			});
         return this;
 	}
 
@@ -220,7 +268,10 @@ public class Camera {
 		up=v1;
 		to=v2; 
 		right=v2.crossProduct(v1).normalize();
-		location=p;	 
+		location=p;	
+		antiAliasing=0;
+		multiThreading=false;
+		adaptiveSS=false;
 	}
 	/**
 	 * set the width and the height, and return the camera
@@ -289,20 +340,20 @@ public class Camera {
 		double yI=-(i-((nY-1)/2))*rY;
 		double xJ=(j-((nX-1)/2))*rX;
 		//distance between the start of the ray in the pixel
-		double dX=(double)rX/9;
-		double dY=(double)rY/9;
+		double dX=(double)rX/antiAliasing;
+		double dY=(double)rY/antiAliasing;
 		//the first point
-		double firstX=xJ+4*dX;
-		double firstY=yI+4*dY;
+		double firstX=xJ+((int)(antiAliasing/2))*dX;
+		double firstY=yI+((int)(antiAliasing/2))*dY;
 		Point pIJ=pC; 
 		if (!Util.isZero(firstX))
 			pIJ=pIJ.add(right.scale(firstX));
 		if(!Util.isZero(firstY))
 			pIJ=pIJ.add(up.scale(firstY));  
 		Point p=pIJ; 
-	    for (int c = 0; c < 9; c++)
+	    for (int c = 0; c < antiAliasing; c++)
 	    {
-	    	for (int b=0;b<9;b++) {
+	    	for (int b=0;b<antiAliasing;b++) {
 	    		p=pIJ;
 		    	if(!Util.isZero(c)) {
 		    		p=p.add(right.scale(dX*c));
