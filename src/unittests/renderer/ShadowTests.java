@@ -23,8 +23,8 @@ public class ShadowTests {
 	private Material trMaterial = new Material().setKd(0.5).setKs(0.5).setShininess(30);
 
 	private Scene scene = new Scene("Test scene");
-	private Camera camera = new Camera(new Point(0, 0, 1000),  new Vector(0, 1, 0),new Vector(0, 0, -1)) //
-			.setVPSize(200, 200).setVPDistance(1000) //
+	private Camera camera = new Camera(new Point(0, 0, 1000),  new Vector(0, 1, 0),new Vector(0, 0, -1)).setAntialiasing(9).setAdaptiveSS(true)//
+			.setVPSize(200, 200).setVPDistance(1000)
 			.setRayTracer(new RayTracerBasic(scene));
 
 	/**
@@ -89,6 +89,17 @@ public class ShadowTests {
 				new Triangle(new Point(-70, -40, 0), new Point(-40, -70, 0), new Point(-68, -68, -4)), //
 				new Point(-76, -76, 70));
 	}
+	/**
+	 * Sphere-Triangle shading - move spot closer
+	 */
+	@Test
+	public void softShadowSphereTriangle() {
+		double d = 0.2; 
+		//scene.setSoftShadow(8).setDelta(d);
+		sphereTriangleHelper("softShadow", //
+				new Triangle(new Point(-70, -40, 0), new Point(-40, -70, 0), new Point(-68, -68, -4)), //
+				new Point(-88, -88, 120));
+	}
 
 	/**
 	 * Produce a picture of a two triangles lighted by a spot light with a Sphere
@@ -116,17 +127,7 @@ public class ShadowTests {
 		camera.writeToImage();
 	}
 	
-	/**
-	 * Sphere-Triangle shading - move spot closer
-	 */
-	@Test
-	public void softShadowSphereTriangle() {
-		double d = 0.2; 
-		scene.setSoftShadow(8).setDelta(d);
-		sphereTriangleHelper("softShadow", //
-				new Triangle(new Point(-70, -40, 0), new Point(-40, -70, 0), new Point(-68, -68, -4)), //
-				new Point(-88, -88, 120));
-	}
+	
 	
 
 

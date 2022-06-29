@@ -19,6 +19,7 @@ public class Color {
 	 * Black color = (0,0,0)
 	 */
 	public static final Color BLACK = new Color();
+	public static final Color NullColor=new Color(-1,-1,-1);
 
 	/**
 	 * Default constructor - to generate Black Color (privately)
@@ -36,7 +37,7 @@ public class Color {
 	 * @param b Blue component
 	 */
 	public Color(double r, double g, double b) {
-		if (r < 0 || g < 0 || b < 0)
+		if ((r < 0 || g < 0 || b < 0)&&(r!=-1 &&b!=-1&&g!=-1))
 			throw new IllegalArgumentException("Negative color component is illegal");
 		rgb = new Double3(r, g, b);
 	}
@@ -146,4 +147,5 @@ public class Color {
 	public String toString() {
 		return "rgb:" + rgb;
 	}
+	
 }

@@ -21,7 +21,9 @@ public class Camera {
 	private int antiAliasing;
 	private boolean multiThreading;
 	private boolean adaptiveSS;
-	private int maxLevelAdaptiveSS = 3;//maximum level of recursion for adaptive supersampling
+	private List<Color> colores = new ArrayList<>(); 
+
+	private int maxLevelAdaptiveSS = 4;//maximum level of recursion for adaptive supersampling
    /**
     * setter for _maxLevel
     *
@@ -29,7 +31,8 @@ public class Camera {
     * @return this
     */
 	public Camera setMaxLevelAdaptiveSS(int maxLevelAdaptiveSS) {
-       maxLevelAdaptiveSS = maxLevelAdaptiveSS;
+       this.maxLevelAdaptiveSS = maxLevelAdaptiveSS;
+      
        return this;
 	}
 	/**
@@ -83,7 +86,7 @@ public class Camera {
 	/**
 	 * check if something is empty, then paint the pixels 
 	 */
-	public Camera renderImage() {
+	public Camera renderImage() { 
 		if (multiThreading)
 			return renderImageMultiThreading();
 		if(location==null||up==null||to==null||Double.isNaN(distance)||Double.isNaN(hight)||Double.isNaN(width)||right==null||imageWriter==null||rayTracerBase==null) 
@@ -93,6 +96,9 @@ public class Camera {
 		//throw new UnsupportedOperationException();
 		for (int i=0; i<imageWriter.getNy();i++) { 
 			for(int j=0;j<imageWriter.getNx();j++) {
+				if (adaptiveSS) {
+					return renderImageAdaptiveSuperSampling();
+				}
 				if (antiAliasing == 0) {
 					Color c= rayTracerBase.traceRay(constructRay(imageWriter.getNx(),imageWriter.getNy(), j, i));
 					imageWriter.writePixel(j, i, c);
@@ -101,9 +107,7 @@ public class Camera {
 					Color c= calcColorAntiAliasing(constructReyAntiAliasing(imageWriter.getNx(),imageWriter.getNy(),j,i));
 					imageWriter.writePixel(j, i, c);
 				}
-				if (adaptiveSS) {
-					imageWriter.writePixel(j, i, castRayAdaptiveSuperSampling(j, i));
-				}
+				
 
 			} 
 		} 
@@ -154,7 +158,7 @@ public class Camera {
 		}
 		return this;
 	}
-	/**
+	/** 
 	* casts beam of rays in pixel according to adaptive supersampling
 	*
 	* @param j col index
@@ -162,10 +166,94 @@ public class Camera {
 	* @return Color for a certain pixel
 	*/
 	private Color castRayAdaptiveSuperSampling(int j, int i) {
-		Ray center = constructRay(imageWriter.getNx(), imageWriter.getNy(), j, i);
-		Color centerColor = rayTracerBase.traceRay(center);
-		return calcAdaptiveSuperSampling(imageWriter.getNx(), imageWriter.getNy(), j,i, maxLevelAdaptiveSS, centerColor);
+		//List<Color> colores = new ArrayList<>(); 
+		int nX=imageWriter.getNx();
+		int nY=imageWriter.getNy();
+
+		//Image center  
+		Point pC=location.add(to.scale(distance));
+		//Ratio (pixel width & height)
+		double rY=hight/nY;
+		double rX=width/nX;
+		// Pixel[i,j] center
+		double yI=-(i-((nY-1)/2))*rY;
+		double xJ=(j-((nX-1)/2))*rX;
+		/*
+		 * //distance between the start of the ray in the pixel
+		double dX=(double)rX/antiAliasing;
+		double dY=(double)rY/antiAliasing;
+			
+		Point pIJ=pC; 
+		double x,y;
+		//Ray temp;
+		for(int a=0;a<4;a++) {
+			pIJ=pC; 
+			if(a<3)
+				y=yI+maxLevelAdaptiveSS*dY;
+			else
+				y=yI-maxLevelAdaptiveSS*dY;
+			if(a==2||a==3)
+				x=xJ-maxLevelAdaptiveSS*dX;
+			else
+				x=xJ+maxLevelAdaptiveSS*dX;
+			if (!Util.isZero(x))
+				pIJ=pIJ.add(right.scale(x));
+			if(!Util.isZero(y))
+				pIJ=pIJ.add(up.scale(y));  
+			//temp=new Ray(location, pIJ.subtract(location));
+			//ans.add(temp);
+			//colores.add(rayTracerBase.traceRay(temp));
+		}
+		 */
+		
+		colores.clear();
+		for(int a=0;a<81;a++) {
+			colores.add(Color.NullColor);
+	    }
+		return calcAdaptiveSuperSampling(rX, rY, xJ,yI,4,4, maxLevelAdaptiveSS);
+
 	}
+	/**
+	 * 
+	 * @param rX pixel width
+	 * @param rY pixel height
+	 * @param i width index of the center
+	 * @param j height index of the center
+	 * @param level level of the recursion
+	 * @param xJ center
+	 * @param yI center
+	 * @return if all the edges of the square are in the same color
+	 */
+	
+	private boolean squareColor(double rX,double rY,int i,int j,int level,double xJ,double yI) {
+		Point pC=location.add(to.scale(distance));
+		Point pIJ=pC;
+		if (xJ!=0)
+			pIJ=pIJ.add(right.scale(xJ));
+		if(yI!=0) 
+			pIJ=pIJ.add(up.scale(yI));
+		if(colores.get(9*(j-level)+i-level).equals(Color.NullColor)) {//up left
+			colores.add(9*(j-level)+i-level, rayTracerBase.traceRay(new Ray(location, pIJ.add(right.scale(-rX/2)).add(up.scale(rY/2)).subtract(location))));
+		}
+		if(colores.get(9*(j-level)+i+level).equals(Color.NullColor)) {//up right
+			colores.add(9*(j-level)+i+level, rayTracerBase.traceRay(new Ray(location, pIJ.add(right.scale(rX/2)).add(up.scale(rY/2)).subtract(location))));
+		}
+		
+		if(colores.get(9*(j+level)+i-level).equals(Color.NullColor)) {//down left
+			colores.add(9*(j+level)+i-level, rayTracerBase.traceRay(new Ray(location, pIJ.add(right.scale(-rX/2)).add(up.scale(-rY/2)).subtract(location))));
+		}
+		if(colores.get(9*(j+level)+i+level).equals(Color.NullColor)) {//down right
+			colores.add(9*(j+level)+i+level, rayTracerBase.traceRay(new Ray(location, pIJ.add(right.scale(rX/2)).add(up.scale(-rY/2)).subtract(location))));
+		}
+		if(colores.get(9*(j-level)+i-level).equals(colores.get(9*(j-level)+i+level))&&
+				colores.get(9*(j-level)+i+level).equals(colores.get(9*(j+level)+i+level))&&
+				colores.get(9*(j+level)+i+level).equals(colores.get(9*(j+level)+i-level))) {
+			return true;
+		}
+		return false;
+	}
+	
+   
 	/**
 	* calculates actual color using adaptive supersampling
 	*
@@ -176,27 +264,94 @@ public class Camera {
 	* @param level level of recursion
 	* @return color of pixel
 	*/
-	private Color calcAdaptiveSuperSampling(int nX, int nY, int j, int i, int level,Color centerColor) {
-		// recursion reached maximum level
-		if (level == 0) {
-			return centerColor;
+	private Color calcAdaptiveSuperSampling(double rX, double rY, double xJ, double yI, int i,int j,int level) {
+		if(level==0) {
+			return colores.get(9*j+i);
 		}
-		Color color = centerColor;
-		// divide pixel into 4 mini-pixels
-		Ray[] beam = new Ray[]{
-				constructRay(2 * nX, 2 * nY, 2 * j, 2 * i),
-				constructRay(2 * nX, 2 * nY, 2 * j, 2 * i + 1),
-				constructRay(2 * nX, 2 * nY, 2 * j + 1, 2 * i),
-				constructRay(2 * nX, 2 * nY, 2 * j + 1, 2 * i + 1)};
-		// for each mini-pixel
-		for (int ray = 0; ray < 4; ray++) {
-			Color currentColor = rayTracerBase.traceRay(beam[ray]);
-			if (!currentColor.equals(centerColor))
-				currentColor = calcAdaptiveSuperSampling(2 * nX, 2 * nY,2 * j + ray / 2, 2 * i + ray % 2, level - 1, currentColor);
-			color = color.add(currentColor);
+		if(squareColor(rX,rY,i,j,level,xJ,yI)) {
+			return colores.get(j-level+i-level); 
 		}
-		return color.reduce(5);
-	}
+		Point pC=location.add(to.scale(distance));
+		Point pIJ=pC;
+		if (xJ!=0)
+			pIJ=pIJ.add(right.scale(xJ));
+		if(yI!=0)
+			pIJ=pIJ.add(up.scale(yI));
+		colores.add(9*j+i,rayTracerBase.traceRay(new Ray(location, pIJ.subtract(location))));
+		if(colores.get(9*(j-level)+i).equals(Color.NullColor)) {//up
+			colores.add(9*(j-level)+i, rayTracerBase.traceRay(new Ray(location, pIJ.add(up.scale(rY/2)).subtract(location))));
+		}
+		if(colores.get(9*j+i+level).equals(Color.NullColor)) {//right
+			colores.add(9*j+i+level, rayTracerBase.traceRay(new Ray(location, pIJ.add(right.scale(rX/2)).subtract(location))));
+		}
+		if(colores.get(9*(j+level)+i).equals(Color.NullColor)) {//down
+			colores.add(9*(j+level)+i, rayTracerBase.traceRay(new Ray(location, pIJ.add(up.scale(-rY/2)).subtract(location))));
+		}
+		if(colores.get(9*j+i-level).equals(Color.NullColor)) {// left
+			colores.add(9*j+i-level, rayTracerBase.traceRay(new Ray(location, pIJ.add(right.scale(-rX/2)).subtract(location))));
+		}
+		Color c=Color.BLACK;
+		c=c.add(calcAdaptiveSuperSampling(rX/2,rY/2,xJ-rX/4,yI+rY/4,(int)Math.ceil(i-(level/2)),(int)Math.floor(j-(level/2)),level/2));//up left
+		c=c.add(calcAdaptiveSuperSampling(rX/2,rY/2,xJ+rX/4,yI+rY/4,(int)Math.ceil(i+(level/2)),(int)Math.floor(j-(level/2)),level/2));//up right
+		c=c.add(calcAdaptiveSuperSampling(rX/2,rY/2,xJ+rX/4,yI-rY/4,(int)Math.ceil(i+(level/2)),(int)Math.floor(j+(level/2)),level/2));//down right
+		c=c.add(calcAdaptiveSuperSampling(rX/2,rY/2,xJ-rX/4,yI-rY/4,(int)Math.ceil(i-(level/2)),(int)Math.floor(j+(level/2)),level/2));//down left
+		return c.reduce(4);
+		/*
+		 *	Color ans=Color.BLACK;
+		if (level == 0) {//if the level of the recursion is 0
+			return ans.add(colores.get(0),colores.get(1),colores.get(2),colores.get(3)).reduce(4);	
+		}
+		if (xJ!=0)
+			pIJ=pIJ.add(right.scale(xJ));
+		if(yI!=0)
+			pIJ=pIJ.add(up.scale(yI));
+		colores.add(rayTracerBase.traceRay(new Ray(location, pIJ.subtract(location))));//add the center of the pixel(5)
+		pIJ=pC;
+		if(yI+level*dY!=0)
+			pIJ=pIJ.add(up.scale(yI+level*dY));
+		colores.add(rayTracerBase.traceRay(new Ray(location, pIJ.subtract(location))));//up-6
+		pIJ=pC;
+		if(xJ+level*dX!=0)
+			pIJ=pIJ.add(up.scale(xJ+level*dX));
+		colores.add(rayTracerBase.traceRay(new Ray(location, pIJ.subtract(location))));//right-7
+		pIJ=pC;
+		if(yI-level*dY!=0)
+			pIJ=pIJ.add(up.scale(yI-level*dY));
+		colores.add(rayTracerBase.traceRay(new Ray(location, pIJ.subtract(location))));//down-8
+		pIJ=pC;
+		if(xJ-level*dX!=0)
+			pIJ=pIJ.add(up.scale(xJ-level*dX));
+		colores.add(rayTracerBase.traceRay(new Ray(location, pIJ.subtract(location))));//left-9
+		int l=level/2;
+		List<Color> c = new ArrayList<>(); 
+		c.add(colores.get(0));
+		c.add(colores.get(5));
+		c.add(colores.get(4));
+		c.add(colores.get(8));
+		ans=ans.add(calcAdaptiveSuperSampling(dX,dY,xJ-l*dX,yI+l*dY,l,c));//up left square
+		c.clear();
+		c.add(colores.get(5));
+		c.add(colores.get(1));
+		c.add(colores.get(4));
+		c.add(colores.get(6));
+		ans=ans.add(calcAdaptiveSuperSampling(dX,dY,xJ+l*dX,yI+l*dY,l,c));//up right square
+		c.clear();
+		c.add(colores.get(4));
+		c.add(colores.get(6));
+		c.add(colores.get(2));
+		c.add(colores.get(7));
+		ans=ans.add(calcAdaptiveSuperSampling(dX,dY,xJ+l*dX,yI-l*dY,l,c));//down right square
+		c.clear();
+		c.add(colores.get(8));
+		c.add(colores.get(4));
+		c.add(colores.get(7));
+		c.add(colores.get(3));
+		ans=ans.add(calcAdaptiveSuperSampling(dX,dY,xJ-l*dX,yI-l*dY,l,c));//down left square
+		return ans.reduce(4);
+ 
+		 */
+		
+		}
 
 
 	

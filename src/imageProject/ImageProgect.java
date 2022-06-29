@@ -33,12 +33,14 @@ class ImageProgect {
 		//z+: close, z-: far
 		
 		Camera camera = new Camera(new Point(0, 0, 10000),  new Vector(0, 1, 0),new Vector(0, 0, -1)) //
-				.setVPSize(2500, 2500).setVPDistance(10000).setAntialiasing(9).setMultiThreading(true);//setAdaptiveSS(true);//
+				.setVPSize(2500, 2500).setVPDistance(10000).setAntialiasing(9).setAdaptiveSS(true);//.setMultiThreading(true);
 
 		scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15)).setBackground(new Color(173,216,230));//.setSoftShadow(9).setDelta(12.5);
 	
 		
 		scene.geometries.add(
+				new Sphere(new Point(-1500,1300,-1500),1000d).setEmission(new Color(190,160,21)).setMaterial(new Material().setKd(1).setKR(new Double3(0.3))),//yellow: up, left
+
 				//Spheres
 				new Sphere(new Point(700,-900,400),100d).setEmission(new Color(190,160,21)).setMaterial(new Material().setKd(1).setKt(new Double3(0.3))),//yellow: spot light - down, right
 				new Sphere(new Point(900,950,500),150d).setEmission(new Color(190,160,21)).setMaterial(new Material().setKd(0.5).setKs(0.5).setShininess(60).setKt(new Double3(0.1))),//yellow: spot light - up, right
