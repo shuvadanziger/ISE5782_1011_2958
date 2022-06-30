@@ -120,7 +120,7 @@ public class Camera {
 				if (antiAliasing == 0) {
 					imageWriter.writePixel(j, i, rayTracerBase.traceRay(constructRay(imageWriter.getNx(),imageWriter.getNy(), j, i)));
 				}
-				else {
+				else if (adaptiveSS==0){
 					imageWriter.writePixel(j, i, calcColorAntiAliasing(constructReyAntiAliasing(imageWriter.getNx(),imageWriter.getNy(),j,i)));
 				}
 				if (adaptiveSS!=0) {
