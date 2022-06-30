@@ -148,6 +148,11 @@ public class Color {
 		return "rgb:" + rgb;
 	}
 	
+	/**
+	 * If the colores are close enough (difference of 1 At most)
+	 * @param color Color for comparison
+	 * @return if the color are equal 
+	 */
 	public boolean equals(Color color) {
 		return  (Math.abs(this.rgb.d1-color.rgb.d1)<= 1) &&
 				(Math.abs(this.rgb.d2-color.rgb.d2)<= 1) &&

@@ -20,15 +20,15 @@ public class Camera {
 	private double distance;
 	private ImageWriter imageWriter;
 	private RayTracerBase rayTracerBase;
-	private int antiAliasing;
+	private int antiAliasing;// if using antiAliasing- this is the number of rays
 	private boolean multiThreading;
-	private int adaptiveSS;
+	private int adaptiveSS;//if using adaptive super sampling- this is the max level of the recursion
 
 	
 	/**
 	 * set the number of rays in anti aliasing
 	 * @param a number of rays in a row
-	 * @return
+	 * @return camera
 	 */
 	public Camera setAntialiasing(int a) {
 		antiAliasing = a;
@@ -37,7 +37,7 @@ public class Camera {
 	/**
 	 * set to use multi threading
 	 * @param b
-	 * @return
+	 * @return camera
 	 */
 	public Camera setMultiThreading(boolean b) {
 		multiThreading = b;
@@ -45,11 +45,11 @@ public class Camera {
 	}
 	/**
 	 * set to use adaptive super sampling
-	 * @param b
-	 * @return
+	 * @param l max level of the recursion
+	 * @return camera
 	 */
-	public Camera setAdaptiveSS(int b) {
-		adaptiveSS = b;
+	public Camera setAdaptiveSS(int l) {
+		adaptiveSS = l;
 		return this;
 	}
 	/**
@@ -71,10 +71,9 @@ public class Camera {
 		return this;
 	}
 	
-	
-	
 	/**
 	 * check if something is empty, then paint the pixels 
+	 * @return camera
 	 */
 	public Camera renderImage() { 
 		
@@ -82,12 +81,11 @@ public class Camera {
 		{ 
 			throw new MissingResourceException("one or more of the fields are empty",null,null);
 		}
-		if (multiThreading)
+		if (multiThreading)//if we use multiThreading
 			return renderImageMultiThreading();
-		if (adaptiveSS!=0) {
+		if (adaptiveSS!=0) {//if we use super sampling
 			return renderImageAdaptiveSuperSampling();
 		}
-		//throw new UnsupportedOperationException();
 		for (int i=0; i<imageWriter.getNy();i++) { 
 			for(int j=0;j<imageWriter.getNx();j++) {
 				
@@ -95,12 +93,10 @@ public class Camera {
 					Color c= rayTracerBase.traceRay(constructRay(imageWriter.getNx(),imageWriter.getNy(), j, i));
 					imageWriter.writePixel(j, i, c);
 				}
-				else {
+				else {//if we use anti aliasing
 					Color c= calcColorAntiAliasing(constructReyAntiAliasing(imageWriter.getNx(),imageWriter.getNy(),j,i));
 					imageWriter.writePixel(j, i, c);
 				}
-				
-
 			} 
 		} 
 		return this;
@@ -116,14 +112,13 @@ public class Camera {
         Pixel.initialize(imageWriter.getNy(), imageWriter.getNx(), 60);
 		IntStream.range(0, imageWriter.getNy()).parallel().forEach(i -> {
 			IntStream.range(0, imageWriter.getNx()).parallel().forEach(j -> {
-				//castRay(imageWriter.getNx(), imageWriter.getNy(), j, i);
-				if (antiAliasing == 0) {
+				if (antiAliasing == 0) {//if we dont use anti aliasing (and super sampling)
 					imageWriter.writePixel(j, i, rayTracerBase.traceRay(constructRay(imageWriter.getNx(),imageWriter.getNy(), j, i)));
 				}
-				else if (adaptiveSS==0){
+				else if (adaptiveSS==0){//if only anti aliasing
 					imageWriter.writePixel(j, i, calcColorAntiAliasing(constructReyAntiAliasing(imageWriter.getNx(),imageWriter.getNy(),j,i)));
 				}
-				if (adaptiveSS!=0) {
+				if (adaptiveSS!=0) {//if super sampling
 					imageWriter.writePixel(j, i, adaptiveSamplingHelper(imageWriter.getNx(),imageWriter.getNy(), j, i));
 				}
 				Pixel.pixelDone();
@@ -143,7 +138,7 @@ public class Camera {
 		{ 
 			throw new MissingResourceException("one or more of the fields are empty",null,null);
 		}
-	 // for each pixel
+		// for each pixel
 		for (int i = 0; i < imageWriter.getNx(); i++) {
 			for (int j = 0; j < imageWriter.getNy(); j++) {
 				imageWriter.writePixel(j, i, adaptiveSamplingHelper(imageWriter.getNx(),imageWriter.getNy(), j, i));
@@ -229,7 +224,7 @@ public class Camera {
 	 * set the width and the height, and return the camera
 	 * @param width
 	 * @param height
-	 * @return
+	 * @return camera
 	 */
 	public Camera setVPSize(double width, double height){
 		this.width=width;
@@ -239,7 +234,7 @@ public class Camera {
 	/**
 	 * set the distance, and return the camera
 	 * @param distance
-	 * @return
+	 * @return distance
 	 */
 	public Camera setVPDistance(double distance) {
 		this.distance=distance;
@@ -249,9 +244,9 @@ public class Camera {
 	 * construct ray
 	 * @param nX-Represents the amount of columns
 	 * @param nY-Represents the amount of rows
-	 * @param j
-	 * @param i
-	 * @return 
+	 * @param j col index
+	 * @param i row index
+	 * @return  ray throw the pixel
 	 */
 	public Ray constructRay(int nX, int nY, int j, int i) {  
 		//Image center
@@ -285,7 +280,7 @@ public class Camera {
 		//Image center  
 		Point pC=location.add(to.scale(distance));
 		//Ratio (pixel width & height)
-		double rY=hight/nY;
+		double rY=hight/nY;  
 		double rX=width/nX;
 		//Pixel[i,j] center
 		double yI=-(i-((nY-1)/2))*rY;

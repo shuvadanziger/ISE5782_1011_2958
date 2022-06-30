@@ -33,7 +33,7 @@ class ImageProgect {
 		//z+: close, z-: far
 		
 		Camera camera = new Camera(new Point(0, 0, 10000),  new Vector(0, 1, 0),new Vector(0, 0, -1)) //
-				.setVPSize(2500, 2500).setVPDistance(10000).setMultiThreading(true);//.setAntialiasing(9).setAdaptiveSS(4);
+				.setVPSize(2500, 2500).setVPDistance(10000).setAntialiasing(9);//.setAdaptiveSS(4);//.setMultiThreading(true)
 
 		scene.setAmbientLight(new AmbientLight(new Color(WHITE), 0.15)).setBackground(new Color(173,216,230));//.setSoftShadow(9).setDelta(12.5);
 	
