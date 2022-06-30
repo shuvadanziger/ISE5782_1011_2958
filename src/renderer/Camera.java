@@ -157,7 +157,7 @@ public class Camera {
 	 // for each pixel
 		for (int i = 0; i < imageWriter.getNx(); i++) {
 			for (int j = 0; j < imageWriter.getNy(); j++) {
-				imageWriter.writePixel(j, i, adaptiveSamplingHelper(imageWriter.getNx(),imageWriter.getNy(),j, i));
+				imageWriter.writePixel(j, i, castRayAdaptiveSuperSampling( j, i));
 			}
 		}
 		return this;
@@ -219,23 +219,133 @@ public class Camera {
 	            Point pdown = center.add(up.scale(-rY/2));
 	            Point pleft = center.add(right.scale(-rY/2));
 	            Point pright = center.add(right.scale(rY/2));
-
-	            Color upColor = rayTracerBase.traceRay(new Ray(location, pup.subtract(location)));
+	            
+	            Color centerColor = rayTracerBase.traceRay(new Ray(location, center.subtract(location)));
+	            
+	            /**
+	            if (leftUpColor.equals(rightUpColor)) {
+	            	Color downColor = rayTracerBase.traceRay(new Ray(location, pdown.subtract(location)));
+		            Color leftColor = rayTracerBase.traceRay(new Ray(location, pleft.subtract(location)));
+		            Color rightColor = rayTracerBase.traceRay(new Ray(location, pright.subtract(location)));
+		            leftDownColor = adaptiveSampling(center.add(right.scale(-rX/4)).add(up.scale(-rY/4)), rX/2, rY/2, 
+                            leftColor, centerColor, leftDownColor, downColor, depth-1);
+		            rightDownColor = adaptiveSampling(center.add(right.scale(rX/4)).add(up.scale(-rY/4)), rX/2, rY/2, 
+                            centerColor, rightColor, downColor, rightDownColor, depth-1);
+	            }
+	            if (leftUpColor.equals(leftDownColor)) {
+	            	Color upColor = rayTracerBase.traceRay(new Ray(location, pup.subtract(location)));	            
+		            Color rightColor = rayTracerBase.traceRay(new Ray(location, pright.subtract(location)));
+		            Color downColor = rayTracerBase.traceRay(new Ray(location, pdown.subtract(location)));
+		            rightUpColor = adaptiveSampling(center.add(right.scale(rX/4)).add(up.scale(rY/4)), rX/2, rY/2, 
+                            upColor, rightUpColor, centerColor, rightColor, depth-1);
+		            rightDownColor = adaptiveSampling(center.add(right.scale(rX/4)).add(up.scale(-rY/4)), rX/2, rY/2, 
+                           centerColor, rightColor, downColor, rightDownColor, depth-1);
+	            }
+	            if (rightUpColor.equals(rightDownColor)) {
+	            	Color upColor = rayTracerBase.traceRay(new Ray(location, pup.subtract(location)));
+	 	            Color leftColor = rayTracerBase.traceRay(new Ray(location, pleft.subtract(location)));
+	 	           Color downColor = rayTracerBase.traceRay(new Ray(location, pdown.subtract(location)));
+	 	            leftUpColor = adaptiveSampling(center.add(right.scale(-rX/4)).add(up.scale(rY/4)), rX/2, rY/2, 
+                           leftUpColor, upColor, leftColor, centerColor, depth-1);
+	 	          leftDownColor = adaptiveSampling(center.add(right.scale(-rX/4)).add(up.scale(-rY/4)), rX/2, rY/2, 
+                           leftColor, centerColor, leftDownColor, downColor, depth-1);
+	            }
+	            */
+	 	            /**
+	            if (leftDownColor.equals(rightDownColor)) {
+	            	Color upColor = rayTracerBase.traceRay(new Ray(location, pup.subtract(location)));
+	 	            Color leftColor = rayTracerBase.traceRay(new Ray(location, pleft.subtract(location)));
+		            Color rightColor = rayTracerBase.traceRay(new Ray(location, pright.subtract(location)));
+	 	            leftUpColor = adaptiveSampling(center.add(right.scale(-rX/4)).add(up.scale(rY/4)), rX/2, rY/2, 
+                           leftUpColor, upColor, leftColor, centerColor, depth-1);
+	 	           rightUpColor = adaptiveSampling(center.add(right.scale(rX/4)).add(up.scale(rY/4)), rX/2, rY/2, 
+                           upColor, rightUpColor, centerColor, rightColor, depth-1);
+	            }
+	            if (leftUpColor.equals(rightDownColor)) {
+	            	 Color upColor = rayTracerBase.traceRay(new Ray(location, pup.subtract(location)));	            
+			         Color rightColor = rayTracerBase.traceRay(new Ray(location, pright.subtract(location)));
+			         rightUpColor = adaptiveSampling(center.add(right.scale(rX/4)).add(up.scale(rY/4)), rX/2, rY/2, 
+	                            upColor, rightUpColor, centerColor, rightColor, depth-1);
+			         Color downColor = rayTracerBase.traceRay(new Ray(location, pdown.subtract(location)));
+			         Color leftColor = rayTracerBase.traceRay(new Ray(location, pleft.subtract(location)));
+			         leftDownColor = adaptiveSampling(center.add(right.scale(-rX/4)).add(up.scale(-rY/4)), rX/2, rY/2, 
+	                            leftColor, centerColor, leftDownColor, downColor, depth-1);
+	            }
+	            if (leftDownColor.equals(rightUpColor)) {
+	            	Color upColor = rayTracerBase.traceRay(new Ray(location, pup.subtract(location)));
+	 	            Color leftColor = rayTracerBase.traceRay(new Ray(location, pleft.subtract(location)));
+	 	            leftUpColor = adaptiveSampling(center.add(right.scale(-rX/4)).add(up.scale(rY/4)), rX/2, rY/2, 
+                           leftUpColor, upColor, leftColor, centerColor, depth-1);
+	 	           Color downColor = rayTracerBase.traceRay(new Ray(location, pdown.subtract(location)));
+		           Color rightColor = rayTracerBase.traceRay(new Ray(location, pright.subtract(location)));
+		           rightDownColor = adaptiveSampling(center.add(right.scale(rX/4)).add(up.scale(-rY/4)), rX/2, rY/2, 
+                           centerColor, rightColor, downColor, rightDownColor, depth-1);
+	            }
+	            
+	            */
+	            
+	            /**
+	            if (!leftUpColor.equals(rightUpColor) && !leftUpColor.equals(leftDownColor)) {
+	            	Color upColor = rayTracerBase.traceRay(new Ray(location, pup.subtract(location)));
+	 	            Color leftColor = rayTracerBase.traceRay(new Ray(location, pleft.subtract(location)));
+	 	            leftUpColor = adaptiveSampling(center.add(right.scale(-rX/4)).add(up.scale(rY/4)), rX/2, rY/2, 
+                           leftUpColor, upColor, leftColor, centerColor, depth-1);
+	            }
+	            else if (!rightUpColor.equals(leftUpColor) && !rightUpColor.equals(leftDownColor)) {
+		            Color upColor = rayTracerBase.traceRay(new Ray(location, pup.subtract(location)));	            
+		            Color rightColor = rayTracerBase.traceRay(new Ray(location, pright.subtract(location)));
+		            rightUpColor = adaptiveSampling(center.add(right.scale(rX/4)).add(up.scale(rY/4)), rX/2, rY/2, 
+                            upColor, rightUpColor, centerColor, rightColor, depth-1);
+	            }
+	            else if (!leftDownColor.equals(leftUpColor) && !leftDownColor.equals(rightUpColor)) {
+	            	Color downColor = rayTracerBase.traceRay(new Ray(location, pdown.subtract(location)));
+		            Color leftColor = rayTracerBase.traceRay(new Ray(location, pleft.subtract(location)));
+		            leftDownColor = adaptiveSampling(center.add(right.scale(-rX/4)).add(up.scale(-rY/4)), rX/2, rY/2, 
+                            leftColor, centerColor, leftDownColor, downColor, depth-1);
+	            }
+	            else if (!rightDownColor.equals(leftUpColor) && !rightDownColor.equals(leftDownColor)) {
+		            Color downColor = rayTracerBase.traceRay(new Ray(location, pdown.subtract(location)));
+		            Color rightColor = rayTracerBase.traceRay(new Ray(location, pright.subtract(location)));
+		            rightDownColor = adaptiveSampling(center.add(right.scale(rX/4)).add(up.scale(-rY/4)), rX/2, rY/2, 
+                            centerColor, rightColor, downColor, rightDownColor, depth-1);
+	            }
+	            */
+	            Color upColor = rayTracerBase.traceRay(new Ray(location, pup.subtract(location)));	            
 	            Color downColor = rayTracerBase.traceRay(new Ray(location, pdown.subtract(location)));
 	            Color leftColor = rayTracerBase.traceRay(new Ray(location, pleft.subtract(location)));
 	            Color rightColor = rayTracerBase.traceRay(new Ray(location, pright.subtract(location)));
-	            Color centerColor = rayTracerBase.traceRay(new Ray(location, center.subtract(location)));
-
-	            leftUpColor = adaptiveSampling(center.add(right.scale(-rX/4)).add(up.scale(rY/4)), rX/2, rY/2, 
-	                                leftUpColor, upColor, leftColor, centerColor, depth-1);
-	            rightUpColor = adaptiveSampling(center.add(right.scale(rX/4)).add(up.scale(rY/4)), rX/2, rY/2, 
-	                                upColor, rightUpColor, centerColor, rightColor, depth-1);
-	            leftDownColor = adaptiveSampling(center.add(right.scale(-rX/4)).add(up.scale(-rY/4)), rX/2, rY/2, 
-	                                leftColor, centerColor, leftDownColor, downColor, depth-1);
-	            rightDownColor = adaptiveSampling(center.add(right.scale(rX/4)).add(up.scale(-rY/4)), rX/2, rY/2, 
-	                                centerColor, rightColor, downColor, rightDownColor, depth-1);
-
-	            Color color = Color.BLACK;
+	            boolean check = true;
+	            if (leftUpColor.equals(leftDownColor) && leftUpColor.equals(rightUpColor) && !rightDownColor.equals(leftUpColor)) {
+	            	rightDownColor = adaptiveSampling(center.add(right.scale(rX/4)).add(up.scale(-rY/4)), rX/2, rY/2, 
+                            centerColor, rightColor, downColor, rightDownColor, depth-1);
+	            	check = false;
+	            }
+	            if (leftUpColor.equals(leftDownColor) && leftUpColor.equals(rightDownColor) && !rightUpColor.equals(leftUpColor)) {
+	            	 rightUpColor = adaptiveSampling(center.add(right.scale(rX/4)).add(up.scale(rY/4)), rX/2, rY/2, 
+	                            upColor, rightUpColor, centerColor, rightColor, depth-1);
+	            	 check = false;
+	            }
+	            if (leftUpColor.equals(rightDownColor) && leftUpColor.equals(rightUpColor) && !leftDownColor.equals(leftUpColor)) {
+	            	leftDownColor = adaptiveSampling(center.add(right.scale(-rX/4)).add(up.scale(-rY/4)), rX/2, rY/2, 
+                            leftColor, centerColor, leftDownColor, downColor, depth-1);
+	            	 check = false;
+	            }
+	            if (rightDownColor.equals(leftDownColor) && rightDownColor.equals(rightUpColor) && !leftUpColor.equals(rightDownColor)) {
+	            	leftUpColor = adaptiveSampling(center.add(right.scale(-rX/4)).add(up.scale(rY/4)), rX/2, rY/2, 
+	                           leftUpColor, upColor, leftColor, centerColor, depth-1);
+	            	 check = false;
+	            }
+	            if (check) {
+	            	rightDownColor = adaptiveSampling(center.add(right.scale(rX/4)).add(up.scale(-rY/4)), rX/2, rY/2, 
+                            centerColor, rightColor, downColor, rightDownColor, depth-1);
+	            	 rightUpColor = adaptiveSampling(center.add(right.scale(rX/4)).add(up.scale(rY/4)), rX/2, rY/2, 
+	                            upColor, rightUpColor, centerColor, rightColor, depth-1);
+	            	 leftDownColor = adaptiveSampling(center.add(right.scale(-rX/4)).add(up.scale(-rY/4)), rX/2, rY/2, 
+	                            leftColor, centerColor, leftDownColor, downColor, depth-1);
+	            	 leftUpColor = adaptiveSampling(center.add(right.scale(-rX/4)).add(up.scale(rY/4)), rX/2, rY/2, 
+	                           leftUpColor, upColor, leftColor, centerColor, depth-1);
+	            }
+		        Color color = Color.BLACK;
 	            color = color.add(leftUpColor, rightUpColor, leftDownColor, rightDownColor);
 	            return color.reduce(4);
 	        }
@@ -348,11 +458,15 @@ public class Camera {
 	* @return color of pixel
 	*/
 	private Color calcAdaptiveSuperSampling(double rX, double rY, double xJ, double yI, int i,int j,int level) {
-		if(level==0) {
-			return colores.get(9*j+i);
+		Color c=Color.BLACK;
+		if (level==0) {
+			return c.add(colores.get(9*j+i),
+					colores.get(9*j+i-1),
+					colores.get(9*(j+1)+i)
+					,colores.get(9*(j+1)+i-1)).reduce(4);
 		}
 		if(squareColor(rX,rY,i,j,level,xJ,yI)) {
-			return colores.get(j-level+i-level); 
+			return colores.get(9*(j-level)+i-level); 
 		}
 		Point pC=location.add(to.scale(distance));
 		Point pIJ=pC;
@@ -373,11 +487,19 @@ public class Camera {
 		if(colores.get(9*j+i-level).equals(Color.NullColor)) {// left
 			colores.add(9*j+i-level, rayTracerBase.traceRay(new Ray(location, pIJ.add(right.scale(-rX/2)).subtract(location))));
 		}
-		Color c=Color.BLACK;
-		c=c.add(calcAdaptiveSuperSampling(rX/2,rY/2,xJ-rX/4,yI+rY/4,(int)Math.ceil(i-(level/2)),(int)Math.floor(j-(level/2)),level/2));//up left
-		c=c.add(calcAdaptiveSuperSampling(rX/2,rY/2,xJ+rX/4,yI+rY/4,(int)Math.ceil(i+(level/2)),(int)Math.floor(j-(level/2)),level/2));//up right
-		c=c.add(calcAdaptiveSuperSampling(rX/2,rY/2,xJ+rX/4,yI-rY/4,(int)Math.ceil(i+(level/2)),(int)Math.floor(j+(level/2)),level/2));//down right
-		c=c.add(calcAdaptiveSuperSampling(rX/2,rY/2,xJ-rX/4,yI-rY/4,(int)Math.ceil(i-(level/2)),(int)Math.floor(j+(level/2)),level/2));//down left
+		if(level==1) {
+			c=c.add(calcAdaptiveSuperSampling(rX/2,rY/2,xJ-rX/4,yI+rY/4,i,j-1,0));//up left
+			c=c.add(calcAdaptiveSuperSampling(rX/2,rY/2,xJ+rX/4,yI+rY/4,i+1,j-1,0));//up right
+			c=c.add(calcAdaptiveSuperSampling(rX/2,rY/2,xJ+rX/4,yI-rY/4,i-1,j,0));//down right
+			c=c.add(calcAdaptiveSuperSampling(rX/2,rY/2,xJ-rX/4,yI-rY/4,i,j,0));//down left
+			//return colores.get(9*j+i);
+		}
+		else {
+			c=c.add(calcAdaptiveSuperSampling(rX/2,rY/2,xJ-rX/4,yI+rY/4,(int)(i-(level/2)),(int)(j-(level/2)),level/2));//up left
+			c=c.add(calcAdaptiveSuperSampling(rX/2,rY/2,xJ+rX/4,yI+rY/4,(int)(i+(level/2)),(int)(j-(level/2)),level/2));//up right
+			c=c.add(calcAdaptiveSuperSampling(rX/2,rY/2,xJ+rX/4,yI-rY/4,(int)(i+(level/2)),(int)(j+(level/2)),level/2));//down right
+			c=c.add(calcAdaptiveSuperSampling(rX/2,rY/2,xJ-rX/4,yI-rY/4,(int)(i-(level/2)),(int)(j+(level/2)),level/2));//down left
+		}
 		return c.reduce(4);
 		/*
 		 *	Color ans=Color.BLACK;
