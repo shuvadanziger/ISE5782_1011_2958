@@ -23,7 +23,7 @@ public class ShadowTests {
 	private Material trMaterial = new Material().setKd(0.5).setKs(0.5).setShininess(30);
 
 	private Scene scene = new Scene("Test scene");
-	private Camera camera = new Camera(new Point(0, 0, 1000),  new Vector(0, 1, 0),new Vector(0, 0, -1)).setAntialiasing(9).setAdaptiveSS(true)//
+	private Camera camera = new Camera(new Point(0, 0, 1000),  new Vector(0, 1, 0),new Vector(0, 0, -1)).setAntialiasing(9).setAdaptiveSS(4)//
 			.setVPSize(200, 200).setVPDistance(1000)
 			.setRayTracer(new RayTracerBasic(scene));
 
@@ -95,7 +95,7 @@ public class ShadowTests {
 	@Test
 	public void softShadowSphereTriangle() {
 		double d = 0.2; 
-		//scene.setSoftShadow(8).setDelta(d);
+		scene.setSoftShadow(8).setDelta(d);
 		sphereTriangleHelper("softShadow", //
 				new Triangle(new Point(-70, -40, 0), new Point(-40, -70, 0), new Point(-68, -68, -4)), //
 				new Point(-88, -88, 120));
